@@ -1,0 +1,25 @@
+# تفعيل mod_rewrite
+RewriteEngine On
+
+# منع استعراض المجلدات
+Options -Indexes
+
+# حماية ملفات النظام المهمة
+<FilesMatch "^(\.ht|\.git|\.env|composer\.json|composer\.lock)">
+  Require all denied
+</FilesMatch>
+
+# منع تحميل بعض الامتدادات الحساسة
+<FilesMatch "\.(bak|config|sql|ini|log|sh)$">
+  Require all denied
+</FilesMatch>
+
+# إضافة .php تلقائياً إذا لم يوجد ملف أو مجلد
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)$ $1.php [L,QSA]
+
+# إعدادات أمنية عامة
+Header set X-Content-Type-Options "nosniff"
+Header always set X-Frame-Options "SAMEORIGIN"
+Header set X-XSS-Protection "1; mode=block"

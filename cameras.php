@@ -1,0 +1,98 @@
+<?php
+session_start();
+if (!isset($_SESSION['user'])) {
+  header("Location: index.php");
+  exit();
+}
+?>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>نظام كاميرات المراقبة - شركة مدارات للأنظمة</title>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <style>
+    body {
+      background-color: #0e0e0e;
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #00ffcc;
+      margin-bottom: 30px;
+      font-size: 36px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .cam-box {
+      background-color: #1c1c1c;
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 0 0 10px #00ffcc33;
+      text-align: center;
+    }
+
+    .cam-title {
+      margin-bottom: 10px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    video {
+      width: 100%;
+      height: auto;
+      border: 2px solid #00ffcc;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>نظام كاميرات المراقبة - شركة مدارات للأنظمة</h1>
+  <div class="grid" id="cameraGrid"></div>
+
+  <script>
+    const container = document.getElementById('cameraGrid');
+
+    for (let i = 1; i <= 20; i++) {
+      const camBox = document.createElement('div');
+      camBox.className = 'cam-box';
+
+      const title = document.createElement('div');
+      title.className = 'cam-title';
+      title.textContent = `كاميرا ${i}`;
+
+      const video = document.createElement('video');
+      video.id = 'video' + i;
+      video.controls = true;
+      video.autoplay = true;
+      video.muted = true;
+
+      camBox.appendChild(title);
+      camBox.appendChild(video);
+      container.appendChild(camBox);
+
+      const source = `streams/camera${i}.m3u8`;
+
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(source);
+        hls.attachMedia(video);
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = source;
+      } else {
+        title.textContent += " (غير مدعومة في هذا المتصفح)";
+      }
+    }
+  </script>
+
+</body>
+</html>
