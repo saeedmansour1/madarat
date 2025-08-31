@@ -199,12 +199,12 @@
         <i class="fas fa-file-contract"></i>
       </div>
       <h1>إدارة عقود الصيانة</h1>
-      <p>ابحث عن عقد الصيانة باستخدام رقم المحل ورقم الهاتف</p>
+      <p>ابحث عن عقد الصيانة باستخدام رقم السجل ورقم الهاتف</p>
     </div>
     
     <div class="box">
       <div class="form-group">
-        <label for="shopNo">رقم المحل:</label>
+        <label for="shopNo">رقم السجل:</label>
         <div class="input-with-icon">
           <i class="fas fa-store"></i>
           <input type="text" id="shopNo" placeholder="أدخل رقم المحل">
@@ -234,8 +234,8 @@
   <script>
     // قاعدة بيانات بسيطة (تقدر تحولها JSON خارجي أو قاعدة بيانات حقيقية)
     const contracts = [
-      {shop:"101", phone:"01012345678", file:"contracts/contract101.pdf"},
-      {shop:"102", phone:"01198765432", file:"contracts/contract102.pdf"},
+      {shop:"4031263073", phone:"0506688011", file:"contracts/shop 287.pdf"},
+      {shop:"470220622458", phone:"0556960498", file:"contracts/shop 260a.pdf.pdf"},
       {shop:"200", phone:"01200011122", file:"contracts/contract200.pdf"},
     ];
 
@@ -260,10 +260,11 @@
         result.innerHTML = `
           <i class="fas fa-times-circle" style="font-size: 48px; margin-bottom: 15px;"></i>
           <h3>لا يوجد عقد مطابق</h3>
-          <p>يرجى التحقق من رقم المحل ورقم الهاتف والمحاولة مرة أخرى</p>`;
+          <p>يرجى التحقق من رقم السجل ورقم الهاتف والمحاولة مرة أخرى</p>`;
       }
       result.style.display="block";
     }
   </script>
 </body>
 </html>
+
