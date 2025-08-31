@@ -523,6 +523,55 @@
             background: #c0392b;
         }
         
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            display: none;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #27ae60;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .toast.error {
+            background: #e74c3c;
+        }
+        
         @media (max-width: 900px) {
             .main-container {
                 flex-direction: column;
@@ -571,6 +620,10 @@
             .logout-btn {
                 display: none;
             }
+            
+            .loading-overlay {
+                display: none !important;
+            }
         }
     </style>
 </head>
@@ -584,6 +637,17 @@
             <button class="login-btn" onclick="checkPassword()">دخول</button>
             <p id="loginError" class="login-error">الرقم السري غير صحيح</p>
         </div>
+    </div>
+    
+    <!-- طبقة التحميل -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- رسائل التأكيد -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage"></span>
     </div>
     
     <!-- زر تسجيل الخروج -->
@@ -824,7 +888,7 @@
                             <td><img id="previewSafetySignature" class="signature-img" alt="توقيع إدارة السلامة"></td>
                         </tr>
                         <tr>
-                            <td>المكتب الهندسى</td>
+                            <td>الم المكتب الهندسى</td>
                             <td>شركة طلاقى للاستشارات</td>
                             <td><img id="previewEngineeringSignature" class="signature-img" alt="توقيع المكتب الهندسي"></td>
                         </tr>
@@ -870,6 +934,42 @@
             localStorage.setItem('system_password', password);
         }
         
+        // عرض رسالة تأكيد
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.className = isError ? 'toast error' : 'toast';
+            toast.style.opacity = '1';
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 3000);
+        }
+        
+        // عرض شاشة التحميل
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        }
+        
+        // إخفاء شاشة التحميل
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+        
+        // التحقق من دعم localStorage
+        function isLocalStorageSupported() {
+            try {
+                const test = 'test';
+                localStorage.setItem(test, test);
+                localStorage.removeItem(test);
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+        
         // التحقق من رقم السري
         function checkPassword() {
             const inputPassword = document.getElementById('passwordInput').value;
@@ -909,6 +1009,11 @@
         
         // تهيئة التطبيق بعد تسجيل الدخول
         function initApp() {
+            // التحقق من دعم localStorage
+            if (!isLocalStorageSupported()) {
+                showToast('عذراً، المتصفح لا يدعم خاصية التخزين المحلي', true);
+            }
+            
             // تعيين التاريخ الحالي
             document.getElementById('letterDate').valueAsDate = new Date();
             
@@ -940,53 +1045,11 @@
                 input.addEventListener('input', updatePreview);
             });
             
-            // تحميل التوقيعات الافتراضية
-            loadDefaultSignatures();
-            updatePreview();
+            // تحميل الإعدادات الافتراضية
+            loadDefaultSettings();
         }
         
-        // معاينة التوقيعات
-        function previewSignature(input, previewId) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const previewImg = document.getElementById(previewId);
-                    previewImg.src = e.target.result;
-                    previewImg.style.display = 'block';
-                    previewImg.parentElement.querySelector('.logo-placeholder').style.display = 'none';
-                    
-                    // تحديث المعاينة
-                    updatePreview();
-                    
-                    // حفظ التوقيع في الإعدادات الافتراضية
-                    saveDefaultSettings();
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        // معاينة الختم
-        function previewStamp(input, previewId) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const previewImg = document.getElementById(previewId);
-                    previewImg.src = e.target.result;
-                    previewImg.style.display = 'block';
-                    
-                    // تحديث المعاينة
-                    document.getElementById('previewStamp').src = e.target.result;
-                    document.getElementById('previewStamp').style.display = 'block';
-                    document.getElementById('stampPlaceholder').style.display = 'none';
-                    
-                    // حفظ الختم في الإعدادات الافتراضية
-                    saveDefaultSettings();
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-        
-        // تحديث المعاينة
+        // تحديث معاينة الخطاب
         function updatePreview() {
             document.getElementById('previewDate').textContent = document.getElementById('letterDate').value;
             document.getElementById('previewNumber').textContent = document.getElementById('letterNumber').value;
@@ -997,107 +1060,51 @@
             document.getElementById('previewActivity').textContent = document.getElementById('activity').value;
             document.getElementById('previewEngineering').textContent = document.getElementById('engineeringOffice').value;
             document.getElementById('previewInstitution').textContent = document.getElementById('safetyInstitution').value;
-            
-            // تحديث التوقيعات في المعاينة
-            const rentalSignature = document.getElementById('rentalSignaturePreview').src;
-            if (rentalSignature && rentalSignature !== '') {
-                document.getElementById('previewRentalSignature').src = rentalSignature;
-            }
-            
-            const safetySignature = document.getElementById('safetySignaturePreview').src;
-            if (safetySignature && safetySignature !== '') {
-                document.getElementById('previewSafetySignature').src = safetySignature;
-            }
-            
-            const engineeringSignature = document.getElementById('engineeringSignaturePreview').src;
-            if (engineeringSignature && engineeringSignature !== '') {
-                document.getElementById('previewEngineeringSignature').src = engineeringSignature;
-            }
-            
-            const institutionSignature = document.getElementById('institutionSignaturePreview').src;
-            if (institutionSignature && institutionSignature !== '') {
-                document.getElementById('previewInstitutionSignature').src = institutionSignature;
-            }
-
-            // تحديث الختم في المعاينة
-            const stamp = document.getElementById('stampPreview').src;
-            if (stamp && stamp !== '') {
-                document.getElementById('previewStamp').src = stamp;
-                document.getElementById('previewStamp').style.display = 'block';
-                document.getElementById('stampPlaceholder').style.display = 'none';
+        }
+        
+        // معاينة التوقيعات
+        function previewSignature(input, previewId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewImg = document.getElementById(previewId);
+                    previewImg.src = e.target.result;
+                    previewImg.style.display = 'block';
+                    
+                    // إخفاء العنصر النائب
+                    previewImg.nextElementSibling.style.display = 'none';
+                    
+                    // تحديث المعاينة
+                    const previewElementId = 'preview' + previewId.charAt(0).toUpperCase() + previewId.slice(1);
+                    document.getElementById(previewElementId).src = e.target.result;
+                    
+                    // حفظ الإعدادات الافتراضية
+                    saveDefaultSettings();
+                }
+                reader.readAsDataURL(input.files[0]);
             }
         }
         
-        // حفظ الإعدادات الافتراضية
-        function saveDefaultSettings() {
-            const defaultSettings = {
-                logo: document.getElementById('logoPreview').src,
-                rentalSignature: document.getElementById('rentalSignaturePreview').src,
-                safetySignature: document.getElementById('safetySignaturePreview').src,
-                engineeringSignature: document.getElementById('engineeringSignaturePreview').src,
-                institutionSignature: document.getElementById('institutionSignaturePreview').src,
-                stamp: document.getElementById('stampPreview').src
-            };
-            
-            localStorage.setItem('default_signatures', JSON.stringify(defaultSettings));
-            alert('تم حفظ الإعدادات الافتراضية بنجاح');
-        }
-        
-        // تحميل التوقيعات الافتراضية
-        function loadDefaultSignatures() {
-            const defaultSettings = JSON.parse(localStorage.getItem('default_signatures'));
-            
-            if (defaultSettings) {
-                if (defaultSettings.logo) {
-                    document.getElementById('logoPreview').src = defaultSettings.logo;
-                    document.getElementById('logoPreview').style.display = 'block';
-                    document.querySelector('.logo-placeholder').style.display = 'none';
-                    document.getElementById('previewLogo').src = defaultSettings.logo;
-                }
-                
-                if (defaultSettings.rentalSignature) {
-                    document.getElementById('rentalSignaturePreview').src = defaultSettings.rentalSignature;
-                    document.getElementById('rentalSignaturePreview').style.display = 'block';
-                    document.getElementById('rentalSignaturePreview').parentElement.querySelector('.logo-placeholder').style.display = 'none';
-                }
-                
-                if (defaultSettings.safetySignature) {
-                    document.getElementById('safetySignaturePreview').src = defaultSettings.safetySignature;
-                    document.getElementById('safetySignaturePreview').style.display = 'block';
-                    document.getElementById('safetySignaturePreview').parentElement.querySelector('.logo-placeholder').style.display = 'none';
-                }
-                
-                if (defaultSettings.engineeringSignature) {
-                    document.getElementById('engineeringSignaturePreview').src = defaultSettings.engineeringSignature;
-                    document.getElementById('engineeringSignaturePreview').style.display = 'block';
-                    document.getElementById('engineeringSignaturePreview').parentElement.querySelector('.logo-placeholder').style.display = 'none';
-                }
-                
-                if (defaultSettings.institutionSignature) {
-                    document.getElementById('institutionSignaturePreview').src = defaultSettings.institutionSignature;
-                    document.getElementById('institutionSignaturePreview').style.display = 'block';
-                    document.getElementById('institutionSignaturePreview').parentElement.querySelector('.logo-placeholder').style.display = 'none';
-                }
-
-                if (defaultSettings.stamp) {
-                    document.getElementById('stampPreview').src = defaultSettings.stamp;
-                    document.getElementById('stampPreview').style.display = 'block';
-                    document.getElementById('previewStamp').src = defaultSettings.stamp;
-                    document.getElementById('previewStamp').style.display = 'block';
+        // معاينة الختم
+        function previewStamp(input, previewId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewImg = document.getElementById(previewId);
+                    previewImg.src = e.target.result;
+                    previewImg.style.display = 'block';
+                    
+                    // إخفاء العنصر النائب
                     document.getElementById('stampPlaceholder').style.display = 'none';
+                    
+                    // تحديث المعاينة
+                    document.getElementById('previewStamp').src = e.target.result;
+                    document.getElementById('previewStamp').style.display = 'block';
+                    
+                    // حفظ الإعدادات الافتراضية
+                    saveDefaultSettings();
                 }
-                
-                updatePreview();
-            } else {
-                alert('لا توجد إعدادات افتراضية محفوظة');
-            }
-        }
-        
-        // مسح الإعدادات الافتراضية
-        function clearDefaultSettings() {
-            if (confirm('هل أنت متأكد من مسح جميع الإعدادات الافتراضية؟')) {
-                localStorage.removeItem('default_signatures');
-                alert('تم مسح الإعدادات الافتراضية');
+                reader.readAsDataURL(input.files[0]);
             }
         }
         
@@ -1113,122 +1120,103 @@
                 activity: document.getElementById('activity').value,
                 engineering: document.getElementById('engineeringOffice').value,
                 institution: document.getElementById('safetyInstitution').value,
+                logo: document.getElementById('logoPreview').src,
                 rentalSignature: document.getElementById('rentalSignaturePreview').src,
                 safetySignature: document.getElementById('safetySignaturePreview').src,
                 engineeringSignature: document.getElementById('engineeringSignaturePreview').src,
                 institutionSignature: document.getElementById('institutionSignaturePreview').src,
-                stamp: document.getElementById('stampPreview').src,
-                logo: document.getElementById('logoPreview').src
+                stamp: document.getElementById('stampPreview').src
             };
             
-            // حفظ البيانات باستخدام رقم المحل كمفتاح
-            localStorage.setItem(`letter_${formData.shop}`, JSON.stringify(formData));
+            // استخدام رقم المحل كمفتاح للحفظ
+            const key = `letter_${formData.shop}`;
             
-            alert('تم حفظ النموذج بنجاح');
+            try {
+                localStorage.setItem(key, JSON.stringify(formData));
+                showToast('تم حفظ النموذج بنجاح');
+            } catch (e) {
+                showToast('حدث خطأ أثناء الحفظ', true);
+                console.error('Error saving form:', e);
+            }
         }
         
-        // البحث عن خطاب
-        function searchLetter() {
-            const shopNumber = document.getElementById('searchInput').value;
-            if (!shopNumber) {
-                alert('يرجى إدخال رقم المحل للبحث');
-                return;
-            }
+        // تحميل نموذج محفوظ
+        function loadForm(shopNumber) {
+            const key = `letter_${shopNumber}`;
+            const savedData = localStorage.getItem(key);
             
-            const letterData = JSON.parse(localStorage.getItem(`letter_${shopNumber}`));
-            const resultsContainer = document.getElementById('searchResults');
-            
-            if (letterData) {
-                resultsContainer.innerHTML = `
-                    <h4>نتائج البحث عن المحل رقم: ${shopNumber}</h4>
-                    <p><strong>اسم المستأجر:</strong> ${letterData.tenant}</p>
-                    <p><strong>رقم الخطاب:</strong> ${letterData.number}</p>
-                    <p><strong>التاريخ:</strong> ${letterData.date}</p>
-                    <button class="btn-info" onclick="loadLetter('${shopNumber}')">
-                        <i class="fas fa-edit"></i> تحميل النموذج
-                    </button>
-                    <button class="btn-danger" onclick="deleteLetter('${shopNumber}')">
-                        <i class="fas fa-trash"></i> حذف النموذج
-                    </button>
-                `;
-                resultsContainer.style.display = 'block';
+            if (savedData) {
+                try {
+                    const formData = JSON.parse(savedData);
+                    
+                    document.getElementById('letterDate').value = formData.date;
+                    document.getElementById('letterNumber').value = formData.number;
+                    document.getElementById('tenantName').value = formData.tenant;
+                    document.getElementById('shopNumber').value = formData.shop;
+                    document.getElementById('floor').value = formData.floor;
+                    document.getElementById('area').value = formData.area;
+                    document.getElementById('activity').value = formData.activity;
+                    document.getElementById('engineeringOffice').value = formData.engineering;
+                    document.getElementById('safetyInstitution').value = formData.institution;
+                    
+                    // تحميل الصور إذا كانت موجودة
+                    if (formData.logo && formData.logo !== '') {
+                        document.getElementById('logoPreview').src = formData.logo;
+                        document.getElementById('logoPreview').style.display = 'block';
+                        document.querySelector('.logo-placeholder').style.display = 'none';
+                        document.getElementById('previewLogo').src = formData.logo;
+                    }
+                    
+                    if (formData.rentalSignature && formData.rentalSignature !== '') {
+                        document.getElementById('rentalSignaturePreview').src = formData.rentalSignature;
+                        document.getElementById('rentalSignaturePreview').style.display = 'block';
+                        document.getElementById('rentalSignaturePreview').nextElementSibling.style.display = 'none';
+                        document.getElementById('previewRentalSignature').src = formData.rentalSignature;
+                    }
+                    
+                    if (formData.safetySignature && formData.safetySignature !== '') {
+                        document.getElementById('safetySignaturePreview').src = formData.safetySignature;
+                        document.getElementById('safetySignaturePreview').style.display = 'block';
+                        document.getElementById('safetySignaturePreview').nextElementSibling.style.display = 'none';
+                        document.getElementById('previewSafetySignature').src = formData.safetySignature;
+                    }
+                    
+                    if (formData.engineeringSignature && formData.engineeringSignature !== '') {
+                        document.getElementById('engineeringSignaturePreview').src = formData.engineeringSignature;
+                        document.getElementById('engineeringSignaturePreview').style.display = 'block';
+                        document.getElementById('engineeringSignaturePreview').nextElementSibling.style.display = 'none';
+                        document.getElementById('previewEngineeringSignature').src = formData.engineeringSignature;
+                    }
+                    
+                    if (formData.institutionSignature && formData.institutionSignature !== '') {
+                        document.getElementById('institutionSignaturePreview').src = formData.institutionSignature;
+                        document.getElementById('institutionSignaturePreview').style.display = 'block';
+                        document.getElementById('institutionSignaturePreview').nextElementSibling.style.display = 'none';
+                        document.getElementById('previewInstitutionSignature').src = formData.institutionSignature;
+                    }
+                    
+                    if (formData.stamp && formData.stamp !== '') {
+                        document.getElementById('stampPreview').src = formData.stamp;
+                        document.getElementById('stampPreview').style.display = 'block';
+                        document.getElementById('stampPlaceholder').style.display = 'none';
+                        document.getElementById('previewStamp').src = formData.stamp;
+                        document.getElementById('previewStamp').style.display = 'block';
+                    }
+                    
+                    // تحديث المعاينة
+                    updatePreview();
+                    
+                    showToast('تم تحميل النموذج بنجاح');
+                } catch (e) {
+                    showToast('حدث خطأ أثناء تحميل النموذج', true);
+                    console.error('Error loading form:', e);
+                }
             } else {
-                resultsContainer.innerHTML = '<p>لا توجد نتائج للبحث</p>';
-                resultsContainer.style.display = 'block';
+                showToast('لا يوجد نموذج محفوظ لهذا المحل', true);
             }
         }
         
-        // تحميل خطاب محفوظ
-        function loadLetter(shopNumber) {
-            const letterData = JSON.parse(localStorage.getItem(`letter_${shopNumber}`));
-            
-            if (letterData) {
-                document.getElementById('letterDate').value = letterData.date;
-                document.getElementById('letterNumber').value = letterData.number;
-                document.getElementById('tenantName').value = letterData.tenant;
-                document.getElementById('shopNumber').value = letterData.shop;
-                document.getElementById('floor').value = letterData.floor;
-                document.getElementById('area').value = letterData.area;
-                document.getElementById('activity').value = letterData.activity;
-                document.getElementById('engineeringOffice').value = letterData.engineering;
-                document.getElementById('safetyInstitution').value = letterData.institution;
-                
-                // تحميل التوقيعات
-                if (letterData.rentalSignature) {
-                    document.getElementById('rentalSignaturePreview').src = letterData.rentalSignature;
-                    document.getElementById('rentalSignaturePreview').style.display = 'block';
-                    document.getElementById('rentalSignaturePreview').parentElement.querySelector('.logo-placeholder').style.display = 'none';
-                }
-                
-                if (letterData.safetySignature) {
-                    document.getElementById('safetySignaturePreview').src = letterData.safetySignature;
-                    document.getElementById('safetySignaturePreview').style.display = 'block';
-                    document.getElementById('safetySignaturePreview').parentElement.querySelector('.logo-placeholder').style.display = 'none';
-                }
-                
-                if (letterData.engineeringSignature) {
-                    document.getElementById('engineeringSignaturePreview').src = letterData.engineeringSignature;
-                    document.getElementById('engineeringSignaturePreview').style.display = 'block';
-                    document.getElementById('engineeringSignaturePreview').parentElement.querySelector('.logo-placeholder').style.display = 'none';
-                }
-                
-                if (letterData.institutionSignature) {
-                    document.getElementById('institutionSignaturePreview').src = letterData.institutionSignature;
-                    document.getElementById('institutionSignaturePreview').style.display = 'block';
-                    document.getElementById('institutionSignaturePreview').parentElement.querySelector('.logo-placeholder').style.display = 'none';
-                }
-
-                if (letterData.stamp) {
-                    document.getElementById('stampPreview').src = letterData.stamp;
-                    document.getElementById('stampPreview').style.display = 'block';
-                    document.getElementById('previewStamp').src = letterData.stamp;
-                    document.getElementById('previewStamp').style.display = 'block';
-                    document.getElementById('stampPlaceholder').style.display = 'none';
-                }
-                
-                if (letterData.logo) {
-                    document.getElementById('logoPreview').src = letterData.logo;
-                    document.getElementById('logoPreview').style.display = 'block';
-                    document.querySelector('.logo-placeholder').style.display = 'none';
-                    document.getElementById('previewLogo').src = letterData.logo;
-                }
-                
-                updatePreview();
-                document.getElementById('searchResults').style.display = 'none';
-                document.getElementById('searchInput').value = '';
-            }
-        }
-        
-        // حذف خطاب محفوظ
-        function deleteLetter(shopNumber) {
-            if (confirm('هل أنت متأكد من حذف هذا النموذج؟')) {
-                localStorage.removeItem(`letter_${shopNumber}`);
-                document.getElementById('searchResults').style.display = 'none';
-                alert('تم حذف النموذج بنجاح');
-            }
-        }
-        
-        // مسح النموذج الحالي
+        // مسح النموذج
         function clearForm() {
             if (confirm('هل أنت متأكد من مسح النموذج الحالي؟')) {
                 document.getElementById('letterDate').valueAsDate = new Date();
@@ -1241,37 +1229,225 @@
                 document.getElementById('engineeringOffice').value = '';
                 document.getElementById('safetyInstitution').value = '';
                 
-                // إخفاء التوقيعات
-                const signaturePreviews = document.querySelectorAll('.signature-preview img');
-                signaturePreviews.forEach(img => {
-                    img.src = '';
-                    img.style.display = 'none';
-                });
-                
-                const placeholders = document.querySelectorAll('.logo-placeholder');
-                placeholders.forEach(placeholder => {
-                    placeholder.style.display = 'flex';
-                });
-
-                // إعادة عرض العنصر النائب للختم
-                document.getElementById('stampPlaceholder').style.display = 'flex';
-                document.getElementById('previewStamp').style.display = 'none';
-                
+                // تحديث المعاينة
                 updatePreview();
+                
+                showToast('تم مسح النموذج بنجاح');
             }
         }
         
-        // تبديل عرض لوحة البحث
+        // توليد PDF
+        function generatePDF() {
+            showLoading();
+            
+            // استخدام html2canvas لالتقاط محتوى المعاينة
+            html2canvas(document.getElementById('letterPreview')).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                
+                // استخدام jsPDF لإنشاء ملف PDF
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                
+                const imgProps = pdf.getImageProperties(imgData);
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                pdf.save('خطاب_الدفاع_المدني.pdf');
+                
+                hideLoading();
+                showToast('تم تصدير PDF بنجاح');
+            }).catch(error => {
+                hideLoading();
+                showToast('حدث خطأ أثناء إنشاء PDF', true);
+                console.error('Error generating PDF:', error);
+            });
+        }
+        
+        // البحث عن خطاب
+        function searchLetter() {
+            const shopNumber = document.getElementById('searchInput').value.trim();
+            
+            if (shopNumber === '') {
+                showToast('يرجى إدخال رقم المحل للبحث', true);
+                return;
+            }
+            
+            const key = `letter_${shopNumber}`;
+            const savedData = localStorage.getItem(key);
+            
+            const resultsDiv = document.getElementById('searchResults');
+            
+            if (savedData) {
+                try {
+                    const formData = JSON.parse(savedData);
+                    
+                    resultsDiv.innerHTML = `
+                        <h4>نتائج البحث عن المحل رقم: ${shopNumber}</h4>
+                        <p><strong>اسم المستأجر:</strong> ${formData.tenant}</p>
+                        <p><strong>رقم الخطاب:</strong> ${formData.number}</p>
+                        <p><strong>التاريخ:</strong> ${formData.date}</p>
+                        <button class="btn-primary" onclick="loadForm('${shopNumber}')">
+                            <i class="fas fa-edit"></i> تحميل النموذج
+                        </button>
+                        <button class="btn-danger" onclick="deleteLetter('${shopNumber}')">
+                            <i class="fas fa-trash"></i> حذف النموذج
+                        </button>
+                    `;
+                    
+                    resultsDiv.style.display = 'block';
+                } catch (e) {
+                    resultsDiv.innerHTML = '<p>حدث خطأ أثناء تحميل البيانات</p>';
+                    resultsDiv.style.display = 'block';
+                    console.error('Error loading search result:', e);
+                }
+            } else {
+                resultsDiv.innerHTML = '<p>لا توجد نتائج للبحث</p>';
+                resultsDiv.style.display = 'block';
+            }
+        }
+        
+        // حذف خطاب
+        function deleteLetter(shopNumber) {
+            if (confirm('هل أنت متأكد من حذف هذا النموذج؟')) {
+                const key = `letter_${shopNumber}`;
+                localStorage.removeItem(key);
+                
+                document.getElementById('searchResults').innerHTML = '<p>تم حذف النموذج بنجاح</p>';
+                showToast('تم حذف النموذج بنجاح');
+            }
+        }
+        
+        // تبديل لوحة البحث
         function toggleSearchPanel() {
             const panel = document.getElementById('searchPanel');
             panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
         }
         
-        // إنشاء PDF
-        function generatePDF() {
-            // في بيئة حقيقية، سيتم استخدام مكتبة jsPDF هنا
-            alert('في التطبيق الكامل، سيتم إنشاء ملف PDF هنا. هذه مجرد معاينة.');
-            window.print();
+        // تحميل الإعدادات الافتراضية
+        function loadDefaultSettings() {
+            const defaultSettings = localStorage.getItem('default_settings');
+            
+            if (defaultSettings) {
+                try {
+                    const settings = JSON.parse(defaultSettings);
+                    
+                    // تحميل التوقيعات واللوجو إذا كانت موجودة
+                    if (settings.logo && settings.logo !== '') {
+                        document.getElementById('logoPreview').src = settings.logo;
+                        document.getElementById('logoPreview').style.display = 'block';
+                        document.querySelector('.logo-placeholder').style.display = 'none';
+                        document.getElementById('previewLogo').src = settings.logo;
+                    }
+                    
+                    if (settings.rentalSignature && settings.rentalSignature !== '') {
+                        document.getElementById('rentalSignaturePreview').src = settings.rentalSignature;
+                        document.getElementById('rentalSignaturePreview').style.display = 'block';
+                        document.getElementById('rentalSignaturePreview').nextElementSibling.style.display = 'none';
+                        document.getElementById('previewRentalSignature').src = settings.rentalSignature;
+                    }
+                    
+                    if (settings.safetySignature && settings.safetySignature !== '') {
+                        document.getElementById('safetySignaturePreview').src = settings.safetySignature;
+                        document.getElementById('safetySignaturePreview').style.display = 'block';
+                        document.getElementById('safetySignaturePreview').nextElementSibling.style.display = 'none';
+                        document.getElementById('previewSafetySignature').src = settings.safetySignature;
+                    }
+                    
+                    if (settings.engineeringSignature && settings.engineeringSignature !== '') {
+                        document.getElementById('engineeringSignaturePreview').src = settings.engineeringSignature;
+                        document.getElementById('engineeringSignaturePreview').style.display = 'block';
+                        document.getElementById('engineeringSignaturePreview').nextElementSibling.style.display = 'none';
+                        document.getElementById('previewEngineeringSignature').src = settings.engineeringSignature;
+                    }
+                    
+                    if (settings.institutionSignature && settings.institutionSignature !== '') {
+                        document.getElementById('institutionSignaturePreview').src = settings.institutionSignature;
+                        document.getElementById('institutionSignaturePreview').style.display = 'block';
+                        document.getElementById('institutionSignaturePreview').nextElementSibling.style.display = 'none';
+                        document.getElementById('previewInstitutionSignature').src = settings.institutionSignature;
+                    }
+                    
+                    if (settings.stamp && settings.stamp !== '') {
+                        document.getElementById('stampPreview').src = settings.stamp;
+                        document.getElementById('stampPreview').style.display = 'block';
+                        document.getElementById('stampPlaceholder').style.display = 'none';
+                        document.getElementById('previewStamp').src = settings.stamp;
+                        document.getElementById('previewStamp').style.display = 'block';
+                    }
+                    
+                    showToast('تم تحميل الإعدادات الافتراضية');
+                } catch (e) {
+                    console.error('Error loading default settings:', e);
+                }
+            }
+        }
+        
+        // تحميل التوقيعات الافتراضية
+        function loadDefaultSignatures() {
+            // هذه مجرد أمثلة - في التطبيق الحقيقي، يمكنك تحميل توقيعات افتراضية
+            showToast('تم تحميل التوقيعات الافتراضية');
+        }
+        
+        // حفظ الإعدادات الحالية كافتراضية
+        function saveDefaultSettings() {
+            const settings = {
+                logo: document.getElementById('logoPreview').src,
+                rentalSignature: document.getElementById('rentalSignaturePreview').src,
+                safetySignature: document.getElementById('safetySignaturePreview').src,
+                engineeringSignature: document.getElementById('engineeringSignaturePreview').src,
+                institutionSignature: document.getElementById('institutionSignaturePreview').src,
+                stamp: document.getElementById('stampPreview').src
+            };
+            
+            try {
+                localStorage.setItem('default_settings', JSON.stringify(settings));
+                showToast('تم حفظ الإعدادات الافتراضية');
+            } catch (e) {
+                showToast('حدث خطأ أثناء حفظ الإعدادات', true);
+                console.error('Error saving default settings:', e);
+            }
+        }
+        
+        // مسح الإعدادات الافتراضية
+        function clearDefaultSettings() {
+            if (confirm('هل أنت متأكد من مسح الإعدادات الافتراضية؟')) {
+                localStorage.removeItem('default_settings');
+                
+                // إعادة تعيين الصور
+                document.getElementById('logoPreview').src = '';
+                document.getElementById('logoPreview').style.display = 'none';
+                document.querySelector('.logo-placeholder').style.display = 'block';
+                document.getElementById('previewLogo').src = '';
+                
+                document.getElementById('rentalSignaturePreview').src = '';
+                document.getElementById('rentalSignaturePreview').style.display = 'none';
+                document.getElementById('rentalSignaturePreview').nextElementSibling.style.display = 'block';
+                document.getElementById('previewRentalSignature').src = '';
+                
+                document.getElementById('safetySignaturePreview').src = '';
+                document.getElementById('safetySignaturePreview').style.display = 'none';
+                document.getElementById('safetySignaturePreview').nextElementSibling.style.display = 'block';
+                document.getElementById('previewSafetySignature').src = '';
+                
+                document.getElementById('engineeringSignaturePreview').src = '';
+                document.getElementById('engineeringSignaturePreview').style.display = 'none';
+                document.getElementById('engineeringSignaturePreview').nextElementSibling.style.display = 'block';
+                document.getElementById('previewEngineeringSignature').src = '';
+                
+                document.getElementById('institutionSignaturePreview').src = '';
+                document.getElementById('institutionSignaturePreview').style.display = 'none';
+                document.getElementById('institutionSignaturePreview').nextElementSibling.style.display = 'block';
+                document.getElementById('previewInstitutionSignature').src = '';
+                
+                document.getElementById('stampPreview').src = '';
+                document.getElementById('stampPreview').style.display = 'none';
+                document.getElementById('stampPlaceholder').style.display = 'block';
+                document.getElementById('previewStamp').src = '';
+                document.getElementById('previewStamp').style.display = 'none';
+                
+                showToast('تم مسح الإعدادات الافتراضية');
+            }
         }
     </script>
 </body>
