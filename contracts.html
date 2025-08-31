@@ -3,29 +3,232 @@
 <head>
   <meta charset="utf-8">
   <title>إدارة عقود الصيانة</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body{font-family:Tahoma,Arial,sans-serif;direction:rtl;background:#f7f7f7;padding:20px}
-    .box{max-width:600px;margin:auto;background:#fff;padding:20px;border-radius:8px;box-shadow:0 3px 10px rgba(0,0,0,0.1)}
-    h1{text-align:center}
-    label{display:block;margin-top:10px}
-    input{width:100%;padding:8px;margin-top:5px}
-    button{margin-top:15px;padding:10px 15px;background:#0b6;color:#fff;border:0;border-radius:6px;cursor:pointer}
-    .result{margin-top:20px;padding:15px;background:#eef;border-radius:6px}
-    a{color:#00f;text-decoration:none}
+    :root {
+      --primary: #2c3e50;
+      --secondary: #3498db;
+      --accent: #e74c3c;
+      --light: #ecf0f1;
+      --dark: #2c3e50;
+      --success: #2ecc71;
+      --warning: #f39c12;
+      --danger: #e74c3c;
+      --gray: #95a5a6;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+      direction: rtl;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      color: white;
+    }
+    
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    .header p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+    
+    .box {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    
+    .input-with-icon {
+      position: relative;
+    }
+    
+    .input-with-icon i {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray);
+    }
+    
+    input {
+      width: 100%;
+      padding: 15px 45px 15px 15px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s;
+    }
+    
+    input:focus {
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+      outline: none;
+    }
+    
+    button {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(to right, var(--secondary), var(--primary));
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    .result {
+      margin-top: 25px;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 18px;
+      display: none;
+      animation: fadeIn 0.5s;
+    }
+    
+    .success {
+      background-color: rgba(46, 204, 113, 0.2);
+      color: #27ae60;
+      border: 1px solid #2ecc71;
+    }
+    
+    .error {
+      background-color: rgba(231, 76, 60, 0.2);
+      color: #c0392b;
+      border: 1px solid #e74c3c;
+    }
+    
+    .result a {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 20px;
+      background: var(--secondary);
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: all 0.3s;
+    }
+    
+    .result a:hover {
+      background: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      color: white;
+      font-size: 14px;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .logo i {
+      font-size: 48px;
+      color: white;
+      background: var(--secondary);
+      padding: 20px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h1>بحث عن عقد صيانة</h1>
-    <label>رقم المحل:
-      <input type="text" id="shopNo">
-    </label>
-    <label>رقم التليفون:
-      <input type="text" id="phoneNo">
-    </label>
-    <button onclick="findContract()">عرض العقد</button>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <i class="fas fa-file-contract"></i>
+      </div>
+      <h1>إدارة عقود الصيانة</h1>
+      <p>ابحث عن عقد الصيانة باستخدام رقم المحل ورقم الهاتف</p>
+    </div>
+    
+    <div class="box">
+      <div class="form-group">
+        <label for="shopNo">رقم المحل:</label>
+        <div class="input-with-icon">
+          <i class="fas fa-store"></i>
+          <input type="text" id="shopNo" placeholder="أدخل رقم المحل">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="phoneNo">رقم التليفون:</label>
+        <div class="input-with-icon">
+          <i class="fas fa-phone"></i>
+          <input type="text" id="phoneNo" placeholder="أدخل رقم الهاتف">
+        </div>
+      </div>
+      
+      <button onclick="findContract()">
+        <i class="fas fa-search"></i> عرض العقد
+      </button>
 
-    <div id="result" class="result" style="display:none"></div>
+      <div id="result" class="result"></div>
+    </div>
+    
+    <div class="footer">
+      <p>© 2023 نظام إدارة عقود الصيانة | جميع الحقوق محفوظة</p>
+    </div>
   </div>
 
   <script>
@@ -44,10 +247,20 @@
       const match = contracts.find(c => c.shop===shop && c.phone===phone);
 
       if(match){
-        result.innerHTML = `✅ تم العثور على العقد<br>
-          <a href="${match.file}" target="_blank">فتح العقد (PDF)</a>`;
+        result.className = "result success";
+        result.innerHTML = `
+          <i class="fas fa-check-circle" style="font-size: 48px; margin-bottom: 15px;"></i>
+          <h3>تم العثور على العقد</h3>
+          <p>يمكنك الآن عرض وتحميل عقد الصيانة</p>
+          <a href="${match.file}" target="_blank">
+            <i class="fas fa-external-link-alt"></i> فتح العقد (PDF)
+          </a>`;
       }else{
-        result.innerHTML = "❌ لا يوجد عقد مطابق للبيانات المدخلة.";
+        result.className = "result error";
+        result.innerHTML = `
+          <i class="fas fa-times-circle" style="font-size: 48px; margin-bottom: 15px;"></i>
+          <h3>لا يوجد عقد مطابق</h3>
+          <p>يرجى التحقق من رقم المحل ورقم الهاتف والمحاولة مرة أخرى</p>`;
       }
       result.style.display="block";
     }
