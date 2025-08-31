@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ar">
+<head>
+  <meta charset="utf-8">
+  <title>إدارة عقود الصيانة</title>
+  <style>
+    body{font-family:Tahoma,Arial,sans-serif;direction:rtl;background:#f7f7f7;padding:20px}
+    .box{max-width:600px;margin:auto;background:#fff;padding:20px;border-radius:8px;box-shadow:0 3px 10px rgba(0,0,0,0.1)}
+    h1{text-align:center}
+    label{display:block;margin-top:10px}
+    input{width:100%;padding:8px;margin-top:5px}
+    button{margin-top:15px;padding:10px 15px;background:#0b6;color:#fff;border:0;border-radius:6px;cursor:pointer}
+    .result{margin-top:20px;padding:15px;background:#eef;border-radius:6px}
+    a{color:#00f;text-decoration:none}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>بحث عن عقد صيانة</h1>
+    <label>رقم المحل:
+      <input type="text" id="shopNo">
+    </label>
+    <label>رقم التليفون:
+      <input type="text" id="phoneNo">
+    </label>
+    <button onclick="findContract()">عرض العقد</button>
+
+    <div id="result" class="result" style="display:none"></div>
+  </div>
+
+  <script>
+    // قاعدة بيانات بسيطة (تقدر تحولها JSON خارجي أو قاعدة بيانات حقيقية)
+    const contracts = [
+      {shop:"101", phone:"01012345678", file:"contracts/contract101.pdf"},
+      {shop:"102", phone:"01198765432", file:"contracts/contract102.pdf"},
+      {shop:"200", phone:"01200011122", file:"contracts/contract200.pdf"},
+    ];
+
+    function findContract(){
+      const shop = document.getElementById("shopNo").value.trim();
+      const phone = document.getElementById("phoneNo").value.trim();
+      const result = document.getElementById("result");
+
+      const match = contracts.find(c => c.shop===shop && c.phone===phone);
+
+      if(match){
+        result.innerHTML = `✅ تم العثور على العقد<br>
+          <a href="${match.file}" target="_blank">فتح العقد (PDF)</a>`;
+      }else{
+        result.innerHTML = "❌ لا يوجد عقد مطابق للبيانات المدخلة.";
+      }
+      result.style.display="block";
+    }
+  </script>
+</body>
+</html>
