@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج خطاب الدفاع المدني - مجمع أبراج الصفوة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* أنماط صفحة تسجيل الدخول */
+        #loginPage {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            direction: rtl;
+        }
+        
+        .login-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .login-container h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .login-container p {
+            color: #7f8c8d;
+            margin-bottom: 25px;
+        }
+        
+        .login-input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        .login-input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .login-btn {
+            background: #2c3e50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        
+        .login-btn:hover {
+            background: #1e2a36;
+        }
+        
+        .login-error {
+            color: #e74c3c;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        body {
+            direction: rtl;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .main-container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-container {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            position: relative;
+        }
+        
+        .preview-container {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #2c3e50;
+            position: relative;
+        }
+        
+        .logo-container {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100px;
+            height: 100px;
+            border: 1px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        
+        .logo-preview {
+            max-width: 100%;
+            max-height: 100%;
+            display: none;
+        }
+        
+        .logo-placeholder {
+            font-size: 12px;
+            text-align: center;
+            color: #777;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin: 10px 0 5px;
+        }
+        
+        .header p {
+            color: #7f8c8d;
+        }
+        
+        .form-section {
+            margin-bottom: 20px;
+        }
+        
+        .form-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            flex: 1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .signature-upload {
+            margin-top: 20px;
+        }
+        
+        .signature-item {
+            margin-bottom: 15px;
+        }
+        
+        .signature-preview {
+            width: 150px;
+            height: 80px;
+            border: 1px dashed #ccc;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .signature-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            display: none;
+        }
+        
+        .btn-upload {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 5px;
+        }
+        
+        .btn-upload:hover {
+            background: #2980b9;
+        }
+        
+        .letter-preview {
+            flex: 1;
+            background: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .preview-content {
+            background: white;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            min-height: 100%;
+            width: 21cm; /* A4 width */
+            min-height: 29.7cm; /* A4 height */
+            margin: 0 auto;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .preview-header {
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .preview-logo {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .preview-logo img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        .preview-header h2 {
+            font-size: 22px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        .info-table td {
+            padding: 8px 5px;
+            vertical-align: top;
+        }
+        
+        .info-table .label {
+            font-weight: bold;
+            white-space: nowrap;
+            width: 100px;
+        }
+        
+        .letter-body {
+            line-height: 1.8;
+            margin-bottom: 30px;
+            text-align: justify;
+        }
+        
+        .signature-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+        
+        .signature-table th, .signature-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .signature-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        .signature-img {
+            max-height: 60px;
+            max-width: 120px;
+        }
+        
+        .stamp-container {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px dashed #ccc;
+        }
+        
+        .stamp-placeholder {
+            display: inline-block;
+            width: 150px;
+            height: 150px;
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+            font-style: italic;
+        }
+        
+        .stamp-image {
+            max-width: 150px;
+            max-height: 150px;
+            display: none;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 10px;
+        }
+        
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #2c3e50;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #1e2a36;
+        }
+        
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #219653;
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        
+        .btn-info {
+            background: #3498db;
+            color: white;
+        }
+        
+        .btn-info:hover {
+            background: #2980b9;
+        }
+        
+        .search-panel {
+            width: 100%;
+            max-width: 1200px;
+            background: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .search-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .search-form input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .search-results {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            border: 1px solid #eee;
+            display: none;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .config-panel {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .config-panel h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .config-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .config-btn {
+            padding: 10px 15px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .config-btn:hover {
+            background: #5a6268;
+        }
+        
+        .logout-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+        
+        @media (max-width: 900px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .preview-content {
+                width: 100%;
+                min-height: auto;
+            }
+            
+            .config-buttons {
+                flex-direction: column;
+            }
+            
+            .logout-btn {
+                top: 10px;
+                left: 10px;
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .form-container, .controls, .search-panel, .config-panel {
+                display: none;
+            }
+            
+            .preview-container {
+                width: 100%;
+                box-shadow: none;
+                padding: 0;
+            }
+            
+            .preview-content {
+                box-shadow: none;
+                padding: 0;
+                width: 100%;
+                min-height: auto;
+            }
+            
+            .logout-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- صفحة تسجيل الدخول -->
+    <div id="loginPage">
+        <div class="login-container">
+            <h2>نظام خطابات الدفاع المدني</h2>
+            <p>يجب إدخال الرقم السري للوصول إلى النظام</p>
+            <input type="password" id="passwordInput" class="login-input" placeholder="أدخل الرقم السري">
+            <button class="login-btn" onclick="checkPassword()">دخول</button>
+            <p id="loginError" class="login-error">الرقم السري غير صحيح</p>
+        </div>
+    </div>
+    
+    <!-- زر تسجيل الخروج -->
+    <button id="logoutBtn" class="logout-btn" style="display: none;" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+    </button>
+    
+    <div class="main-container" id="mainContent" style="display: none;">
+        <div class="form-container">
+            <div class="header">
+                <div class="logo-container" id="logoContainer">
+                    <div class="logo-placeholder">انقر لرفع لوجو الشركة</div>
+                    <img id="logoPreview" class="logo-preview" alt="لوجو الشركة">
+                </div>
+                <h1>نموذج خطاب الدفاع المدني</h1>
+                <p>مجمع أبراج الصفوة - إدارة السلامة</p>
+                <input type="file" id="logoUpload" accept="image/*" class="hidden">
+            </div>
+            
+            <div class="config-panel">
+                <h3><i class="fas fa-cog"></i> الإعدادات الثابتة</h3>
+                <div class="config-buttons">
+                    <button class="config-btn" onclick="loadDefaultSignatures()">
+                        <i class="fas fa-signature"></i> تحميل التوقيعات الافتراضية
+                    </button>
+                    <button class="config-btn" onclick="saveDefaultSettings()">
+                        <i class="fas fa-save"></i> حفظ الإعدادات الحالية كافتراضية
+                    </button>
+                    <button class="config-btn" onclick="clearDefaultSettings()">
+                        <i class="fas fa-trash"></i> مسح الإعدادات الافتراضية
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3><i class="fas fa-info-circle"></i> المعلومات الأساسية</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="letterDate">التاريخ:</label>
+                        <input type="date" id="letterDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="letterNumber">رقم الخطاب:</label>
+                        <input type="text" id="letterNumber" placeholder="أدخل رقم الخطاب">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tenantName">اسم المستأجر:</label>
+                    <input type="text" id="tenantName" placeholder="أدخل اسم المستأجر">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="shopNumber">رقم المحل:</label>
+                        <input type="text" id="shopNumber" placeholder="أدخل رقم المحل">
+                    </div>
+                    <div class="form-group">
+                        <label for="floor">الدور:</label>
+                        <input type="text" id="floor" placeholder="أدخل الدور">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="area">المساحة:</label>
+                        <input type="text" id="area" placeholder="أدخل المساحة">
+                    </div>
+                    <div class="form-group">
+                        <label for="activity">النشاط:</label>
+                        <input type="text" id="activity" placeholder="أدخل النشاط">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="engineeringOffice">المكتب الهندسي:</label>
+                        <input type="text" id="engineeringOffice" placeholder="أدخل اسم المكتب الهندسي">
+                    </div>
+                    <div class="form-group">
+                        <label for="safetyInstitution">مؤسسة السلامة:</label>
+                        <input type="text" id="safetyInstitution" placeholder="أدخل اسم مؤسسة السلامة">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section signature-upload">
+                <h3><i class="fas fa-signature"></i> التوقيعات الإلكترونية</h3>
+                
+                <div class="signature-item">
+                    <label>توقيع إدارة التأجير:</label>
+                    <button class="btn-upload" onclick="document.getElementById('rentalSignature').click()">
+                        <i class="fas fa-upload"></i> رفع التوقيع
+                    </button>
+                    <input type="file" id="rentalSignature" accept="image/*" class="hidden" onchange="previewSignature(this, 'rentalSignaturePreview')">
+                    <div class="signature-preview">
+                        <img id="rentalSignaturePreview" alt="توقيع إدارة التأجير">
+                        <div class="logo-placeholder">سيظهر التوقيع هنا</div>
+                    </div>
+                </div>
+                
+                <div class="signature-item">
+                    <label>توقيع إدارة السلامة:</label>
+                    <button class="btn-upload" onclick="document.getElementById('safetySignature').click()">
+                        <i class="fas fa-upload"></i> رفع التوقيع
+                    </button>
+                    <input type="file" id="safetySignature" accept="image/*" class="hidden" onchange="previewSignature(this, 'safetySignaturePreview')">
+                    <div class="signature-preview">
+                        <img id="safetySignaturePreview" alt="توقيع إدارة السلامة">
+                        <div class="logo-placeholder">سيظهر التوقيع هنا</div>
+                    </div>
+                </div>
+                
+                <div class="signature-item">
+                    <label>توقيع المكتب الهندسي:</label>
+                    <button class="btn-upload" onclick="document.getElementById('engineeringSignature').click()">
+                        <i class="fas fa-upload"></i> رفع التوقيع
+                    </button>
+                    <input type="file" id="engineeringSignature" accept="image/*" class="hidden" onchange="previewSignature(this, 'engineeringSignaturePreview')">
+                    <div class="signature-preview">
+                        <img id="engineeringSignaturePreview" alt="توقيع المكتب الهندسي">
+                        <div class="logo-placeholder">سيظهر التوقيع هنا</div>
+                    </div>
+                </div>
+                
+                <div class="signature-item">
+                    <label>توقيع مؤسسة السلامة:</label>
+                    <button class="btn-upload" onclick="document.getElementById('institutionSignature').click()">
+                        <i class="fas fa-upload"></i> رفع التوقيع
+                    </button>
+                    <input type="file" id="institutionSignature" accept="image/*" class="hidden" onchange="previewSignature(this, 'institutionSignaturePreview')">
+                    <div class="signature-preview">
+                        <img id="institutionSignaturePreview" alt="توقيع مؤسسة السلامة">
+                        <div class="logo-placeholder">سيظهر التوقيع هنا</div>
+                    </div>
+                </div>
+
+                <div class="signature-item">
+                    <label>ختم الشركة:</label>
+                    <button class="btn-upload" onclick="document.getElementById('companyStamp').click()">
+                        <i class="fas fa-upload"></i> رفع الختم
+                    </button>
+                    <input type="file" id="companyStamp" accept="image/*" class="hidden" onchange="previewStamp(this, 'stampPreview')">
+                    <div class="signature-preview">
+                        <img id="stampPreview" alt="ختم الشركة">
+                        <div class="logo-placeholder">سيظهر الختم هنا</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button class="btn-primary" onclick="saveForm()">
+                    <i class="fas fa-save"></i> حفظ النموذج
+                </button>
+                <button class="btn-success" onclick="generatePDF()">
+                    <i class="fas fa-file-pdf"></i> تصدير PDF
+                </button>
+                <button class="btn-danger" onclick="clearForm()">
+                    <i class="fas fa-trash"></i> مسح النموذج
+                </button>
+                <button class="btn-info" onclick="toggleSearchPanel()">
+                    <i class="fas fa-search"></i> البحث
+                </button>
+            </div>
+        </div>
+        
+        <div class="preview-container">
+            <h3><i class="fas fa-eye"></i> معاينة الخطاب</h3>
+            <div class="letter-preview">
+                <div class="preview-content" id="letterPreview">
+                    <div class="preview-header">
+                        <div class="preview-logo">
+                            <img id="previewLogo" alt="لوجو الشركة">
+                        </div>
+                        <h2>خطاب الدفاع المدني</h2>
+                        <p>مجمع أبراج الصفوة</p>
+                    </div>
+                    
+                    <table class="info-table">
+                        <tr>
+                            <td class="label">التاريخ:</td>
+                            <td id="previewDate"></td>
+                            <td class="label">رقم الخطاب:</td>
+                            <td id="previewNumber"></td>
+                        </tr>
+                    </table>
+                    
+                    <p>إلى: مدير الإدارة العامة للدفاع المدنى بالعاصمة المقدسة</p>
+                    <p>إلى: مدير مركز السلامة الميدانى بالمنطقة المركزية</p>
+                    <p>الموضوع: بشأن الوقوف على المحل الموضح بياناته أدناه</p>
+                    
+                    <table class="info-table">
+                        <tr>
+                            <td class="label">اسم المستأجر:</td>
+                            <td id="previewTenant"></td>
+                            <td class="label">رقم المحل:</td>
+                            <td id="previewShop"></td>
+                        </tr>
+                        <tr>
+                            <td class="label">الدور:</td>
+                            <td id="previewFloor"></td>
+                            <td class="label">المساحة:</td>
+                            <td id="previewArea"></td>
+                        </tr>
+                        <tr>
+                            <td class="label">النشاط:</td>
+                            <td id="previewActivity"></td>
+                            <td class="label">الم المكتب الهندسي:</td>
+                            <td id="previewEngineering"></td>
+                        </tr>
+                        <tr>
+                            <td class="label">مؤسسة السلامة:</td>
+                            <td colspan="3" id="previewInstitution"></td>
+                        </tr>
+                    </table>
+                    
+                    <div class="letter-body">
+                        <p>نفيدكم نحن إدارة السلامة الصادرة بموجب قرار سمو وزير الداخلية رقم (10/ك/و/دف) وتاريخ 24/04/1410هـ</p>
+                        <p>بأنه تم الوقوف على المحل وانه مستوفى لاشتراطات ومتطلبات السلامة ومطابق للمخططات المعتمدة من المكتب الهندسى ولايوجد به أي استحداثات أنه ضمن خطة التأجير المعتمدة للسوق التجارى واتضح جاهزية جميع أنظمة الوقاية والحماية من الحريق.</p>
+                        <p>وتقبلوا وافر الاحترام والتقدير</p>
+                    </div>
+                    
+                    <table class="signature-table">
+                        <tr>
+                            <th>الجهة</th>
+                            <th>الاسم</th>
+                            <th>التوقيع</th>
+                        </tr>
+                        <tr>
+                            <td>إدارة التأجير</td>
+                            <td>حسن جمعان الزهرانى</td>
+                            <td><img id="previewRentalSignature" class="signature-img" alt="توقيع إدارة التأجير"></td>
+                        </tr>
+                        <tr>
+                            <td>إدارة السلامة</td>
+                            <td>تركى هباس العتيبى</td>
+                            <td><img id="previewSafetySignature" class="signature-img" alt="توقيع إدارة السلامة"></td>
+                        </tr>
+                        <tr>
+                            <td>المكتب الهندسى</td>
+                            <td>شركة طلاقى للاستشارات</td>
+                            <td><img id="previewEngineeringSignature" class="signature-img" alt="توقيع المكتب الهندسي"></td>
+                        </tr>
+                        <tr>
+                            <td>مؤسسة السلامة</td>
+                            <td>مؤسسة العطيشان</td>
+                            <td><img id="previewInstitutionSignature" class="signature-img" alt="توقيع مؤسسة السلامة"></td>
+                        </tr>
+                    </table>
+
+                    <div class="stamp-container">
+                        <div class="stamp-placeholder" id="stampPlaceholder">ختم الشركة</div>
+                        <img id="previewStamp" class="stamp-image" alt="ختم الشركة">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="search-panel" id="searchPanel" style="display: none;">
+        <h3><i class="fas fa-search"></i> البحث السريع</h3>
+        <div class="search-form">
+            <input type="text" id="searchInput" placeholder="أدخل رقم المحل للبحث">
+            <button class="btn-primary" onclick="searchLetter()"><i class="fas fa-search"></i> بحث</button>
+        </div>
+        
+        <div id="searchResults" class="search-results">
+            <!-- سيتم عرض نتائج البحث هنا -->
+        </div>
+    </div>
+
+    <script>
+        // الرقم السري الافتراضي (يمكن تغييره)
+        const DEFAULT_PASSWORD = "123456";
+        
+        // التحقق من وجود رقم سري محفوظ أو استخدام الافتراضي
+        function getStoredPassword() {
+            return localStorage.getItem('system_password') || DEFAULT_PASSWORD;
+        }
+        
+        // حفظ رقم سري جديد
+        function setStoredPassword(password) {
+            localStorage.setItem('system_password', password);
+        }
+        
+        // التحقق من رقم السري
+        function checkPassword() {
+            const inputPassword = document.getElementById('passwordInput').value;
+            const storedPassword = getStoredPassword();
+            
+            if (inputPassword === storedPassword) {
+                // تسجيل الدخول ناجح
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'flex';
+                document.getElementById('logoutBtn').style.display = 'block';
+                
+                // بدء التطبيق
+                initApp();
+            } else {
+                // عرض خطأ
+                document.getElementById('loginError').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('loginError').style.display = 'none';
+                }, 3000);
+            }
+        }
+        
+        // تسجيل الخروج
+        function logout() {
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('logoutBtn').style.display = 'none';
+            document.getElementById('passwordInput').value = '';
+        }
+        
+        // السماح بالدخول بالزر Enter في حقل كلمة السر
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+        
+        // تهيئة التطبيق بعد تسجيل الدخول
+        function initApp() {
+            // تعيين التاريخ الحالي
+            document.getElementById('letterDate').valueAsDate = new Date();
+            
+            // إعداد رفع اللوجو
+            document.getElementById('logoContainer').addEventListener('click', function() {
+                document.getElementById('logoUpload').click();
+            });
+            
+            document.getElementById('logoUpload').addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('logoPreview').src = e.target.result;
+                        document.getElementById('logoPreview').style.display = 'block';
+                        document.querySelector('.logo-placeholder').style.display = 'none';
+                        
+                        document.getElementById('previewLogo').src = e.target.result;
+                        
+                        // حفظ اللوجو في الإعدادات الافتراضية
+                        saveDefaultSettings();
+                    }
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+            
+            // تحديث المعاينة عند تغيير الحقول
+            const formInputs = document.querySelectorAll('input, select');
+            formInputs.forEach(input => {
+                input.addEventListener('input', updatePreview);
+            });
+            
+            // تحميل التوقيعات الافتراضية
+            loadDefaultSignatures();
+            updatePreview();
+        }
+        
+        // معاينة التوقيعات
+        function previewSignature(input, previewId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewImg = document.getElementById(previewId);
+                    previewImg.src = e.target.result;
+                    previewImg.style.display = 'block';
+                    previewImg.parentElement.querySelector('.logo-placeholder').style.display = 'none';
+                    
+                    // تحديث المعاينة
+                    updatePreview();
+                    
+                    // حفظ التوقيع في الإعدادات الافتراضية
+                    saveDefaultSettings();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // معاينة الختم
+        function previewStamp(input, previewId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewImg = document.getElementById(previewId);
+                    previewImg.src = e.target.result;
+                    previewImg.style.display = 'block';
+                    
+                    // تحديث المعاينة
+                    document.getElementById('previewStamp').src = e.target.result;
+                    document.getElementById('previewStamp').style.display = 'block';
+                    document.getElementById('stampPlaceholder').style.display = 'none';
+                    
+                    // حفظ الختم في الإعدادات الافتراضية
+                    saveDefaultSettings();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+        // تحديث المعاينة
+        function updatePreview() {
+            document.getElementById('previewDate').textContent = document.getElementById('letterDate').value;
+            document.getElementById('previewNumber').textContent = document.getElementById('letterNumber').value;
+            document.getElementById('previewTenant').textContent = document.getElementById('tenantName').value;
+            document.getElementById('previewShop').textContent = document.getElementById('shopNumber').value;
+            document.getElementById('previewFloor').textContent = document.getElementById('floor').value;
+            document.getElementById('previewArea').textContent = document.getElementById('area').value;
+            document.getElementById('previewActivity').textContent = document.getElementById('activity').value;
+            document.getElementById('previewEngineering').textContent = document.getElementById('engineeringOffice').value;
+            document.getElementById('previewInstitution').textContent = document.getElementById('safetyInstitution').value;
+            
+            // تحديث التوقيعات في المعاينة
+            const rentalSignature = document.getElementById('rentalSignaturePreview').src;
+            if (rentalSignature && rentalSignature !== '') {
+                document.getElementById('previewRentalSignature').src = rentalSignature;
+            }
+            
+            const safetySignature = document.getElementById('safetySignaturePreview').src;
+            if (safetySignature && safetySignature !== '') {
+                document.getElementById('previewSafetySignature').src = safetySignature;
+            }
+            
+            const engineeringSignature = document.getElementById('engineeringSignaturePreview').src;
+            if (engineeringSignature && engineeringSignature !== '') {
+                document.getElementById('previewEngineeringSignature').src = engineeringSignature;
+            }
+            
+            const institutionSignature = document.getElementById('institutionSignaturePreview').src;
+            if (institutionSignature && institutionSignature !== '') {
+                document.getElementById('previewInstitutionSignature').src = institutionSignature;
+            }
+
+            // تحديث الختم في المعاينة
+            const stamp = document.getElementById('stampPreview').src;
+            if (stamp && stamp !== '') {
+                document.getElementById('previewStamp').src = stamp;
+                document.getElementById('previewStamp').style.display = 'block';
+                document.getElementById('stampPlaceholder').style.display = 'none';
+            }
+        }
+        
+        // حفظ الإعدادات الافتراضية
+        function saveDefaultSettings() {
+            const defaultSettings = {
+                logo: document.getElementById('logoPreview').src,
+                rentalSignature: document.getElementById('rentalSignaturePreview').src,
+                safetySignature: document.getElementById('safetySignaturePreview').src,
+                engineeringSignature: document.getElementById('engineeringSignaturePreview').src,
+                institutionSignature: document.getElementById('institutionSignaturePreview').src,
+                stamp: document.getElementById('stampPreview').src
+            };
+            
+            localStorage.setItem('default_signatures', JSON.stringify(defaultSettings));
+            alert('تم حفظ الإعدادات الافتراضية بنجاح');
+        }
+        
+        // تحميل التوقيعات الافتراضية
+        function loadDefaultSignatures() {
+            const defaultSettings = JSON.parse(localStorage.getItem('default_signatures'));
+            
+            if (defaultSettings) {
+                if (defaultSettings.logo) {
+                    document.getElementById('logoPreview').src = defaultSettings.logo;
+                    document.getElementById('logoPreview').style.display = 'block';
+                    document.querySelector('.logo-placeholder').style.display = 'none';
+                    document.getElementById('previewLogo').src = defaultSettings.logo;
+                }
+                
+                if (defaultSettings.rentalSignature) {
+                    document.getElementById('rentalSignaturePreview').src = defaultSettings.rentalSignature;
+                    document.getElementById('rentalSignaturePreview').style.display = 'block';
+                    document.getElementById('rentalSignaturePreview').parentElement.querySelector('.logo-placeholder').style.display = 'none';
+                }
+                
+                if (defaultSettings.safetySignature) {
+                    document.getElementById('safetySignaturePreview').src = defaultSettings.safetySignature;
+                    document.getElementById('safetySignaturePreview').style.display = 'block';
+                    document.getElementById('safetySignaturePreview').parentElement.querySelector('.logo-placeholder').style.display = 'none';
+                }
+                
+                if (defaultSettings.engineeringSignature) {
+                    document.getElementById('engineeringSignaturePreview').src = defaultSettings.engineeringSignature;
+                    document.getElementById('engineeringSignaturePreview').style.display = 'block';
+                    document.getElementById('engineeringSignaturePreview').parentElement.querySelector('.logo-placeholder').style.display = 'none';
+                }
+                
+                if (defaultSettings.institutionSignature) {
+                    document.getElementById('institutionSignaturePreview').src = defaultSettings.institutionSignature;
+                    document.getElementById('institutionSignaturePreview').style.display = 'block';
+                    document.getElementById('institutionSignaturePreview').parentElement.querySelector('.logo-placeholder').style.display = 'none';
+                }
+
+                if (defaultSettings.stamp) {
+                    document.getElementById('stampPreview').src = defaultSettings.stamp;
+                    document.getElementById('stampPreview').style.display = 'block';
+                    document.getElementById('previewStamp').src = defaultSettings.stamp;
+                    document.getElementById('previewStamp').style.display = 'block';
+                    document.getElementById('stampPlaceholder').style.display = 'none';
+                }
+                
+                updatePreview();
+            } else {
+                alert('لا توجد إعدادات افتراضية محفوظة');
+            }
+        }
+        
+        // مسح الإعدادات الافتراضية
+        function clearDefaultSettings() {
+            if (confirm('هل أنت متأكد من مسح جميع الإعدادات الافتراضية؟')) {
+                localStorage.removeItem('default_signatures');
+                alert('تم مسح الإعدادات الافتراضية');
+            }
+        }
+        
+        // حفظ النموذج
+        function saveForm() {
+            const formData = {
+                date: document.getElementById('letterDate').value,
+                number: document.getElementById('letterNumber').value,
+                tenant: document.getElementById('tenantName').value,
+                shop: document.getElementById('shopNumber').value,
+                floor: document.getElementById('floor').value,
+                area: document.getElementById('area').value,
+                activity: document.getElementById('activity').value,
+                engineering: document.getElementById('engineeringOffice').value,
+                institution: document.getElementById('safetyInstitution').value,
+                rentalSignature: document.getElementById('rentalSignaturePreview').src,
+                safetySignature: document.getElementById('safetySignaturePreview').src,
+                engineeringSignature: document.getElementById('engineeringSignaturePreview').src,
+                institutionSignature: document.getElementById('institutionSignaturePreview').src,
+                stamp: document.getElementById('stampPreview').src,
+                logo: document.getElementById('logoPreview').src
+            };
+            
+            // حفظ البيانات باستخدام رقم المحل كمفتاح
+            localStorage.setItem(`letter_${formData.shop}`, JSON.stringify(formData));
+            
+            alert('تم حفظ النموذج بنجاح');
+        }
+        
+        // البحث عن خطاب
+        function searchLetter() {
+            const shopNumber = document.getElementById('searchInput').value;
+            if (!shopNumber) {
+                alert('يرجى إدخال رقم المحل للبحث');
+                return;
+            }
+            
+            const letterData = JSON.parse(localStorage.getItem(`letter_${shopNumber}`));
+            const resultsContainer = document.getElementById('searchResults');
+            
+            if (letterData) {
+                resultsContainer.innerHTML = `
+                    <h4>نتائج البحث عن المحل رقم: ${shopNumber}</h4>
+                    <p><strong>اسم المستأجر:</strong> ${letterData.tenant}</p>
+                    <p><strong>رقم الخطاب:</strong> ${letterData.number}</p>
+                    <p><strong>التاريخ:</strong> ${letterData.date}</p>
+                    <button class="btn-info" onclick="loadLetter('${shopNumber}')">
+                        <i class="fas fa-edit"></i> تحميل النموذج
+                    </button>
+                    <button class="btn-danger" onclick="deleteLetter('${shopNumber}')">
+                        <i class="fas fa-trash"></i> حذف النموذج
+                    </button>
+                `;
+                resultsContainer.style.display = 'block';
+            } else {
+                resultsContainer.innerHTML = '<p>لا توجد نتائج للبحث</p>';
+                resultsContainer.style.display = 'block';
+            }
+        }
+        
+        // تحميل خطاب محفوظ
+        function loadLetter(shopNumber) {
+            const letterData = JSON.parse(localStorage.getItem(`letter_${shopNumber}`));
+            
+            if (letterData) {
+                document.getElementById('letterDate').value = letterData.date;
+                document.getElementById('letterNumber').value = letterData.number;
+                document.getElementById('tenantName').value = letterData.tenant;
+                document.getElementById('shopNumber').value = letterData.shop;
+                document.getElementById('floor').value = letterData.floor;
+                document.getElementById('area').value = letterData.area;
+                document.getElementById('activity').value = letterData.activity;
+                document.getElementById('engineeringOffice').value = letterData.engineering;
+                document.getElementById('safetyInstitution').value = letterData.institution;
+                
+                // تحميل التوقيعات
+                if (letterData.rentalSignature) {
+                    document.getElementById('rentalSignaturePreview').src = letterData.rentalSignature;
+                    document.getElementById('rentalSignaturePreview').style.display = 'block';
+                    document.getElementById('rentalSignaturePreview').parentElement.querySelector('.logo-placeholder').style.display = 'none';
+                }
+                
+                if (letterData.safetySignature) {
+                    document.getElementById('safetySignaturePreview').src = letterData.safetySignature;
+                    document.getElementById('safetySignaturePreview').style.display = 'block';
+                    document.getElementById('safetySignaturePreview').parentElement.querySelector('.logo-placeholder').style.display = 'none';
+                }
+                
+                if (letterData.engineeringSignature) {
+                    document.getElementById('engineeringSignaturePreview').src = letterData.engineeringSignature;
+                    document.getElementById('engineeringSignaturePreview').style.display = 'block';
+                    document.getElementById('engineeringSignaturePreview').parentElement.querySelector('.logo-placeholder').style.display = 'none';
+                }
+                
+                if (letterData.institutionSignature) {
+                    document.getElementById('institutionSignaturePreview').src = letterData.institutionSignature;
+                    document.getElementById('institutionSignaturePreview').style.display = 'block';
+                    document.getElementById('institutionSignaturePreview').parentElement.querySelector('.logo-placeholder').style.display = 'none';
+                }
+
+                if (letterData.stamp) {
+                    document.getElementById('stampPreview').src = letterData.stamp;
+                    document.getElementById('stampPreview').style.display = 'block';
+                    document.getElementById('previewStamp').src = letterData.stamp;
+                    document.getElementById('previewStamp').style.display = 'block';
+                    document.getElementById('stampPlaceholder').style.display = 'none';
+                }
+                
+                if (letterData.logo) {
+                    document.getElementById('logoPreview').src = letterData.logo;
+                    document.getElementById('logoPreview').style.display = 'block';
+                    document.querySelector('.logo-placeholder').style.display = 'none';
+                    document.getElementById('previewLogo').src = letterData.logo;
+                }
+                
+                updatePreview();
+                document.getElementById('searchResults').style.display = 'none';
+                document.getElementById('searchInput').value = '';
+            }
+        }
+        
+        // حذف خطاب محفوظ
+        function deleteLetter(shopNumber) {
+            if (confirm('هل أنت متأكد من حذف هذا النموذج؟')) {
+                localStorage.removeItem(`letter_${shopNumber}`);
+                document.getElementById('searchResults').style.display = 'none';
+                alert('تم حذف النموذج بنجاح');
+            }
+        }
+        
+        // مسح النموذج الحالي
+        function clearForm() {
+            if (confirm('هل أنت متأكد من مسح النموذج الحالي؟')) {
+                document.getElementById('letterDate').valueAsDate = new Date();
+                document.getElementById('letterNumber').value = '';
+                document.getElementById('tenantName').value = '';
+                document.getElementById('shopNumber').value = '';
+                document.getElementById('floor').value = '';
+                document.getElementById('area').value = '';
+                document.getElementById('activity').value = '';
+                document.getElementById('engineeringOffice').value = '';
+                document.getElementById('safetyInstitution').value = '';
+                
+                // إخفاء التوقيعات
+                const signaturePreviews = document.querySelectorAll('.signature-preview img');
+                signaturePreviews.forEach(img => {
+                    img.src = '';
+                    img.style.display = 'none';
+                });
+                
+                const placeholders = document.querySelectorAll('.logo-placeholder');
+                placeholders.forEach(placeholder => {
+                    placeholder.style.display = 'flex';
+                });
+
+                // إعادة عرض العنصر النائب للختم
+                document.getElementById('stampPlaceholder').style.display = 'flex';
+                document.getElementById('previewStamp').style.display = 'none';
+                
+                updatePreview();
+            }
+        }
+        
+        // تبديل عرض لوحة البحث
+        function toggleSearchPanel() {
+            const panel = document.getElementById('searchPanel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        // إنشاء PDF
+        function generatePDF() {
+            // في بيئة حقيقية، سيتم استخدام مكتبة jsPDF هنا
+            alert('في التطبيق الكامل، سيتم إنشاء ملف PDF هنا. هذه مجرد معاينة.');
+            window.print();
+        }
+    </script>
+</body>
+</html>

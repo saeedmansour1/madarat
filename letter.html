@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>البحث عن خطابات الدفاع المدني</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            direction: rtl;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #2c3e50;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin: 10px 0 5px;
+        }
+        
+        .header p {
+            color: #7f8c8d;
+        }
+        
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+        }
+        
+        .back-button:hover {
+            background: #2980b9;
+        }
+        
+        .search-section {
+            margin-bottom: 30px;
+        }
+        
+        .search-section h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .search-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .search-form input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .search-form button {
+            padding: 12px 20px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .search-form button:hover {
+            background: #1e2a36;
+        }
+        
+        .search-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #e9ecef;
+            margin-bottom: 20px;
+        }
+        
+        .search-info h3 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .search-results {
+            margin-top: 20px;
+        }
+        
+        .result-item {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .result-item h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .result-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .detail-label {
+            font-weight: bold;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            color: #2c3e50;
+        }
+        
+        .result-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background: #2c3e50;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #1e2a36;
+        }
+        
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #219653;
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        
+        .btn-info {
+            background: #3498db;
+            color: white;
+        }
+        
+        .btn-info:hover {
+            background: #2980b9;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border: 1px solid #e9ecef;
+            color: #7f8c8d;
+        }
+        
+        .no-results i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #bdc3c7;
+        }
+        
+        .letter-preview {
+            background: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .preview-content {
+            background: white;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            min-height: 100%;
+            margin: 0 auto;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .preview-header {
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .preview-logo {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .preview-logo img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        .preview-header h2 {
+            font-size: 22px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        .info-table td {
+            padding: 8px 5px;
+            vertical-align: top;
+        }
+        
+        .info-table .label {
+            font-weight: bold;
+            white-space: nowrap;
+            width: 100px;
+        }
+        
+        .letter-body {
+            line-height: 1.8;
+            margin-bottom: 30px;
+            text-align: justify;
+        }
+        
+        .signature-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+        
+        .signature-table th, .signature-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .signature-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        .signature-img {
+            max-height: 60px;
+            max-width: 120px;
+        }
+        
+        .stamp-container {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px dashed #ccc;
+        }
+        
+        .stamp-placeholder {
+            display: inline-block;
+            width: 150px;
+            height: 150px;
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+            font-style: italic;
+        }
+        
+        .stamp-image {
+            max-width: 150px;
+            max-height: 150px;
+            display: none;
+        }
+        
+        .preview-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        @media (max-width: 768px) {
+            .search-form {
+                flex-direction: column;
+            }
+            
+            .result-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .result-actions {
+                flex-direction: column;
+            }
+            
+            .preview-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container, .search-section, .result-item, .preview-actions {
+                display: none;
+            }
+            
+            .letter-preview {
+                display: block;
+                width: 100%;
+                box-shadow: none;
+                padding: 0;
+            }
+            
+            .preview-content {
+                box-shadow: none;
+                padding: 0;
+                width: 100%;
+                min-height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="javascript:history.back()" class="back-button">
+            <i class="fas fa-arrow-right"></i> العودة للخلف
+        </a>
+        
+        <div class="header">
+            <h1>البحث عن خطابات الدفاع المدني</h1>
+            <p>مجمع أبراج الصفوة - إدارة السلامة</p>
+        </div>
+        
+        <div class="search-section">
+            <h2><i class="fas fa-search"></i> البحث عن خطاب</h2>
+            
+            <div class="search-info">
+                <h3><i class="fas fa-info-circle"></i> كيف تبحث؟</h3>
+                <p>يمكنك البحث عن الخطابات المخزنة باستخدام رقم المحل. أدخل رقم المحل في الحقل أدناه ثم انقر على زر البحث.</p>
+            </div>
+            
+            <div class="search-form">
+                <input type="text" id="searchInput" placeholder="أدخل رقم المحل للبحث">
+                <button onclick="searchLetters()">
+                    <i class="fas fa-search"></i> بحث
+                </button>
+            </div>
+        </div>
+        
+        <div class="search-results" id="searchResults">
+            <!-- سيتم عرض نتائج البحث هنا -->
+        </div>
+
+        <div class="letter-preview" id="letterPreview">
+            <div class="preview-content" id="previewContent">
+                <div class="preview-header">
+                    <div class="preview-logo">
+                        <img id="previewLogo" alt="لوجو الشركة">
+                    </div>
+                    <h2>خطاب الدفاع المدني</h2>
+                    <p>مجمع أبراج الصفوة</p>
+                </div>
+                
+                <table class="info-table">
+                    <tr>
+                        <td class="label">التاريخ:</td>
+                        <td id="previewDate"></td>
+                        <td class="label">رقم الخطاب:</td>
+                        <td id="previewNumber"></td>
+                    </tr>
+                </table>
+                
+                <p>إلى: مدير الإدارة العامة للدفاع المدنى بالعاصمة المقدسة</p>
+                <p>إلى: مدير مركز السلامة الميدانى بالمنطقة المركزية</p>
+                <p>الموضوع: بشأن الوقوف على المحل الموضح بياناته أدناه</p>
+                
+                <table class="info-table">
+                    <tr>
+                        <td class="label">اسم المستأجر:</td>
+                        <td id="previewTenant"></td>
+                        <td class="label">رقم المحل:</td>
+                        <td id="previewShop"></td>
+                    </tr>
+                    <tr>
+                        <td class="label">الدور:</td>
+                        <td id="previewFloor"></td>
+                        <td class="label">المساحة:</td>
+                        <td id="previewArea"></td>
+                    </tr>
+                    <tr>
+                        <td class="label">النشاط:</td>
+                        <td id="previewActivity"></td>
+                        <td class="label">المكتب الهندسي:</td>
+                        <td id="previewEngineering"></td>
+                    </tr>
+                    <tr>
+                        <td class="label">مؤسسة السلامة:</td>
+                        <td colspan="3" id="previewInstitution"></td>
+                    </tr>
+                </table>
+                
+                <div class="letter-body">
+                    <p>نفيدكم نحن إدارة السلامة الصادرة بموجب قرار سمو وزير الداخلية رقم (10/ك/و/دف) وتاريخ 24/04/1410هـ</p>
+                    <p>بأنه تم الوقوف على المحل وانه مستوفى لاشتراطات ومتطلبات السلامة ومطابق للمخططات المعتمدة من المكتب الهندسى ولايوجد به أي استحداثات أنه ضمن خطة التأجير المعتمدة للسوق التجارى واتضح جاهزية جميع أنظمة الوقاية والحماية من الحريق.</p>
+                    <p>وتقبلوا وافر الاحترام والتقدير</p>
+                </div>
+                
+                <table class="signature-table">
+                    <tr>
+                        <th>الجهة</th>
+                        <th>الاسم</th>
+                        <th>التوقيع</th>
+                    </tr>
+                    <tr>
+                        <td>إدارة التأجير</td>
+                        <td>حسن جمعان الزهرانى</td>
+                        <td><img id="previewRentalSignature" class="signature-img" alt="توقيع إدارة التأجير"></td>
+                    </tr>
+                    <tr>
+                        <td>إدارة السلامة</td>
+                        <td>تركى هباس العتيبى</td>
+                        <td><img id="previewSafetySignature" class="signature-img" alt="توقيع إدارة السلامة"></td>
+                    </tr>
+                    <tr>
+                        <td>المكتب الهندسى</td>
+                        <td>شركة طلاقى للاستشارات</td>
+                        <td><img id="previewEngineeringSignature" class="signature-img" alt="توقيع المكتب الهندسي"></td>
+                    </tr>
+                    <tr>
+                        <td>مؤسسة السلامة</td>
+                        <td>مؤسسة العطيشان</td>
+                        <td><img id="previewInstitutionSignature" class="signature-img" alt="توقيع مؤسسة السلامة"></td>
+                    </tr>
+                </table>
+
+                <div class="stamp-container">
+                    <div class="stamp-placeholder" id="stampPlaceholder">ختم الشركة</div>
+                    <img id="previewStamp" class="stamp-image" alt="ختم الشركة">
+                </div>
+            </div>
+
+            <div class="preview-actions">
+                <button class="btn btn-info" onclick="printLetter()">
+                    <i class="fas fa-print"></i> طباعة الخطاب
+                </button>
+                <button class="btn btn-success" onclick="downloadLetterFromPreview()">
+                    <i class="fas fa-download"></i> حفظ كملف PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // البحث عن الخطابات
+        function searchLetters() {
+            const searchValue = document.getElementById('searchInput').value.trim();
+            const resultsContainer = document.getElementById('searchResults');
+            const letterPreview = document.getElementById('letterPreview');
+            
+            if (!searchValue) {
+                resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <h3>يرجى إدخال رقم المحل للبحث</h3>
+                        <p>لم تقم بإدخال أي قيمة للبحث، يرجى إدخال رقم المحل ثم المحاولة مرة أخرى.</p>
+                    </div>
+                `;
+                letterPreview.style.display = 'none';
+                return;
+            }
+            
+            // الحصول على جميع المفاتيح من localStorage
+            const keys = Object.keys(localStorage);
+            const defenseLetters = keys.filter(key => key.startsWith('defense_letter_'));
+            
+            if (defenseLetters.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-folder-open"></i>
+                        <h3>لا توجد خطابات مخزنة</h3>
+                        <p>لم يتم العثور على أي خطابات مخزنة في النظام، يرجى حفظ بعض الخطابات أولاً.</p>
+                    </div>
+                `;
+                letterPreview.style.display = 'none';
+                return;
+            }
+            
+            // البحث عن الخطابات التي تطابق رقم المحل
+            const results = defenseLetters.filter(key => {
+                const data = JSON.parse(localStorage.getItem(key));
+                return data.shop && data.shop.includes(searchValue);
+            });
+            
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <h3>لا توجد نتائج</h3>
+                        <p>لم يتم العثور على أي خطابات تطابق رقم المحل: <strong>${searchValue}</strong></p>
+                    </div>
+                `;
+                letterPreview.style.display = 'none';
+                return;
+            }
+            
+            // عرض النتائج
+            let resultsHTML = `<h2 style="margin-bottom: 20px; color: #2c3e50;">نتائج البحث: <span style="color: #3498db;">${results.length}</span> نتيجة</h2>`;
+            
+            results.forEach(key => {
+                const data = JSON.parse(localStorage.getItem(key));
+                
+                resultsHTML += `
+                    <div class="result-item">
+                        <h3>خطاب دفاع مدني - المحل رقم: ${data.shop}</h3>
+                        <div class="result-details">
+                            <div class="detail-item">
+                                <span class="detail-label">رقم الخطاب:</span>
+                                <span class="detail-value">${data.number || 'غير محدد'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">التاريخ:</span>
+                                <span class="detail-value">${data.date || 'غير محدد'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">اسم المستأجر:</span>
+                                <span class="detail-value">${data.tenant || 'غير محدد'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">الدور:</span>
+                                <span class="detail-value">${data.floor || 'غير محدد'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">المساحة:</span>
+                                <span class="detail-value">${data.area || 'غير محدد'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">النشاط:</span>
+                                <span class="detail-value">${data.activity || 'غير محدد'}</span>
+                            </div>
+                        </div>
+                        <div class="result-actions">
+                            <button class="btn btn-primary" onclick="showLetterPreview('${data.shop}')">
+                                <i class="fas fa-eye"></i> معاينة الخطاب
+                            </button>
+                            <button class="btn btn-success" onclick="downloadLetter('${data.shop}')">
+                                <i class="fas fa-download"></i> تحميل الخطاب
+                            </button>
+                           
+                        </div>
+                    </div>
+                `;
+            });
+            
+            resultsContainer.innerHTML = resultsHTML;
+            letterPreview.style.display = 'none';
+        }
+        
+        // عرض معاينة الخطاب
+        function showLetterPreview(shopNumber) {
+            const data = JSON.parse(localStorage.getItem(`defense_letter_${shopNumber}`));
+            const letterPreview = document.getElementById('letterPreview');
+            
+            if (data) {
+                // تعبئة الحقول
+                document.getElementById('previewDate').textContent = data.date || '';
+                document.getElementById('previewNumber').textContent = data.number || '';
+                document.getElementById('previewTenant').textContent = data.tenant || '';
+                document.getElementById('previewShop').textContent = data.shop || '';
+                document.getElementById('previewFloor').textContent = data.floor || '';
+                document.getElementById('previewArea').textContent = data.area || '';
+                document.getElementById('previewActivity').textContent = data.activity || '';
+                document.getElementById('previewEngineering').textContent = data.engineeringOffice || '';
+                document.getElementById('previewInstitution').textContent = data.safetyInstitution || '';
+                
+                // تحميل الصور
+                if (data.logo && data.logo !== '') {
+                    document.getElementById('previewLogo').src = data.logo;
+                }
+                
+                if (data.rentalSignature && data.rentalSignature !== '') {
+                    document.getElementById('previewRentalSignature').src = data.rentalSignature;
+                }
+                
+                if (data.safetySignature && data.safetySignature !== '') {
+                    document.getElementById('previewSafetySignature').src = data.safetySignature;
+                }
+                
+                if (data.engineeringSignature && data.engineeringSignature !== '') {
+                    document.getElementById('previewEngineeringSignature').src = data.engineeringSignature;
+                }
+                
+                if (data.institutionSignature && data.institutionSignature !== '') {
+                    document.getElementById('previewInstitutionSignature').src = data.institutionSignature;
+                }
+
+                // تحميل الختم
+                if (data.stamp && data.stamp !== '') {
+                    document.getElementById('previewStamp').src = data.stamp;
+                    document.getElementById('previewStamp').style.display = 'block';
+                    document.getElementById('stampPlaceholder').style.display = 'none';
+                } else {
+                    document.getElementById('previewStamp').style.display = 'none';
+                    document.getElementById('stampPlaceholder').style.display = 'block';
+                }
+                
+                // إظهار معاينة الخطاب
+                letterPreview.style.display = 'block';
+                
+                // التمرير إلى معاينة الخطاب
+                letterPreview.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        // تحميل الخطاب كملف PDF
+        function downloadLetter(shopNumber) {
+            const data = JSON.parse(localStorage.getItem(`defense_letter_${shopNumber}`));
+            
+            if (data) {
+                // أولاً نعرض الخطاب ثم نقوم بتحويله إلى PDF
+                showLetterPreview(shopNumber);
+                
+                // ننتظر قليلاً لضمان عرض المحتوى ثم نقوم بإنشاء PDF
+                setTimeout(() => {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF('p', 'mm', 'a4');
+                    
+                    // الحصول على محتوى المعاينة
+                    const previewContent = document.getElementById('previewContent');
+                    
+                    // استخدام html2canvas لالتقاط المحتوى كصورة
+                    html2canvas(previewContent, {
+                        scale: 2,
+                        useCORS: true,
+                        logging: false
+                    }).then(canvas => {
+                        const imgData = canvas.toDataURL('image/png');
+                        const imgWidth = 210; // A4 width in mm
+                        const imgHeight = canvas.height * imgWidth / canvas.width;
+                        
+                        // إضافة الصورة إلى PDF
+                        doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                        
+                        // حفظ الملف
+                        doc.save(`خطاب_الدفاع_المدني_${data.shop}.pdf`);
+                    });
+                }, 500);
+            }
+        }
+
+        // تحميل الخطاب الحالي المعروض كملف PDF
+        function downloadLetterFromPreview() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            
+            // الحصول على محتوى المعاينة
+            const previewContent = document.getElementById('previewContent');
+            
+            // استخدام html2canvas لالتقاط المحتوى كصورة
+            html2canvas(previewContent, {
+                scale: 2,
+                useCORS: true,
+                logging: false
+            }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const imgWidth = 210; // A4 width in mm
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+                
+                // إضافة الصورة إلى PDF
+                doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                
+                // حفظ الملف
+                const shopNumber = document.getElementById('previewShop').textContent;
+                doc.save(`خطاب_الدفاع_المدني_${shopNumber || 'جديد'}.pdf`);
+            });
+        }
+        
+        // طباعة الخطاب
+        function printLetter() {
+            window.print();
+        }
+        
+        // حذف خطاب
+        function deleteLetter(shopNumber) {
+            if (confirm(`هل أنت متأكد من أنك تريد حذف الخطاب الخاص بالمحل رقم: ${shopNumber}؟`)) {
+                localStorage.removeItem(`defense_letter_${shopNumber}`);
+                alert('تم حذف الخطاب بنجاح');
+                searchLetters(); // تحديث نتائج البحث
+                
+                // إخفاء معاينة الخطاب إذا كان الخطاب المحذوف هو المعروض
+                document.getElementById('letterPreview').style.display = 'none';
+            }
+        }
+        
+        // البحث عند الضغط على Enter
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchLetters();
+            }
+        });
+        
+        // تحميل نتائج البحث تلقائياً إذا كان هناك بحث سابق
+        window.addEventListener('load', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchParam = urlParams.get('search');
+            
+            if (searchParam) {
+                document.getElementById('searchInput').value = searchParam;
+                searchLetters();
+            }
+        });
+    </script>
+</body>
+</html>
