@@ -847,7 +847,7 @@
                         body {
                             direction: rtl;
                             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                            margin: 0;
+                            margin: 0.5;
                             padding: 15mm;
                             font-size: 14px;
                             line-height: 1.4;
@@ -968,31 +968,39 @@
         
         // دالة تصدير PDF
         function exportToPDF() {
-            const content = document.getElementById('previewContent');
-            const loadingPDF = document.getElementById('loadingPDF');
-            
-            loadingPDF.style.display = 'block';
-            
-            const options = {
-                margin: 10,
-                filename: 'خطاب_الدفاع_المدني.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-            
-            html2pdf()
-                .from(content)
-                .set(options)
-                .save()
-                .then(() => {
-                    loadingPDF.style.display = 'none';
-                })
-                .catch(error => {
-                    loadingPDF.style.display = 'none';
-                    console.error('Error generating PDF:', error);
-                });
-        }
+  const content = document.getElementById('previewContent');
+  const loadingPDF = document.getElementById('loadingPDF');
+  
+  loadingPDF.style.display = 'block';
+
+  // قبل ما نعمل PDF، نصغر المحتوى شوية عشان يدخل في صفحة وحدة
+  content.style.width = '800px'; // مقاس مناسب لـ A4
+  content.style.margin = 'auto';
+
+  const opt = {
+    margin:       10, // هوامش الصفحة بالمليمتر
+    filename:     'خطاب_الدفاع_المدني.pdf',
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2, useCORS: true },
+    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    pagebreak:    { mode: ['avoid-all','css','legacy'] } // يمنع القص العشوائي
+  };
+
+  html2pdf()
+    .set(opt)
+    .from(content)
+    .save()
+    .then(() => {
+      loadingPDF.style.display = 'none';
+      // رجّع العرض الطبيعي بعد الحفظ
+      content.style.width = '';
+      content.style.margin = '';
+    })
+    .catch(err => {
+      loadingPDF.style.display = 'none';
+      console.error('Error generating PDF:', err);
+    });
+}
         
         // دالة إغلاق معاينة الخطاب
         function closePreview() {
@@ -1009,3 +1017,4 @@
 </body>
 
 </html>
+
