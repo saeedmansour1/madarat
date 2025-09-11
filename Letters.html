@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بحث خطابات الدفاع المدني - مجمع أبراج الصفوة</title>
+    <title>خطابات </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
@@ -514,14 +514,14 @@
         </div>
         
         <div class="header">
-            <h1>بحث خطابات الدفاع المدني</h1>
-            <p>مجمع أبراج الصفوة - إدارة السلامة</p>
+            <h1>بحث الخطابات</h1>
+            <p> الشئون الادارية </p>
         </div>
         
         <div class="search-section">
             <h2><i class="fas fa-search"></i> البحث عن خطاب</h2>
             <div class="search-form">
-                <input type="text" id="searchInput" placeholder="أدخل رقم المحل للبحث">
+                <input type="text" id="searchInput" placeholder="أدخل رقم الخطاب للبحث">
                 <button class="btn-primary" onclick="searchLetter()">
                     <i class="fas fa-search"></i> بحث
                 </button>
@@ -573,7 +573,7 @@
             const shopNumber = document.getElementById('searchInput').value.trim();
             
             if (shopNumber === '') {
-                alert('يرجى إدخال رقم المحل للبحث');
+                alert('يرجى إدخال رقم الخطاب للبحث');
                 return;
             }
             
@@ -594,7 +594,7 @@
                     
                     resultsDiv.innerHTML = `
                         <div class="result-item">
-                            <h3>نتائج البحث عن المحل رقم: ${shopNumber}</h3>
+                            <h3>نتائج البحث عن الخطاب رقم: ${shopNumber}</h3>
                             <div class="result-details">
                                 <div class="detail-item">
                                     <span class="detail-label">اسم المستأجر:</span>
@@ -640,7 +640,7 @@
                     resultsDiv.innerHTML = `
                         <div class="no-results">
                             <i class="fas fa-search"></i>
-                            <p>لا توجد نتائج للبحث عن المحل رقم: ${shopNumber}</p>
+                            <p>لا توجد نتائج للبحث عن الخطاب رقم: ${shopNumber}</p>
                         </div>
                     `;
                 }
@@ -649,7 +649,7 @@
                 resultsDiv.innerHTML = `
                     <div class="no-results">
                         <i class="fas fa-exclamation-triangle"></i>
-                        <p>حدث خطأ في الاتصال بالخادم</p>
+                        <p>فى حالة تعذر البحث تواصل مع الادارة او تاكد من رقم الخطاب</p>
                     </div>
                 `;
                 console.error('Error:', error);
@@ -1015,6 +1015,7 @@
 </body>
 
 </html>
+
 
 
 
