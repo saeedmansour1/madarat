@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الحماية - مدارات للأنظمة المحدودة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #005f73;
+            --secondary-color: #0a9396;
+            --accent-color: #94d2bd;
+            --cyber-blue: #001935;
+            --cyber-dark: #000b1c;
+            --cyber-neon: #00f3ff;
+            --cyber-red: #ff073a;
+            --cyber-green: #39ff14;
+            --light-color: #f6fafd;
+            --gray-color: #e2e2e2;
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--cyber-dark);
+            color: #fff;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Cyber Background */
+        .cyber-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--cyber-dark) 0%, var(--cyber-blue) 100%);
+            opacity: 0.95;
+        }
+        
+        .binary-code {
+            position: absolute;
+            color: rgba(0, 243, 255, 0.3);
+            font-family: monospace;
+            font-size: 16px;
+            animation: scroll 15s infinite linear;
+            font-weight: bold;
+            z-index: -1;
+        }
+        
+        .cyber-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
+            grid-template-rows: repeat(15, 1fr);
+            opacity: 0.1;
+        }
+        
+        .grid-line {
+            position: absolute;
+            background: rgba(0, 243, 255, 0.1);
+        }
+        
+        .horizontal {
+            width: 100%;
+            height: 1px;
+            animation: pulse 3s infinite ease-in-out;
+        }
+        
+        .vertical {
+            width: 1px;
+            height: 100%;
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(0, 243, 255, 0.3);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--cyber-neon);
+            display: flex;
+            align-items: center;
+            text-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--cyber-neon);
+            text-decoration: none;
+            transition: var(--transition);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover {
+            color: var(--cyber-dark);
+            background-color: var(--cyber-neon);
+            box-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title h1 {
+            font-size: 2.5rem;
+            color: var(--cyber-neon);
+            text-shadow: 0 0 10px var(--cyber-neon);
+            margin-bottom: 15px;
+        }
+
+        .page-title p {
+            color: #ccc;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .protection-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .protection-card {
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .protection-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+        }
+
+        .protection-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 35px;
+            box-shadow: 0 0 20px var(--cyber-neon);
+        }
+
+        .protection-title {
+            font-size: 1.5rem;
+            color: var(--cyber-neon);
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .protection-stats {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--cyber-green);
+            margin: 15px 0;
+            text-shadow: 0 0 5px var(--cyber-green);
+        }
+
+        .protection-description {
+            color: #ccc;
+        }
+
+        .threats-section {
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 40px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--cyber-neon);
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .threats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .threat-card {
+            background: rgba(255, 7, 58, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid var(--cyber-red);
+            transition: var(--transition);
+        }
+
+        .threat-card:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 0 15px rgba(255, 7, 58, 0.3);
+        }
+
+        .threat-title {
+            color: var(--cyber-red);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .threat-title i {
+            margin-left: 10px;
+        }
+
+        .threat-description {
+            color: #ccc;
+        }
+
+        .solutions-section {
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 40px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            margin-bottom: 50px;
+        }
+
+        .solutions-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .solution-card {
+            background: rgba(57, 255, 20, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid var(--cyber-green);
+            transition: var(--transition);
+        }
+
+        .solution-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+        }
+
+        .solution-title {
+            color: var(--cyber-green);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .solution-title i {
+            margin-left: 10px;
+        }
+
+        .solution-description {
+            color: #ccc;
+        }
+
+        .process-section {
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 40px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            margin-bottom: 50px;
+        }
+
+        .process-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 40px 0;
+        }
+
+        .process-steps::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--cyber-neon);
+            z-index: 1;
+        }
+
+        .process-step {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            flex: 1;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 auto 15px;
+            box-shadow: 0 0 15px var(--cyber-neon);
+        }
+
+        .step-title {
+            color: var(--cyber-neon);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .step-description {
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        .security-packages {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .package-card {
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            transition: var(--transition);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .package-card.popular {
+            border: 2px solid var(--cyber-green);
+            transform: scale(1.05);
+        }
+
+        .package-card.popular::before {
+            content: 'الأكثر طلباً';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--cyber-green);
+            color: var(--cyber-dark);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .package-title {
+            font-size: 1.5rem;
+            color: var(--cyber-neon);
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .package-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--cyber-green);
+            margin: 20px 0;
+            text-shadow: 0 0 5px var(--cyber-green);
+        }
+
+        .package-features {
+            margin: 25px 0;
+            text-align: right;
+        }
+
+        .package-feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            color: #ccc;
+        }
+
+        .package-feature i {
+            color: var(--cyber-green);
+            margin-left: 10px;
+        }
+
+        .package-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+            border: none;
+            border-radius: 5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .package-btn:hover {
+            background: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--cyber-neon);
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 50px 20px;
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .cta-title {
+            font-size: 2rem;
+            color: var(--cyber-neon);
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .cta-description {
+            color: #ccc;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 12px 25px;
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: var(--transition);
+            box-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .cta-btn:hover {
+            background: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--cyber-neon);
+        }
+
+        .cta-btn.outline {
+            background: transparent;
+            color: var(--cyber-neon);
+            border: 2px solid var(--cyber-neon);
+        }
+
+        .cta-btn.outline:hover {
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #aaa;
+            border-top: 1px solid rgba(0, 243, 255, 0.3);
+        }
+
+        /* Animations */
+        @keyframes scroll {
+            0% { transform: translateY(100vh); }
+            100% { transform: translateY(-100vh); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .page-title h1 {
+                font-size: 2rem;
+            }
+            
+            .process-steps {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .process-steps::before {
+                display: none;
+            }
+            
+            .package-card.popular {
+                transform: scale(1);
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cyber Background -->
+    <div class="cyber-bg" id="cyber-bg"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>مدارات للأنظمة المحدودة</span>
+            </div>
+            <div class="nav-links">
+                <a href="index">الرئيسية</a>
+                <a href="pro">من نحن</a>
+                <a href="serves">الخدمات</a>
+                <a href="security">الحماية</a>
+                <a href="contactUs">اتصل بنا</a>
+            </div>
+        </header>
+
+        <div class="page-title">
+            <h1>حلول الحماية الشاملة</h1>
+            <p>نحمي أعمالك من التهديدات الإلكترونية باستخدام أحدث تقنيات الذكاء الاصطناعي والتعلم الآلي</p>
+        </div>
+
+        <div class="protection-overview">
+            <div class="protection-card">
+                <div class="protection-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="protection-title">الحماية من الاختراق</h3>
+                <div class="protection-stats">99.9%</div>
+                <p class="protection-description">نسبة نجاح في منع محاولات الاختراق والهجمات الإلكترونية</p>
+            </div>
+
+            <div class="protection-card">
+                <div class="protection-icon">
+                    <i class="fas fa-bug"></i>
+                </div>
+                <h3 class="protection-title">الحماية من البرمجيات الخبيثة</h3>
+                <div class="protection-stats">100%</div>
+                <p class="protection-description">كشف وإزالة الفيروسات والبرمجيات الخبيثة</p>
+            </div>
+
+            <div class="protection-card">
+                <div class="protection-icon">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h3 class="protection-title">حماية البيانات</h3>
+                <div class="protection-stats">256-bit</div>
+                <p class="protection-description">تشفير متقدم لحماية البيانات الحساسة والمعلومات الخاصة</p>
+            </div>
+        </div>
+
+        <div class="threats-section">
+            <h2 class="section-title">التهديدات الإلكترونية التي نحميك منها</h2>
+            <div class="threats-container">
+                <div class="threat-card">
+                    <h3 class="threat-title"><i class="fas fa-virus"></i> هجمات الفيروسات والبرمجيات الخبيثة</h3>
+                    <p class="threat-description">حماية متكاملة من الفيروسات، ransomware، trojans، والبرمجيات الخبيثة الأخرى.</p>
+                </div>
+
+                <div class="threat-card">
+                    <h3 class="threat-title"><i class="fas fa-user-secret"></i> اختراق البيانات والخصوصية</h3>
+                    <p class="threat-description">منع الوصول غير المصرح به إلى البيانات الحساسة وأنظمة الشبكات.</p>
+                </div>
+
+                <div class="threat-card">
+                    <h3 class="threat-title"><i class="fas fa-broadcast-tower"></i> هجمات DDoS</h3>
+                    <p class="threat-description">حماية من هجمات الحرمان من الخدمة التي تهدف لإيقاف خدماتك.</p>
+                </div>
+
+                <div class="threat-card">
+                    <h3 class="threat-title"><i class="fas fa-phishing"></i> التصيد الاحتيالي</h3>
+                    <p class="threat-description">كشف ومنع محاولات التصيد الاحتيالي وسرقة الهوية.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="solutions-section">
+            <h2 class="section-title">حلول الحماية المتكاملة</h2>
+            <div class="solutions-container">
+                <div class="solution-card">
+                    <h3 class="solution-title"><i class="fas fa-firewall"></i> جدران الحماية المتقدمة</h3>
+                    <p class="solution-description">أنظمة حماية متطورة تراقب وتتحكم في حركة المرور الشبكية بناءً على قواعد أمنية محددة.</p>
+                </div>
+
+                <div class="solution-card">
+                    <h3 class="solution-title"><i class="fas fa-eye"></i> أنظمة كشف الاختراق</h3>
+                    <p class="solution-description">مراقبة مستمرة للشبكة لاكتشاف أي أنشطة مشبوهة أو محاولات اختراق.</p>
+                </div>
+
+                <div class="solution-card">
+                    <h3 class="solution-title"><i class="fas fa-lock"></i> أنظمة منع الاختراق</h3>
+                    <p class="solution-description">أنظمة متقدمة تمنع الهجمات الإلكترونية بشكل تلقائي وفوري.</p>
+                </div>
+
+                <div class="solution-card">
+                    <h3 class="solution-title"><i class="fas fa-database"></i> حماية قواعد البيانات</h3>
+                    <p class="solution-description">حماية شاملة لقواعد البيانات من الوصول غير المصرح به وتسرب المعلومات.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="process-section">
+            <h2 class="section-title">كيفية عمل نظام الحماية الخاص بنا</h2>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">التقييم</h3>
+                    <p class="step-description">تحليل شامل لنقاط القوة والضعف في النظام الحالي</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">التصميم</h3>
+                    <p class="step-description">تصميم حل حماية مخصص يناسب احتياجاتك</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">التنفيذ</h3>
+                    <p class="step-description">تركيب وتكوين أنظمة الحماية المتكاملة</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">المراقبة</h3>
+                    <p class="step-description">مراقبة مستمرة على مدار الساعة</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="security-packages">
+            <div class="package-card">
+                <h3 class="package-title">الحماية الأساسية</h3>
+                <div class="package-price">1,500 ريال/شهر</div>
+                <div class="package-features">
+                    <div class="package-feature">
+                        <i class="fas fa-check"></i>
+                        <span>جدار حماية أساسي</span>
+                    </div>
+                    <div class="package-feature">
+                        <i class="fas fa-check"></i>
+                        <span>حماية من الفيروسات</span>
+                    </div>
+                    <div class="package-feature">
+                        <i class="fas fa-check"></i>
+                        <span>مراقبة أمنية 8 ساعات</span>
+                    </div>
+                    <div class="package-feature">
+                        <i class="fas fa-times"></i>
+                        <span>كشف اختراق متقدم</span>
+                    </div>
+                </div>
+                <button class="package-btn">اختر الباقة</button>
+            </div>
+
+            <div class="package-card popular">
+                <h3 class="package-title">الحماية المتقدمة</h3>
+                <div class="package-price">3,500 ريال/شهر</div>
+                <div class="package-features">
+                    <div class="package-feature">
+                        <i class="fas fa-check"></i>
+                        <span>جدار حماية متقدم</span>
+                    </div>
+                    <div class="package-feature">
+                        <i class="fas fa-check"></i>
+                        <span>حماية شاملة من الفيروسات</span>
+                    </div>
+                    <div class="package-feature">
+                        <i class="fas fa-check"></i>
+                        <span>مراقبة أمنية 24/7</span>
+                    </div>
+                    <div class="package-feature">
+                        <i class="fas fa-check"></i>
+                        <span>كشف اختراق متقدم</span>
+                    </div>
+                </div>
+                <button class="package-btn">اختر الباقة</button>
+            </div>
+
+            <div class="package-card">
+                <h3 class="package-title">الحماية الشاملة</h3>
+                <div class="package-price">6,000 ريال/شهر</div>
+                <div class="package-features">
+                    <div class="package-feature">
+                        <i class="fas fa-check"></i>
+                        <span>جدار حماية enterprise</span>
+                    </div>
+                    <div class="package-feature">
+                        <i class="fas fa-check"></i>
+                        <span>حماية متكاملة بالذكاء الاصطناعي</span>
+                    </div>
+                    <div class="package-feature">
+                        <i class="fas fa-check"></i>
+                        <span>مراقبة أمنية 24/7 مع فريق مخصص</span>
+                    </div>
+                    <div class="package-feature">
+                        <i class="fas fa-check"></i>
+                        <span>كشف ومنع اختراق فوري</span>
+                    </div>
+                </div>
+                <button class="package-btn">اختر الباقة</button>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2 class="cta-title">جاهزون لتأمين عملك؟</h2>
+            <p class="cta-description">تواصل معنا اليوم للحصول على استشارة أمنية مجانية وتقييم شامل لنظامك الحالي</p>
+            <div class="cta-buttons">
+                <a href="#" class="cta-btn">اطلب استشارة مجانية</a>
+                <a href="#" class="cta-btn outline">اتصل بنا الآن</a>
+            </div>
+        </div>
+
+        <footer>
+            <p>جميع الحقوق محفوظة &copy; 2023 - مدارات للأنظمة المحدودة</p>
+        </footer>
+    </div>
+
+    <script>
+        // إنشاء خلفية الأرقام الثنائية
+        const cyberBg = document.getElementById('cyber-bg');
+        
+        // إنشاء خطوط الشبكة
+        const grid = document.createElement('div');
+        grid.className = 'cyber-grid';
+        for (let i = 0; i < 16; i++) {
+            const horizontal = document.createElement('div');
+            horizontal.className = 'grid-line horizontal';
+            horizontal.style.top = `${i * 6.66}%`;
+            horizontal.style.animationDelay = `${i * 0.2}s`;
+            grid.appendChild(horizontal);
+            
+            const vertical = document.createElement('div');
+            vertical.className = 'grid-line vertical';
+            vertical.style.left = `${i * 6.66}%`;
+            vertical.style.animationDelay = `${i * 0.2 + 0.5}s`;
+            grid.appendChild(vertical);
+        }
+        cyberBg.appendChild(grid);
+        
+        // إنشاء شفرة ثنائية متساقطة (0 و1)
+        for (let i = 0; i < 40; i++) {
+            const binary = document.createElement('div');
+            binary.className = 'binary-code';
+            binary.textContent = generateBinaryCode(25);
+            binary.style.left = `${Math.random() * 100}%`;
+            binary.style.animationDelay = `${Math.random() * 15}s`;
+            binary.style.animationDuration = `${15 + Math.random() * 15}s`;
+            cyberBg.appendChild(binary);
+        }
+        
+        function generateBinaryCode(length) {
+            let code = '';
+            for (let i = 0; i < length; i++) {
+                code += Math.round(Math.random()) + ' ';
+            }
+            return code;
+        }
+
+        // تفعيل أزرار الباقات
+        const packageButtons = document.querySelectorAll('.package-btn');
+        packageButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const packageName = this.closest('.package-card').querySelector('.package-title').textContent;
+                alert(`شكراً لاختيارك ${packageName}. سيتصل بك فريقنا قريباً!`);
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('تم تحميل صفحة الحماية');
+        });
+    </script>
+</body>
+</html>
