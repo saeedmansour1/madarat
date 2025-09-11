@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طلب استشارة مجانية - مدارات للأنظمة المحدودة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #005f73;
+            --secondary-color: #0a9396;
+            --accent-color: #94d2bd;
+            --cyber-blue: #001935;
+            --cyber-dark: #000b1c;
+            --cyber-neon: #00f3ff;
+            --cyber-green: #39ff14;
+            --light-color: #f6fafd;
+            --gray-color: #e2e2e2;
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--cyber-dark);
+            color: #fff;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Cyber Background */
+        .cyber-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--cyber-dark) 0%, var(--cyber-blue) 100%);
+            opacity: 0.95;
+        }
+        
+        .binary-code {
+            position: absolute;
+            color: rgba(0, 243, 255, 0.3);
+            font-family: monospace;
+            font-size: 16px;
+            animation: scroll 15s infinite linear;
+            font-weight: bold;
+            z-index: -1;
+        }
+        
+        .cyber-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
+            grid-template-rows: repeat(15, 1fr);
+            opacity: 0.1;
+        }
+        
+        .grid-line {
+            position: absolute;
+            background: rgba(0, 243, 255, 0.1);
+        }
+        
+        .horizontal {
+            width: 100%;
+            height: 1px;
+            animation: pulse 3s infinite ease-in-out;
+        }
+        
+        .vertical {
+            width: 1px;
+            height: 100%;
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(0, 243, 255, 0.3);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--cyber-neon);
+            display: flex;
+            align-items: center;
+            text-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--cyber-neon);
+            text-decoration: none;
+            transition: var(--transition);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover {
+            color: var(--cyber-dark);
+            background-color: var(--cyber-neon);
+            box-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title h1 {
+            font-size: 2.5rem;
+            color: var(--cyber-neon);
+            text-shadow: 0 0 10px var(--cyber-neon);
+            margin-bottom: 15px;
+        }
+
+        .page-title p {
+            color: #ccc;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .consultation-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 992px) {
+            .consultation-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .consultation-form {
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            color: var(--cyber-neon);
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--cyber-neon);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--cyber-neon);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 576px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: var(--cyber-neon);
+            color: var(--cyber-dark);
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 0 10px var(--cyber-neon);
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background-color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--cyber-neon);
+        }
+
+        .consultation-info {
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .info-title {
+            font-size: 1.5rem;
+            color: var(--cyber-neon);
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(0, 243, 255, 0.1);
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+
+        .info-item:hover {
+            background: rgba(0, 243, 255, 0.2);
+            transform: translateX(-5px);
+        }
+
+        .info-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+            font-size: 20px;
+            box-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .info-content h4 {
+            margin-bottom: 5px;
+            color: var(--cyber-neon);
+        }
+
+        .info-content p {
+            color: #ccc;
+        }
+
+        .benefits-section {
+            margin-top: 40px;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .benefit-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 243, 255, 0.1);
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+
+        .benefit-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+        }
+
+        .benefit-icon {
+            font-size: 2.5rem;
+            color: var(--cyber-neon);
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .benefit-item h4 {
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .benefit-item p {
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        .consultation-process {
+            margin-top: 50px;
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 40px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .process-title {
+            font-size: 1.8rem;
+            color: var(--cyber-neon);
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .process-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 40px 0;
+        }
+
+        .process-steps::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--cyber-neon);
+            z-index: 1;
+        }
+
+        .process-step {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            flex: 1;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 auto 15px;
+            box-shadow: 0 0 15px var(--cyber-neon);
+        }
+
+        .step-title {
+            color: var(--cyber-neon);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .step-description {
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        .faq-section {
+            margin-top: 50px;
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 40px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .faq-title {
+            font-size: 1.8rem;
+            color: var(--cyber-neon);
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .faq-item {
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+            padding-bottom: 20px;
+        }
+
+        .faq-question {
+            color: var(--cyber-neon);
+            margin-bottom: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .faq-question i {
+            transition: var(--transition);
+        }
+
+        .faq-answer {
+            color: #ccc;
+            padding-right: 20px;
+            display: none;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #aaa;
+            border-top: 1px solid rgba(0, 243, 255, 0.3);
+        }
+
+        /* Animations */
+        @keyframes scroll {
+            0% { transform: translateY(100vh); }
+            100% { transform: translateY(-100vh); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .page-title h1 {
+                font-size: 2rem;
+            }
+            
+            .process-steps {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .process-steps::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cyber Background -->
+    <div class="cyber-bg" id="cyber-bg"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>مدارات للأنظمة المحدودة</span>
+            </div>
+            <div class="nav-links">
+                <a href="index">الرئيسية</a>
+                <a href="pro">من نحن</a>
+                <a href="serves">الخدمات</a>
+                <a href="security">الحماية</a>
+                <a href="contactUs">اتصل بنا</a>
+            </div>
+        </header>
+
+        <div class="page-title">
+            <h1>طلب استشارة مجانية</h1>
+            <p>احصل على استشارة مجانية من خبرائنا لتقييم نظامك الحالي وتقديم حلول مخصصة تناسب احتياجاتك</p>
+        </div>
+
+        <div class="consultation-container">
+            <div class="consultation-form">
+                <h3 class="form-title">املأ نموذج الطلب</h3>
+                <form id="consultationForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">الاسم الكامل *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="company">اسم الشركة</label>
+                            <input type="text" id="company" name="company">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">البريد الإلكتروني *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">رقم الهاتف *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="service">نوع الخدمة المطلوبة *</label>
+                        <select id="service" name="service" required>
+                            <option value="">اختر الخدمة</option>
+                            <option value="security">الأمن السيبراني</option>
+                            <option value="surveillance">أنظمة المراقبة</option>
+                            <option value="network">أمن الشبكات</option>
+                            <option value="communication">أنظمة الاتصالات</option>
+                            <option value="support">الدعم الفني</option>
+                            <option value="other">خدمة أخرى</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">الرسالة *</label>
+                        <textarea id="message" name="message" placeholder="أخبرنا عن احتياجاتك ومتطلباتك..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">إرسال طلب الاستشارة</button>
+                </form>
+            </div>
+
+            <div class="consultation-info">
+                <h3 class="info-title">معلومات التواصل</h3>
+                
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="info-content">
+                        <h4>العنوان</h4>
+                        <p>مكة المكرمة، المملكة العربية السعودية</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="info-content">
+                        <h4>الهاتف</h4>
+                        <p>+966500904343</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="info-content">
+                        <h4>البريد الإلكتروني</h4>
+                        <p>s.mansour@madaratsys.com</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="info-content">
+                        <h4>ساعات العمل</h4>
+                        <p>الأحد - الخميس: 8 صباحاً - 5 مساءً</p>
+                    </div>
+                </div>
+
+                <div class="benefits-section">
+                    <h3 class="info-title">مزايا الاستشارة المجانية</h3>
+                    <div class="benefits-grid">
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h4>تحليل شامل</h4>
+                            <p>تقييم دقيق لنقاط القوة والضعف في نظامك الحالي</p>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <h4>حلول مخصصة</h4>
+                            <p>تصميم حلول تناسب احتياجات عملك بالتحديد</p>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <h4>توفير في التكاليف</h4>
+                            <p>تحديد أفضل الحلول من حيث التكلفة والفعالية</p>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <h4>دعم متكامل</h4>
+                            <p>استشارة من خبراء معتمدين في مجال الأمن السيبراني</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="consultation-process">
+            <h3 class="process-title">كيفية عمل الاستشارة</h3>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">طلب الاستشارة</h3>
+                    <p class="step-description">املأ النموذج وسيتصل بك أحد مستشارينا</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">التقييم الأولي</h3>
+                    <p class="step-description">مناقشة احتياجاتك ومتطلباتك</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">التحليل الشامل</h3>
+                    <p class="step-description">دراسة نظامك الحالي وتحديد المتطلبات</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">التقرير النهائي</h3>
+                    <p class="step-description">تقديم الحلول والتوصيات المناسبة</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-section">
+            <h3 class="faq-title">أسئلة شائعة</h3>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>ما هي مدة الاستشارة المجانية؟</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>عادة ما تستغرق الاستشارة المجانية بين 30 إلى 60 دقيقة، depending on the complexity of your needs.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>هل الاستشارة المجانية ملزمة لأي اتفاق؟</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>لا، الاستشارة المجانية完全不 ملزمة. نحن نقدمها لمساعدتك على فهم احتياجاتك ومساعدتك في اتخاذ القرار المناسب.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>ما هي المعلومات التي أحتاج لتجهيزها للاستشارة؟</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>يفضل أن تكون لديك فكرة عن متطلباتك، حجم عملك، والتحديات التي تواجهها في مجال الأمن السيبراني.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>كم تستغرق مدة الحصول على التقرير؟</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>عادة ما يتم إعداد التقرير خلال 3-5 أيام عمل بعد الانتهاء من جلسة الاستشارة.</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>جميع الحقوق محفوظة &copy; 2023 - مدارات للأنظمة المحدودة</p>
+        </footer>
+    </div>
+
+    <script>
+        // إنشاء خلفية الأرقام الثنائية
+        const cyberBg = document.getElementById('cyber-bg');
+        
+        // إنشاء خطوط الشبكة
+        const grid = document.createElement('div');
+        grid.className = 'cyber-grid';
+        for (let i = 0; i < 16; i++) {
+            const horizontal = document.createElement('div');
+            horizontal.className = 'grid-line horizontal';
+            horizontal.style.top = `${i * 6.66}%`;
+            horizontal.style.animationDelay = `${i * 0.2}s`;
+            grid.appendChild(horizontal);
+            
+            const vertical = document.createElement('div');
+            vertical.className = 'grid-line vertical';
+            vertical.style.left = `${i * 6.66}%`;
+            vertical.style.animationDelay = `${i * 0.2 + 0.5}s`;
+            grid.appendChild(vertical);
+        }
+        cyberBg.appendChild(grid);
+        
+        // إنشاء شفرة ثنائية متساقطة (0 و1)
+        for (let i = 0; i < 40; i++) {
+            const binary = document.createElement('div');
+            binary.className = 'binary-code';
+            binary.textContent = generateBinaryCode(25);
+            binary.style.left = `${Math.random() * 100}%`;
+            binary.style.animationDelay = `${Math.random() * 15}s`;
+            binary.style.animationDuration = `${15 + Math.random() * 15}s`;
+            cyberBg.appendChild(binary);
+        }
+        
+        function generateBinaryCode(length) {
+            let code = '';
+            for (let i = 0; i < length; i++) {
+                code += Math.round(Math.random()) + ' ';
+            }
+            return code;
+        }
+
+        // معالجة إرسال النموذج
+        document.getElementById('consultationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('شكراً لتقديم طلب الاستشارة! سيتصل بك أحد مستشارينا خلال 24 ساعة.');
+            this.reset();
+        });
+
+        // تفعيل الأسئلة الشائعة
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', function() {
+                const faqItem = this.parentElement;
+                faqItem.classList.toggle('active');
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('تم تحميل صفحة طلب الاستشارة');
+        });
+    </script>
+</body>
+</html>
