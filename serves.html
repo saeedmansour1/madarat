@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الخدمات - مدارات للأنظمة المحدودة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #005f73;
+            --secondary-color: #0a9396;
+            --accent-color: #94d2bd;
+            --cyber-blue: #001935;
+            --cyber-dark: #000b1c;
+            --cyber-neon: #00f3ff;
+            --light-color: #f6fafd;
+            --gray-color: #e2e2e2;
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--cyber-dark);
+            color: #fff;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Cyber Background */
+        .cyber-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--cyber-dark) 0%, var(--cyber-blue) 100%);
+            opacity: 0.95;
+        }
+        
+        .binary-code {
+            position: absolute;
+            color: rgba(0, 243, 255, 0.3);
+            font-family: monospace;
+            font-size: 16px;
+            animation: scroll 15s infinite linear;
+            font-weight: bold;
+            z-index: -1;
+        }
+        
+        .cyber-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
+            grid-template-rows: repeat(15, 1fr);
+            opacity: 0.1;
+        }
+        
+        .grid-line {
+            position: absolute;
+            background: rgba(0, 243, 255, 0.1);
+        }
+        
+        .horizontal {
+            width: 100%;
+            height: 1px;
+            animation: pulse 3s infinite ease-in-out;
+        }
+        
+        .vertical {
+            width: 1px;
+            height: 100%;
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(0, 243, 255, 0.3);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--cyber-neon);
+            display: flex;
+            align-items: center;
+            text-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--cyber-neon);
+            text-decoration: none;
+            transition: var(--transition);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover {
+            color: var(--cyber-dark);
+            background-color: var(--cyber-neon);
+            box-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title h1 {
+            font-size: 2.5rem;
+            color: var(--cyber-neon);
+            text-shadow: 0 0 10px var(--cyber-neon);
+            margin-bottom: 15px;
+        }
+
+        .page-title p {
+            color: #ccc;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .services-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .service-card {
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            transition: var(--transition);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+        }
+
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 30px;
+            box-shadow: 0 0 15px var(--cyber-neon);
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            color: var(--cyber-neon);
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .service-description {
+            color: #ccc;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .service-features {
+            margin-bottom: 25px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+
+        .feature-item i {
+            color: var(--cyber-neon);
+            margin-left: 10px;
+        }
+
+        .service-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            color: var(--cyber-neon);
+            border: 2px solid var(--cyber-neon);
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            margin-top: auto;
+        }
+
+        .service-btn:hover {
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+            box-shadow: 0 0 15px var(--cyber-neon);
+        }
+
+        .services-categories {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .category-btn {
+            padding: 10px 20px;
+            background: rgba(0, 243, 255, 0.1);
+            color: var(--cyber-neon);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+            box-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .why-choose {
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 40px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--cyber-neon);
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .feature-box {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 243, 255, 0.1);
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+
+        .feature-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+        }
+
+        .feature-box i {
+            font-size: 2.5rem;
+            color: var(--cyber-neon);
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .feature-box h4 {
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .feature-box p {
+            color: #ccc;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 50px 20px;
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .cta-title {
+            font-size: 2rem;
+            color: var(--cyber-neon);
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .cta-description {
+            color: #ccc;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 12px 25px;
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: var(--transition);
+            box-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .cta-btn:hover {
+            background: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--cyber-neon);
+        }
+
+        .cta-btn.outline {
+            background: transparent;
+            color: var(--cyber-neon);
+            border: 2px solid var(--cyber-neon);
+        }
+
+        .cta-btn.outline:hover {
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #aaa;
+            border-top: 1px solid rgba(0, 243, 255, 0.3);
+        }
+
+        /* Animations */
+        @keyframes scroll {
+            0% { transform: translateY(100vh); }
+            100% { transform: translateY(-100vh); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .page-title h1 {
+                font-size: 2rem;
+            }
+            
+            .services-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cyber Background -->
+    <div class="cyber-bg" id="cyber-bg"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>مدارات للأنظمة المحدودة</span>
+            </div>
+            <div class="nav-links">
+                <a href="index">الرئيسية</a>
+                <a href="pro">من نحن</a>
+                <a href="serves">الخدمات</a>
+                <a href="contactUs">اتصل بنا</a>
+            </div>
+        </header>
+
+        <div class="page-title">
+            <h1>خدماتنا</h1>
+            <p>نقدم مجموعة متكاملة من حلول الأمن السيبراني والأنظمة الذكية لتلبية احتياجاتك وحماية أعمالك</p>
+        </div>
+
+        <div class="services-categories">
+            <button class="category-btn active">جميع الخدمات</button>
+            <button class="category-btn">الأمن السيبراني</button>
+            <button class="category-btn">أنظمة المراقبة</button>
+            <button class="category-btn">الشبكات</button>
+            <button class="category-btn">أنظمة الاتصالات</button>
+        </div>
+
+        <div class="services-container">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="service-title">الحماية السيبرانية</h3>
+                <p class="service-description">نقدم حلول أمنية متكاملة لحماية بياناتك وأنظمتك من الهجمات الإلكترونية والاختراقات باستخدام أحدث تقنيات الذكاء الاصطناعي.</p>
+                <div class="service-features">
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>جدران حماية متقدمة</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>أنظمة كشف الاختراق</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>حماية من البرمجيات الخبيثة</span>
+                    </div>
+                </div>
+                <a href="#" class="service-btn">اطلب الخدمة</a>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <h3 class="service-title">أنظمة المراقبة الذكية</h3>
+                <p class="service-description">نصمم وننفذ أنظمة مراقبة متطورة بدقة عالية وتقنيات التعرف على الوجوه والحركة لتحقيق الأمان الشامل لمؤسستك.</p>
+                <div class="service-features">
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>كاميرات دقة 4K</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>تحليلات فيديو ذكية</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>مراقبة عن بعد</span>
+                    </div>
+                </div>
+                <a href="#" class="service-btn">اطلب الخدمة</a>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-network-wired"></i>
+                </div>
+                <h3 class="service-title">أمن الشبكات</h3>
+                <p class="service-description">نصمم وننفذ شبكات آمنة ومحكمة مع حلول متكاملة للحماية من الاختراق وفقدان البيانات لضمان استمرارية عملك.</p>
+                <div class="service-features">
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>تصميم شبكات آمن</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>أنظمة VPN متطورة</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>مراقبة حركة الشبكة</span>
+                    </div>
+                </div>
+                <a href="#" class="service-btn">اطلب الخدمة</a>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-phone-alt"></i>
+                </div>
+                <h3 class="service-title">أنظمة الاتصالات</h3>
+                <p class="service-description">نقدم حلول اتصالات متكاملة باستخدام أحدث تقنيات VoIP والسنترالات الذكية مع إمكانية التكامل مع أنظمتك الإدارية.</p>
+                <div class="service-features">
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>سنترالات IP</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>أنظمة مؤتمرات مرئية</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>تكامل مع CRM/ERP</span>
+                    </div>
+                </div>
+                <a href="#" class="service-btn">اطلب الخدمة</a>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-satellite-dish"></i>
+                </div>
+                <h3 class="service-title">أنظمة الستلايت</h3>
+                <p class="service-description">نصمم وننفذ شبكات القنوات المركزية باحترافية تامة لضمان توزيع دقيق ومتوازن للإشارة في جميع أرجاء المبنى.</p>
+                <div class="service-features">
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>توزيع إشارة متكامل</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>أجهزة استقبال عالية الجودة</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>صيانة دورية</span>
+                    </div>
+                </div>
+                <a href="#" class="service-btn">اطلب الخدمة</a>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3 class="service-title">الدعم الفني الشامل</h3>
+                <p class="service-description">نوفر دعمًا فنيًا متكاملًا على مدار الساعة مع فرق متخصصة للتدخل السريع وصيانة الأنظمة وتقديم التقارير الدورية.</p>
+                <div class="service-features">
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>دعم فني 24/7</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>صيانة وقائية</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>تقارير أداء دورية</span>
+                    </div>
+                </div>
+                <a href="#" class="service-btn">اطلب الخدمة</a>
+            </div>
+        </div>
+
+        <div class="why-choose">
+            <h2 class="section-title">لماذا تختار خدماتنا؟</h2>
+            <div class="features-grid">
+                <div class="feature-box">
+                    <i class="fas fa-certificate"></i>
+                    <h4>جودة عالية</h4>
+                    <p>نقدم خدمات بأعلى معايير الجودة والكفاءة</p>
+                </div>
+                <div class="feature-box">
+                    <i class="fas fa-clock"></i>
+                    <h4>دعم مستمر</h4>
+                    <p>دعم فني متاح على مدار الساعة طوال الأسبوع</p>
+                </div>
+                <div class="feature-box">
+                    <i class="fas fa-lock"></i>
+                    <h4>أمان كامل</h4>
+                    <p>حلول أمنية متكاملة لحماية بياناتك</p>
+                </div>
+                <div class="feature-box">
+                    <i class="fas fa-cogs"></i>
+                    <h4>تقنيات متطورة</h4>
+                    <p>أحدث التقنيات والبرمجيات في مجالنا</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2 class="cta-title">مستعدون لبدء مشروعك القادم؟</h2>
+            <p class="cta-description">تواصل معنا اليوم للحصول على استشارة مجانية وتصميم حل مخصص يناسب احتياجات عملك بالتحديد.</p>
+            <div class="cta-buttons">
+                <a href="#" class="cta-btn">اطلب استشارة مجانية</a>
+                <a href="#" class="cta-btn outline">اتصل بنا الآن</a>
+            </div>
+        </div>
+
+        <footer>
+            <p>جميع الحقوق محفوظة &copy; 2023 - مدارات للأنظمة المحدودة</p>
+        </footer>
+    </div>
+
+    <script>
+        // إنشاء خلفية الأرقام الثنائية
+        const cyberBg = document.getElementById('cyber-bg');
+        
+        // إنشاء خطوط الشبكة
+        const grid = document.createElement('div');
+        grid.className = 'cyber-grid';
+        for (let i = 0; i < 16; i++) {
+            const horizontal = document.createElement('div');
+            horizontal.className = 'grid-line horizontal';
+            horizontal.style.top = `${i * 6.66}%`;
+            horizontal.style.animationDelay = `${i * 0.2}s`;
+            grid.appendChild(horizontal);
+            
+            const vertical = document.createElement('div');
+            vertical.className = 'grid-line vertical';
+            vertical.style.left = `${i * 6.66}%`;
+            vertical.style.animationDelay = `${i * 0.2 + 0.5}s`;
+            grid.appendChild(vertical);
+        }
+        cyberBg.appendChild(grid);
+        
+        // إنشاء شفرة ثنائية متساقطة (0 و1)
+        for (let i = 0; i < 40; i++) {
+            const binary = document.createElement('div');
+            binary.className = 'binary-code';
+            binary.textContent = generateBinaryCode(25);
+            binary.style.left = `${Math.random() * 100}%`;
+            binary.style.animationDelay = `${Math.random() * 15}s`;
+            binary.style.animationDuration = `${15 + Math.random() * 15}s`;
+            cyberBg.appendChild(binary);
+        }
+        
+        function generateBinaryCode(length) {
+            let code = '';
+            for (let i = 0; i < length; i++) {
+                code += Math.round(Math.random()) + ' ';
+            }
+            return code;
+        }
+
+        // تفعيل أزرار التصنيف
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('تم تحميل صفحة الخدمات');
+        });
+    </script>
+</body>
+</html>
