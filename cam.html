@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>باقات كاميرات المراقبة - مدارات للأنظمة المحدودة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #005f73;
+            --secondary-color: #0a9396;
+            --accent-color: #94d2bd;
+            --cyber-blue: #001935;
+            --cyber-dark: #000b1c;
+            --cyber-neon: #00f3ff;
+            --cyber-green: #39ff14;
+            --cyber-purple: #8a2be2;
+            --light-color: #f6fafd;
+            --gray-color: #e2e2e2;
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--cyber-dark);
+            color: #fff;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Cyber Background */
+        .cyber-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--cyber-dark) 0%, var(--cyber-blue) 100%);
+            opacity: 0.95;
+        }
+        
+        .binary-code {
+            position: absolute;
+            color: rgba(0, 243, 255, 0.3);
+            font-family: monospace;
+            font-size: 16px;
+            animation: scroll 15s infinite linear;
+            font-weight: bold;
+            z-index: -1;
+        }
+        
+        .cyber-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
+            grid-template-rows: repeat(15, 1fr);
+            opacity: 0.1;
+        }
+        
+        .grid-line {
+            position: absolute;
+            background: rgba(0, 243, 255, 0.1);
+        }
+        
+        .horizontal {
+            width: 100%;
+            height: 1px;
+            animation: pulse 3s infinite ease-in-out;
+        }
+        
+        .vertical {
+            width: 1px;
+            height: 100%;
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(0, 243, 255, 0.3);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--cyber-neon);
+            display: flex;
+            align-items: center;
+            text-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--cyber-neon);
+            text-decoration: none;
+            transition: var(--transition);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover {
+            color: var(--cyber-dark);
+            background-color: var(--cyber-neon);
+            box-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title h1 {
+            font-size: 2.5rem;
+            color: var(--cyber-neon);
+            text-shadow: 0 0 10px var(--cyber-neon);
+            margin-bottom: 15px;
+        }
+
+        .page-title p {
+            color: #ccc;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .packages-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .package-card {
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .package-card.popular {
+            border: 2px solid var(--cyber-green);
+            transform: scale(1.03);
+        }
+
+        .package-card.popular::before {
+            content: 'الأكثر طلباً';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--cyber-green);
+            color: var(--cyber-dark);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            z-index: 2;
+        }
+
+        .package-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+        }
+
+        .package-header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .package-title {
+            font-size: 1.8rem;
+            color: var(--cyber-neon);
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .package-description {
+            color: #ccc;
+            font-size: 1rem;
+        }
+
+        .package-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--cyber-green);
+            margin: 20px 0;
+            text-shadow: 0 0 5px var(--cyber-green);
+        }
+
+        .package-price .period {
+            font-size: 1rem;
+            color: #ccc;
+            font-weight: normal;
+        }
+
+        .package-features {
+            margin: 25px 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #ccc;
+        }
+
+        .feature-item i {
+            color: var(--cyber-neon);
+            margin-left: 10px;
+            font-size: 1.2rem;
+        }
+
+        .feature-item.unavailable {
+            opacity: 0.5;
+        }
+
+        .feature-item.unavailable i {
+            color: #ff073a;
+        }
+
+        .package-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 0 10px var(--cyber-neon);
+            margin-top: 20px;
+        }
+
+        .package-btn:hover {
+            background: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--cyber-neon);
+        }
+
+        .comparison-section {
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 40px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--cyber-neon);
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .comparison-table th, 
+        .comparison-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .comparison-table th {
+            background: rgba(0, 243, 255, 0.1);
+            color: var(--cyber-neon);
+            font-weight: 600;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .feature-name {
+            text-align: right;
+            color: #ccc;
+            font-weight: 600;
+        }
+
+        .feature-value {
+            color: #fff;
+        }
+
+        .feature-value i {
+            color: var(--cyber-green);
+            font-size: 1.2rem;
+        }
+
+        .feature-value .unavailable {
+            color: #ff073a;
+        }
+
+        .services-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .service-card {
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 25px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.3);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--cyber-neon);
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            color: var(--cyber-neon);
+            margin-bottom: 15px;
+        }
+
+        .service-description {
+            color: #ccc;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 50px 20px;
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .cta-title {
+            font-size: 2rem;
+            color: var(--cyber-neon);
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .cta-description {
+            color: #ccc;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 12px 25px;
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: var(--transition);
+            box-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .cta-btn:hover {
+            background: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--cyber-neon);
+        }
+
+        .cta-btn.outline {
+            background: transparent;
+            color: var(--cyber-neon);
+            border: 2px solid var(--cyber-neon);
+        }
+
+        .cta-btn.outline:hover {
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #aaa;
+            border-top: 1px solid rgba(0, 243, 255, 0.3);
+        }
+
+        /* Animations */
+        @keyframes scroll {
+            0% { transform: translateY(100vh); }
+            100% { transform: translateY(-100vh); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .page-title h1 {
+                font-size: 2rem;
+            }
+            
+            .packages-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .package-card.popular {
+                transform: scale(1);
+            }
+            
+            .comparison-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cyber Background -->
+    <div class="cyber-bg" id="cyber-bg"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-camera"></i>
+                <span>مدارات للأنظمة المحدودة</span>
+            </div>
+            <div class="nav-links">
+                <a href="index">الرئيسية</a>
+                <a href="serves">الخدمات</a>
+                <a href="security">الحماية</a>
+                <a href="contactUs">اتصل بنا</a>
+            </div>
+        </header>
+
+        <div class="page-title">
+            <h1>باقات كاميرات المراقبة</h1>
+            <p>اختر الباقة المناسبة لاحتياجاتك من أنظمة المراقبة المتكاملة والعالية الجودة</p>
+        </div>
+
+        <div class="packages-container">
+            <!-- باقة 4 كاميرات -->
+            <div class="package-card">
+                <div class="package-header">
+                    <h3 class="package-title">باقة 4 كاميرات</h3>
+                    <p class="package-description">نظام مراقبة متكامل للمنازل والمحلات الصغيرة</p>
+                    <div class="package-price">2,599 <span class="period">ريال/شامل التركيب</span></div>
+                </div>
+                
+                <div class="package-features">
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>4 كاميرات  بدقة 6MP</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>جهاز تسجيل NVR 4 قنوات</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>هارد ديسك 4 تيرابايت</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>تركيب احترافي شامل</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>ضمان لمدة عام</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>برنامج مشاهدة عن بعد</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-times-circle"></i>
+                        <span>كاميرات ليلية ملونة</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-times-circle"></i>
+                        <span>تحليل ذكي للحركة</span>
+                    </div>
+                </div>
+                
+                 <button class="package-btn" onclick="window.location.href='pay3';">
+  اختر الباقة
+</button>
+            </div>
+
+            <!-- باقة 8 كاميرات (الأكثر طلباً) -->
+            <div class="package-card popular">
+                <div class="package-header">
+                    <h3 class="package-title">باقة 8 كاميرات</h3>
+                    <p class="package-description">نظام متكامل للمنازل الكبيرة والمتاجر والمكاتب</p>
+                    <div class="package-price">4,299 <span class="period">ريال/شامل التركيب</span></div>
+                </div>
+                
+                <div class="package-features">
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>8 كاميرات  بدقة 6MP</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>جهاز تسجيل NVR 8 قنوات</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>هارد ديسك 8 تيرابايت</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>تركيب احترافي شامل</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>ضمان لمدة عام</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>برنامج مشاهدة عن بعد</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>كاميرات ليلية ملونة</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>تحليل ذكي للحركة</span>
+                    </div>
+                </div>
+                
+                 <button class="package-btn" onclick="window.location.href='pay4';">
+  اختر الباقة
+</button>
+            </div>
+
+            <!-- باقة 16 كاميرا -->
+            <div class="package-card">
+                <div class="package-header">
+                    <h3 class="package-title">باقة 16 كاميرا</h3>
+                    <p class="package-description">نظام متقدم للمجمعات السكنية والشركات الكبيرة</p>
+                    <div class="package-price">8,599 <span class="period">ريال/شامل التركيب</span></div>
+                </div>
+                
+                <div class="package-features">
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>16 كاميرا بدقة 6MP</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>جهاز تسجيل NVR 16 قنوات</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>هارد ديسك 10 تيرابايت</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>تركيب احترافي متكامل</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>ضمان لمدة عام</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>برنامج متقدم للمراقبة</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>كاميرات ليلية ملونة</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>تحليل ذكي متقدم للحركة</span>
+                    </div>
+                </div>
+                
+                 <button class="package-btn" onclick="window.location.href='pay5';">
+  اختر الباقة
+</button>
+            </div>
+        </div>
+
+        <div class="comparison-section">
+            <h2 class="section-title">مقارنة بين الباقات</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>الميزة</th>
+                        <th>باقة 4 كاميرات</th>
+                        <th>باقة 8 كاميرات</th>
+                        <th>باقة 16 كاميرا</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="feature-name">عدد الكاميرات</td>
+                        <td class="feature-value">4</td>
+                        <td class="feature-value">8</td>
+                        <td class="feature-value">16</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">دقة الكاميرات</td>
+                        <td class="feature-value">6MP</td>
+                        <td class="feature-value">6MP</td>
+                        <td class="feature-value">6MP</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">سعة التخزين</td>
+                        <td class="feature-value">4TB</td>
+                        <td class="feature-value">8TB</td>
+                        <td class="feature-value">10TB</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">مدة التسجيل</td>
+                        <td class="feature-value">اكثر من 31  يوم</td>
+                        <td class="feature-value">اكثر من 31 يوم</td>
+                        <td class="feature-value">أكثر من 31 يوم</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">الرؤية الليلية</td>
+                        <td class="feature-value"><i class="fas fa-check"></i></td>
+                        <td class="feature-value"><i class="fas fa-check"></i></td>
+                        <td class="feature-value"><i class="fas fa-check"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">الرؤية الليلية الملونة</td>
+                        <td class="feature-value"><i class="fas fa-check"></i></td>
+                        <td class="feature-value"><i class="fas fa-check"></i></td>
+                        <td class="feature-value"><i class="fas fa-check"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">التحليل الذكي</td>
+                        <td class="feature-value"><i class="fas fa-check"></i></td>
+                        <td class="feature-value"><i class="fas fa-check"></i></td>
+                        <td class="feature-value"><i class="fas fa-check"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">المشاهدة عن بعد</td>
+                        <td class="feature-value"><i class="fas fa-check"></i></td>
+                        <td class="feature-value"><i class="fas fa-check"></i></td>
+                        <td class="feature-value"><i class="fas fa-check"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">مدة الضمان</td>
+                        <td class="feature-value">12 شهر</td>
+                        <td class="feature-value">12 شهر</td>
+                        <td class="feature-value">12 شهر</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">الصيانة الدورية</td>
+                        <td class="feature-value"><i class="fas fa-times unavailable"></i></td>
+                        <td class="feature-value"><i class="fas fa-check"></i></td>
+                        <td class="feature-value"><i class="fas fa-check"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="services-section">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <h3 class="service-title">خدمات التركيب</h3>
+                <p class="service-description">نقدم خدمات تركيب احترافية بواسطة فنيين متخصصين مع استخدام أحدث التقنيات والأدوات</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3 class="service-title">الدعم الفني</h3>
+                <p class="service-description">دعم فني على مدار الساعة طوال أيام الأسبوع لحل أي مشكلة تواجهك في النظام</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="service-title">الصيانة الدورية</h3>
+                <p class="service-description">خدمات صيانة دورية لضمان استمرارية عمل النظام وكفاءته على المدى الطويل</p>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2 class="cta-title">هل تحتاج إلى نظام مراقبة مخصص؟</h2>
+            <p class="cta-description">تواصل معنا اليوم للحصول على استشارة مجانية وتصميم نظام مراقبة يناسب احتياجاتك الخاصة</p>
+            <div class="cta-buttons">
+                <a href="contactUs" class="cta-btn">اطلب استشارة مجانية</a>
+                <a href="tel:+966500904343" class="cta-btn outline">اتصل بنا الآن</a>
+            </div>
+        </div>
+
+        <footer>
+            <p>جميع الحقوق محفوظة &copy; 2023 - مدارات للأنظمة المحدودة</p>
+        </footer>
+    </div>
+
+    <script>
+        // إنشاء خلفية الأرقام الثنائية
+        const cyberBg = document.getElementById('cyber-bg');
+        
+        // إنشاء خطوط الشبكة
+        const grid = document.createElement('div');
+        grid.className = 'cyber-grid';
+        for (let i = 0; i < 16; i++) {
+            const horizontal = document.createElement('div');
+            horizontal.className = 'grid-line horizontal';
+            horizontal.style.top = `${i * 6.66}%`;
+            horizontal.style.animationDelay = `${i * 0.2}s`;
+            grid.appendChild(horizontal);
+            
+            const vertical = document.createElement('div');
+            vertical.className = 'grid-line vertical';
+            vertical.style.left = `${i * 6.66}%`;
+            vertical.style.animationDelay = `${i * 0.2 + 0.5}s`;
+            grid.appendChild(vertical);
+        }
+        cyberBg.appendChild(grid);
+        
+        // إنشاء شفرة ثنائية متساقطة (0 و1)
+        for (let i = 0; i < 40; i++) {
+            const binary = document.createElement('div');
+            binary.className = 'binary-code';
+            binary.textContent = generateBinaryCode(25);
+            binary.style.left = `${Math.random() * 100}%`;
+            binary.style.animationDelay = `${Math.random() * 15}s`;
+            binary.style.animationDuration = `${15 + Math.random() * 15}s`;
+            cyberBg.appendChild(binary);
+        }
+        
+        function generateBinaryCode(length) {
+            let code = '';
+            for (let i = 0; i < length; i++) {
+                code += Math.round(Math.random()) + ' ';
+            }
+            return code;
+        }
+
+        // تفعيل أزرار اختيار الباقات
+        const packageButtons = document.querySelectorAll('.package-btn');
+        packageButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const packageName = this.closest('.package-card').querySelector('.package-title').textContent;
+                alert(`شكراً لاختيارك ${packageName}. تاكد من معلومات الدفع!`);
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('تم تحميل صفحة باقات الكاميرات');
+        });
+    </script>
+</body>
+</html>

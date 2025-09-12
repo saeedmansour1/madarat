@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام الدفع - مدارات للأنظمة المحدودة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #005f73;
+            --secondary-color: #0a9396;
+            --accent-color: #94d2bd;
+            --cyber-blue: #001935;
+            --cyber-dark: #000b1c;
+            --cyber-neon: #00f3ff;
+            --cyber-green: #39ff14;
+            --cyber-purple: #8a2be2;
+            --light-color: #f6fafd;
+            --gray-color: #e2e2e2;
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--cyber-dark);
+            color: #fff;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Cyber Background */
+        .cyber-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--cyber-dark) 0%, var(--cyber-blue) 100%);
+            opacity: 0.95;
+        }
+        
+        .binary-code {
+            position: absolute;
+            color: rgba(0, 243, 255, 0.3);
+            font-family: monospace;
+            font-size: 16px;
+            animation: scroll 15s infinite linear;
+            font-weight: bold;
+            z-index: -1;
+        }
+        
+        .cyber-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
+            grid-template-rows: repeat(15, 1fr);
+            opacity: 0.1;
+        }
+        
+        .grid-line {
+            position: absolute;
+            background: rgba(0, 243, 255, 0.1);
+        }
+        
+        .horizontal {
+            width: 100%;
+            height: 1px;
+            animation: pulse 3s infinite ease-in-out;
+        }
+        
+        .vertical {
+            width: 1px;
+            height: 100%;
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(0, 243, 255, 0.3);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--cyber-neon);
+            display: flex;
+            align-items: center;
+            text-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--cyber-neon);
+            text-decoration: none;
+            transition: var(--transition);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover {
+            color: var(--cyber-dark);
+            background-color: var(--cyber-neon);
+            box-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title h1 {
+            font-size: 2.5rem;
+            color: var(--cyber-neon);
+            text-shadow: 0 0 10px var(--cyber-neon);
+            margin-bottom: 15px;
+        }
+
+        .page-title p {
+            color: #ccc;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .payment-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 992px) {
+            .payment-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .order-summary {
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .summary-title {
+            font-size: 1.5rem;
+            color: var(--cyber-neon);
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .order-details {
+            margin-bottom: 25px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-label {
+            color: #ccc;
+        }
+
+        .item-value {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--cyber-green);
+            padding-top: 15px;
+            border-top: 2px solid rgba(0, 243, 255, 0.3);
+            text-shadow: 0 0 5px var(--cyber-green);
+        }
+
+        .payment-methods {
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .methods-title {
+            font-size: 1.5rem;
+            color: var(--cyber-neon);
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .method-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .method-tab {
+            flex: 1;
+            padding: 12px;
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .method-tab.active {
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+            font-weight: 700;
+            box-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .method-content {
+            display: none;
+        }
+
+        .method-content.active {
+            display: block;
+        }
+
+        .bank-info {
+            background: rgba(0, 243, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .bank-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .bank-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .bank-label {
+            color: #ccc;
+            font-weight: 600;
+        }
+
+        .bank-value {
+            color: #fff;
+            font-family: monospace;
+        }
+
+        .copy-btn {
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            margin-right: 10px;
+        }
+
+        .copy-btn:hover {
+            background: #fff;
+            box-shadow: 0 0 8px var(--cyber-neon);
+        }
+
+        .instructions {
+            background: rgba(57, 255, 20, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--cyber-green);
+        }
+
+        .instructions-title {
+            color: var(--cyber-green);
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px var(--cyber-green);
+        }
+
+        .instructions-list {
+            list-style-type: none;
+        }
+
+        .instructions-list li {
+            margin-bottom: 10px;
+            color: #ccc;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .instructions-list li i {
+            color: var(--cyber-green);
+            margin-left: 10px;
+            margin-top: 5px;
+        }
+
+        .upload-section {
+            margin-top: 25px;
+        }
+
+        .upload-title {
+            color: var(--cyber-neon);
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .upload-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: var(--cyber-purple);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: var(--transition);
+            text-align: center;
+            margin-bottom: 15px;
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+        }
+
+        .upload-btn:hover {
+            background: #9b4dff;
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.7);
+        }
+
+        .card-form {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--cyber-neon);
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--cyber-neon);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: var(--cyber-green);
+            color: var(--cyber-dark);
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 0 10px var(--cyber-green);
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #6aff46;
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--cyber-green);
+        }
+
+        .secure-note {
+            text-align: center;
+            color: #ccc;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .secure-note i {
+            color: var(--cyber-green);
+            margin-left: 5px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #aaa;
+            border-top: 1px solid rgba(0, 243, 255, 0.3);
+        }
+
+        /* Animations */
+        @keyframes scroll {
+            0% { transform: translateY(100vh); }
+            100% { transform: translateY(-100vh); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .page-title h1 {
+                font-size: 2rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cyber Background -->
+    <div class="cyber-bg" id="cyber-bg"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>مدارات للأنظمة المحدودة</span>
+            </div>
+            <div class="nav-links">
+               <a href="index">الرئيسية</a>
+                <a href="pro">من نحن</a>
+                <a href="serves">الخدمات</a>
+                <a href="security">الحماية</a>
+                <a href="contactUs">اتصل بنا</a>
+            </div>
+        </header>
+
+        <div class="page-title">
+            <h1>نظام الدفع الآمن</h1>
+            <p>اختر طريقة الدفع المناسبة وأكمل عملية الدفع بشكل آمن ومحمي</p>
+        </div>
+
+        <div class="payment-container">
+            <div class="order-summary">
+                <h3 class="summary-title">تفاصيل الطلب</h3>
+                <div class="order-details">
+                    <div class="order-item">
+                        <span class="item-label">رقم الطلب:</span>
+                        <span class="item-value">#ORD-7688</span>
+                    </div>
+                    <div class="order-item">
+                        <span class="item-label">الخدمة:</span>
+                        <span class="item-value">باقة 16 كاميرات</span>
+                    </div>
+                    <div class="order-item">
+                        <span class="item-label">المدة:</span>
+                        <span class="item-value">شهر واحد</span>
+                    </div>
+                    <div class="order-item">
+                        <span class="item-label">السعر:</span>
+                        <span class="item-value">8,599 ريال</span>
+                    </div>
+                    <div class="order-item">
+                        <span class="item-label">الضريبة:</span>
+                        <span class="item-value">0 ريال</span>
+                    </div>
+                </div>
+                <div class="total">
+                    <span>المبلغ الإجمالي:</span>
+                    <span>8,599 ريال سعودي</span>
+                </div>
+            </div>
+
+            <div class="payment-methods">
+                <h3 class="methods-title">طرق الدفع المتاحة</h3>
+                
+                <div class="method-tabs">
+                    <div class="method-tab active" data-method="bank">التحويل البنكي</div>
+                    <div class="method-tab" data-method="card">بطاقة ائتمان</div>
+                </div>
+
+                <!-- التحويل البنكي -->
+                <div class="method-content active" id="bank-method">
+                    <div class="bank-info">
+                        <div class="bank-item">
+                            <span class="bank-label">اسم البنك:</span>
+                            <span class="bank-value">البنك الأهلي السعودي</span>
+                        </div>
+                        <div class="bank-item">
+                            <span class="bank-label">اسم المستفيد:</span>
+                            <span class="bank-value">مدارات للأنظمة المحدودة</span>
+                        </div>
+                        <div class="bank-item">
+                            <span class="bank-label">رقم الحساب:</span>
+                            <span class="bank-value">SA98 8000 0123 4567 8901 2345</span>
+                            <button class="copy-btn" data-text="SA98 8000 0123 4567 8901 2345">نسخ</button>
+                        </div>
+                        <div class="bank-item">
+                            <span class="bank-label">رقم الآيبان:</span>
+                            <span class="bank-value">SA03 8000 0000 6080 1016 7519</span>
+                            <button class="copy-btn" data-text="SA03 8000 0000 6080 1016 7519">نسخ</button>
+                        </div>
+                    </div>
+
+                    <div class="instructions">
+                        <h4 class="instructions-title">تعليمات التحويل</h4>
+                        <ul class="instructions-list">
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>قم بإجراء التحويل البنكي باستخدام المعلومات أعلاه</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>احتفظ بصورة من إيصال التحويل</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>سيتم تفعيل الخدمة خلال 24 ساعة من تأكيد التحويل</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>للاستفسار، اتصل على: +966500904343</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="upload-section">
+                        <h4 class="upload-title">رفع إيصال التحويل (اختياري)</h4>
+                        <p style="color: #ccc; margin-bottom: 15px;">لتسريع عملية التفعيل، يمكنك رفع صورة إيصال التحويل</p>
+                        <button class="upload-btn">
+                            <i class="fas fa-upload"></i> رفع إيصال التحويل
+                        </button>
+                    </div>
+
+                    <button class="submit-btn" id="confirm-bank">
+                        <i class="fas fa-check-circle"></i> تأكيد إتمام التحويل
+                    </button>
+                </div>
+
+                <!-- بطاقة الائتمان -->
+                <div class="method-content" id="card-method">
+                    <div class="card-form">
+                        <div class="form-group">
+                            <label for="card-number">رقم البطاقة</label>
+                            <input type="text" id="card-number" placeholder="1234 5678 9012 3456" maxlength="19">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="expiry-date">تاريخ الانتهاء</label>
+                                <input type="text" id="expiry-date" placeholder="MM/YY" maxlength="5">
+                            </div>
+                            <div class="form-group">
+                                <label for="cvv">CVV</label>
+                                <input type="text" id="cvv" placeholder="123" maxlength="3">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="card-name">اسم صاحب البطاقة</label>
+                            <input type="text" id="card-name" placeholder="كما هو مدون على البطاقة">
+                        </div>
+
+                        <button class="submit-btn">
+                            <i class="fas fa-lock"></i> دفع الآن
+                        </button>
+
+                        <p class="secure-note">
+                            <i class="fas fa-shield-alt"></i> عملية الدفع مشفرة وآمنة بنسبة 100%
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>جميع الحقوق محفوظة &copy; 2023 - مدارات للأنظمة المحدودة</p>
+        </footer>
+    </div>
+
+    <script>
+        // إنشاء خلفية الأرقام الثنائية
+        const cyberBg = document.getElementById('cyber-bg');
+        
+        // إنشاء خطوط الشبكة
+        const grid = document.createElement('div');
+        grid.className = 'cyber-grid';
+        for (let i = 0; i < 16; i++) {
+            const horizontal = document.createElement('div');
+            horizontal.className = 'grid-line horizontal';
+            horizontal.style.top = `${i * 6.66}%`;
+            horizontal.style.animationDelay = `${i * 0.2}s`;
+            grid.appendChild(horizontal);
+            
+            const vertical = document.createElement('div');
+            vertical.className = 'grid-line vertical';
+            vertical.style.left = `${i * 6.66}%`;
+            vertical.style.animationDelay = `${i * 0.2 + 0.5}s`;
+            grid.appendChild(vertical);
+        }
+        cyberBg.appendChild(grid);
+        
+        // إنشاء شفرة ثنائية متساقطة (0 و1)
+        for (let i = 0; i < 40; i++) {
+            const binary = document.createElement('div');
+            binary.className = 'binary-code';
+            binary.textContent = generateBinaryCode(25);
+            binary.style.left = `${Math.random() * 100}%`;
+            binary.style.animationDelay = `${Math.random() * 15}s`;
+            binary.style.animationDuration = `${15 + Math.random() * 15}s`;
+            cyberBg.appendChild(binary);
+        }
+        
+        function generateBinaryCode(length) {
+            let code = '';
+            for (let i = 0; i < length; i++) {
+                code += Math.round(Math.random()) + ' ';
+            }
+            return code;
+        }
+
+        // تبديل طرق الدفع
+        const methodTabs = document.querySelectorAll('.method-tab');
+        methodTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const method = this.getAttribute('data-method');
+                
+                // إلغاء تنشيط جميع الألسنة
+                methodTabs.forEach(t => t.classList.remove('active'));
+                // تنشيط اللسان الحالي
+                this.classList.add('active');
+                
+                // إخفاء جميع محتويات الطرق
+                document.querySelectorAll('.method-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                // إظهار المحتوى المحدد
+                document.getElementById(`${method}-method`).classList.add('active');
+            });
+        });
+
+        // نسخ معلومات البنك
+        const copyButtons = document.querySelectorAll('.copy-btn');
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const textToCopy = this.getAttribute('data-text');
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    const originalText = this.textContent;
+                    this.textContent = 'تم النسخ!';
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                    }, 2000);
+                });
+            });
+        });
+
+        // تأكيد التحويل البنكي
+        document.getElementById('confirm-bank').addEventListener('click', function() {
+            alert('شكراً لك! تم تسجيل تأكيدك للتحويل البنكي. سيتم تفعيل الخدمة خلال 24 ساعة من استلام التحويل.');
+        });
+
+        // معالجة إدخال رقم البطاقة
+        document.getElementById('card-number').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0) {
+                value = value.match(new RegExp('.{1,4}', 'g')).join(' ');
+            }
+            e.target.value = value;
+        });
+
+        // معالجة إدخال تاريخ الانتهاء
+        document.getElementById('expiry-date').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            e.target.value = value;
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('تم تحميل صفحة الدفع');
+        });
+    </script>
+</body>
+</html>
