@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طلب خدمة أنظمة الاتصالات - مدارات للأنظمة المحدودة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #005f73;
+            --secondary-color: #0a9396;
+            --accent-color: #94d2bd;
+            --cyber-blue: #001935;
+            --cyber-dark: #000b1c;
+            --cyber-neon: #00f3ff;
+            --cyber-green: #39ff14;
+            --cyber-purple: #8a2be2;
+            --light-color: #f6fafd;
+            --gray-color: #e2e2e2;
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--cyber-dark);
+            color: #fff;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Cyber Background */
+        .cyber-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--cyber-dark) 0%, var(--cyber-blue) 100%);
+            opacity: 0.95;
+        }
+        
+        .binary-code {
+            position: absolute;
+            color: rgba(0, 243, 255, 0.3);
+            font-family: monospace;
+            font-size: 16px;
+            animation: scroll 15s infinite linear;
+            font-weight: bold;
+            z-index: -1;
+        }
+        
+        .cyber-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
+            grid-template-rows: repeat(15, 1fr);
+            opacity: 0.1;
+        }
+        
+        .grid-line {
+            position: absolute;
+            background: rgba(0, 243, 255, 0.1);
+        }
+        
+        .horizontal {
+            width: 100%;
+            height: 1px;
+            animation: pulse 3s infinite ease-in-out;
+        }
+        
+        .vertical {
+            width: 1px;
+            height: 100%;
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(0, 243, 255, 0.3);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--cyber-neon);
+            display: flex;
+            align-items: center;
+            text-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--cyber-neon);
+            text-decoration: none;
+            transition: var(--transition);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover {
+            color: var(--cyber-dark);
+            background-color: var(--cyber-neon);
+            box-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title h1 {
+            font-size: 2.5rem;
+            color: var(--cyber-neon);
+            text-shadow: 0 0 10px var(--cyber-neon);
+            margin-bottom: 15px;
+        }
+
+        .page-title p {
+            color: #ccc;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .services-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        @media (max-width: 992px) {
+            .services-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .services-list {
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .services-title {
+            font-size: 1.5rem;
+            color: var(--cyber-neon);
+            margin-bottom: 25px;
+            text-align: center;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .service-category {
+            margin-bottom: 30px;
+        }
+
+        .category-title {
+            font-size: 1.3rem;
+            color: var(--cyber-green);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+            text-shadow: 0 0 5px var(--cyber-green);
+        }
+
+        .service-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: rgba(0, 243, 255, 0.1);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .service-item:hover {
+            background: rgba(0, 243, 255, 0.2);
+            transform: translateX(-5px);
+        }
+
+        .service-item.active {
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+        }
+
+        .service-item.active .service-icon {
+            color: var(--cyber-dark);
+        }
+
+        .service-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 243, 255, 0.2);
+            color: var(--cyber-neon);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+            font-size: 18px;
+            transition: var(--transition);
+        }
+
+        .service-name {
+            font-weight: 600;
+        }
+
+        .service-description {
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-top: 5px;
+        }
+
+        .service-item.active .service-description {
+            color: var(--cyber-dark);
+        }
+
+        .order-form {
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            color: var(--cyber-neon);
+            margin-bottom: 25px;
+            text-align: center;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--cyber-neon);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--cyber-neon);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 576px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .selected-services {
+            background: rgba(57, 255, 20, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 4px solid var(--cyber-green);
+        }
+
+        .selected-title {
+            color: var(--cyber-green);
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px var(--cyber-green);
+        }
+
+        .selected-list {
+            list-style-type: none;
+        }
+
+        .selected-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(57, 255, 20, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .selected-list li:last-child {
+            border-bottom: none;
+        }
+
+        .remove-btn {
+            background: rgba(255, 7, 58, 0.2);
+            color: #ff073a;
+            border: none;
+            padding: 3px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: var(--transition);
+        }
+
+        .remove-btn:hover {
+            background: rgba(255, 7, 58, 0.3);
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 0 10px var(--cyber-neon);
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--cyber-neon);
+        }
+
+        .benefits-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .benefit-card {
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 25px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.3);
+        }
+
+        .benefit-icon {
+            font-size: 2.5rem;
+            color: var(--cyber-neon);
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .benefit-title {
+            font-size: 1.3rem;
+            color: var(--cyber-neon);
+            margin-bottom: 15px;
+        }
+
+        .benefit-description {
+            color: #ccc;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 50px 20px;
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .cta-title {
+            font-size: 2rem;
+            color: var(--cyber-neon);
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .cta-description {
+            color: #ccc;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 12px 25px;
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: var(--transition);
+            box-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .cta-btn:hover {
+            background: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--cyber-neon);
+        }
+
+        .cta-btn.outline {
+            background: transparent;
+            color: var(--cyber-neon);
+            border: 2px solid var(--cyber-neon);
+        }
+
+        .cta-btn.outline:hover {
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #aaa;
+            border-top: 1px solid rgba(0, 243, 255, 0.3);
+        }
+
+        /* Animations */
+        @keyframes scroll {
+            0% { transform: translateY(100vh); }
+            100% { transform: translateY(-100vh); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .page-title h1 {
+                font-size: 2rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cyber Background -->
+    <div class="cyber-bg" id="cyber-bg"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-phone-alt"></i>
+                <span>مدارات للأنظمة المحدودة</span>
+            </div>
+            <div class="nav-links">
+                <a href="index">الرئيسية</a>
+                <a href="serves">الخدمات</a>
+                <a href="security">الحماية</a>
+                <a href="contactUs">اتصل بنا</a>
+            </div>
+        </header>
+
+        <div class="page-title">
+            <h1>طلب خدمة أنظمة الاتصالات</h1>
+            <p>اختر من خدماتنا المتكاملة لأنظمة الاتصالات واحصل على استشارة مجانية من خبرائنا</p>
+        </div>
+
+        <div class="services-container">
+            <div class="services-list">
+                <h3 class="services-title">خدمات أنظمة الاتصالات</h3>
+                
+                <div class="service-category">
+                    <h4 class="category-title">أنظمة السنترالات</h4>
+                    
+                    <div class="service-item" data-service="سنترال 8 خطوط">
+                        <div class="service-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <div class="service-name">سنترال 8 خطوط</div>
+                            <div class="service-description">نظام اتصال داخلي وخارجي متكامل</div>
+                        </div>
+                    </div>
+                    
+                    <div class="service-item" data-service="سنترال 16 خطوط">
+                        <div class="service-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <div class="service-name">سنترال 16 خطوط</div>
+                            <div class="service-description">نظام اتصال متقدم للمؤسسات المتوسطة</div>
+                        </div>
+                    </div>
+                    
+                    <div class="service-item" data-service="سنترال 32 خطوط">
+                        <div class="service-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <div class="service-name">سنترال 32 خطوط</div>
+                            <div class="service-description">نظام اتصال متكامل للشركات الكبيرة</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="service-category">
+                    <h4 class="category-title">أنظمة VoIP</h4>
+                    
+                    <div class="service-item" data-service="نظام VoIP أساسي">
+                        <div class="service-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <div>
+                            <div class="service-name">نظام VoIP أساسي</div>
+                            <div class="service-description">نظام اتصال عبر الإنترنت للمكاتب الصغيرة</div>
+                        </div>
+                    </div>
+                    
+                    <div class="service-item" data-service="نظام VoIP متقدم">
+                        <div class="service-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <div>
+                            <div class="service-name">نظام VoIP متقدم</div>
+                            <div class="service-description">نظام اتصال متقدم مع ميزات متكاملة</div>
+                        </div>
+                    </div>
+                    
+                    <div class="service-item" data-service="نظام VoIP Enterprise">
+                        <div class="service-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <div>
+                            <div class="service-name">نظام VoIP Enterprise</div>
+                            <div class="service-description">نظام اتصال متكامل للشركات الكبيرة</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="service-category">
+                    <h4 class="category-title">أنظمة المؤتمرات</h4>
+                    
+                    <div class="service-item" data-service="نظام مؤتمرات صوتي">
+                        <div class="service-icon">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <div>
+                            <div class="service-name">نظام مؤتمرات صوتي</div>
+                            <div class="service-description">نظام مؤتمرات صوتي عالي الجودة</div>
+                        </div>
+                    </div>
+                    
+                    <div class="service-item" data-service="نظام مؤتمرات مرئي">
+                        <div class="service-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <div>
+                            <div class="service-name">نظام مؤتمرات مرئي</div>
+                            <div class="service-description">نظام مؤتمرات مرئي متكامل</div>
+                        </div>
+                    </div>
+                    
+                    <div class="service-item" data-service="نظام مؤتمرات متكامل">
+                        <div class="service-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <div>
+                            <div class="service-name">نظام مؤتمرات متكامل</div>
+                            <div class="service-description">نظام مؤتمرات متكامل صوتي ومرئي</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="service-category">
+                    <h4 class="category-title">خدمات الصيانة والدعم</h4>
+                    
+                    <div class="service-item" data-service="صيانة وقائية">
+                        <div class="service-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <div>
+                            <div class="service-name">صيانة وقائية</div>
+                            <div class="service-description">صيانة دورية لأنظمة الاتصالات</div>
+                        </div>
+                    </div>
+                    
+                    <div class="service-item" data-service="دعم فني">
+                        <div class="service-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <div>
+                            <div class="service-name">دعم فني</div>
+                            <div class="service-description">دعم فني على مدار الساعة</div>
+                        </div>
+                    </div>
+                    
+                    <div class="service-item" data-service="ترقية الأنظمة">
+                        <div class="service-icon">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
+                        <div>
+                            <div class="service-name">ترقية الأنظمة</div>
+                            <div class="service-description">ترقية أنظمة الاتصالات إلى أحدث التقنيات</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-form">
+                <h3 class="form-title">طلب الخدمة</h3>
+                
+                <div class="selected-services">
+                    <h4 class="selected-title">الخدمات المختارة</h4>
+                    <ul class="selected-list" id="selectedServices">
+                        <li>لم يتم اختيار خدمات بعد</li>
+                    </ul>
+                </div>
+                
+                <form id="communicationForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">الاسم الكامل *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="company">اسم الشركة</label>
+                            <input type="text" id="company" name="company">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">البريد الإلكتروني *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">رقم الهاتف *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">العنوان</label>
+                        <input type="text" id="address" name="address">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="current-system">نظام الاتصالات الحالي (إن وجد)</label>
+                        <select id="current-system" name="current-system">
+                            <option value="">اختر النظام الحالي</option>
+                            <option value="none">لا يوجد نظام حالي</option>
+                            <option value="analog">سنترال تناظري</option>
+                            <option value="digital">سنترال رقمي</option>
+                            <option value="voip">نظام VoIP</option>
+                            <option value="other">نظام آخر</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="employees">عدد الموظفين</label>
+                        <select id="employees" name="employees">
+                            <option value="">اختر عدد الموظفين</option>
+                            <option value="1-10">1-10 موظفين</option>
+                            <option value="11-50">11-50 موظف</option>
+                            <option value="51-100">51-100 موظف</option>
+                            <option value="100+">أكثر من 100 موظف</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">ملاحظات إضافية</label>
+                        <textarea id="message" name="message" placeholder="أخبرنا عن احتياجاتك الخاصة بأنظمة الاتصالات..."></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">إرسال طلب الخدمة</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="benefits-section">
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3 class="benefit-title">تركيب سريع</h3>
+                <p class="benefit-description">نقوم بتركيب أنظمة الاتصالات خلال وقت قياسي دون تعطيل سير العمل</p>
+            </div>
+
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h3 class="benefit-title">دعم فني متكامل</h3>
+                <p class="benefit-description">فريق دعم فني متاح على مدار الساعة لحل أي مشكلة تواجهك</p>
+            </div>
+
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <h3 class="benefit-title">ضمان شامل</h3>
+                <p class="benefit-description">جميع أنظمتنا تأتي بضمان شامل يغطي الأعطال والصيانة</p>
+            </div>
+
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-plug"></i>
+                </div>
+                <h3 class="benefit-title">تكامل مع الأنظمة</h3>
+                <p class="benefit-description">أنظمة اتصالات قابلة للتكامل مع أنظمة CRM وERP الخاصة بك</p>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2 class="cta-title">هل تحتاج إلى استشارة مجانية؟</h2>
+            <p class="cta-description">اتصل بنا اليوم للحصول على استشارة مجانية وتقييم احتياجاتك من أنظمة الاتصالات</p>
+            <div class="cta-buttons">
+                <a href="contactUs" class="cta-btn">اطلب استشارة مجانية</a>
+                <a href="tel:+966500904343" class="cta-btn outline">اتصل بنا الآن</a>
+            </div>
+        </div>
+
+        <footer>
+            <p>جميع الحقوق محفوظة &copy; 2023 - مدارات للأنظمة المحدودة</p>
+        </footer>
+    </div>
+
+    <script>
+        // إنشاء خلفية الأرقام الثنائية
+        const cyberBg = document.getElementById('cyber-bg');
+        
+        // إنشاء خطوط الشبكة
+        const grid = document.createElement('div');
+        grid.className = 'cyber-grid';
+        for (let i = 0; i < 16; i++) {
+            const horizontal = document.createElement('div');
+            horizontal.className = 'grid-line horizontal';
+            horizontal.style.top = `${i * 6.66}%`;
+            horizontal.style.animationDelay = `${i * 0.2}s`;
+            grid.appendChild(horizontal);
+            
+            const vertical = document.createElement('div');
+            vertical.className = 'grid-line vertical';
+            vertical.style.left = `${i * 6.66}%`;
+            vertical.style.animationDelay = `${i * 0.2 + 0.5}s`;
+            grid.appendChild(vertical);
+        }
+        cyberBg.appendChild(grid);
+        
+        // إنشاء شفرة ثنائية متساقطة (0 و1)
+        for (let i = 0; i < 40; i++) {
+            const binary = document.createElement('div');
+            binary.className = 'binary-code';
+            binary.textContent = generateBinaryCode(25);
+            binary.style.left = `${Math.random() * 100}%`;
+            binary.style.animationDelay = `${Math.random() * 15}s`;
+            binary.style.animationDuration = `${15 + Math.random() * 15}s`;
+            cyberBg.appendChild(binary);
+        }
+        
+        function generateBinaryCode(length) {
+            let code = '';
+            for (let i = 0; i < length; i++) {
+                code += Math.round(Math.random()) + ' ';
+            }
+            return code;
+        }
+
+        // إدارة الخدمات المختارة
+        const serviceItems = document.querySelectorAll('.service-item');
+        const selectedServicesList = document.getElementById('selectedServices');
+        let selectedServices = [];
+
+        serviceItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const serviceName = this.getAttribute('data-service');
+                
+                // التحقق إذا كانت الخدمة مختارة بالفعل
+                const index = selectedServices.indexOf(serviceName);
+                
+                if (index === -1) {
+                    // إضافة الخدمة إذا لم تكن مختارة
+                    selectedServices.push(serviceName);
+                    this.classList.add('active');
+                } else {
+                    // إزالة الخدمة إذا كانت مختارة
+                    selectedServices.splice(index, 1);
+                    this.classList.remove('active');
+                }
+                
+                // تحديث قائمة الخدمات المختارة
+                updateSelectedServices();
+            });
+        });
+
+        function updateSelectedServices() {
+            if (selectedServices.length === 0) {
+                selectedServicesList.innerHTML = '<li>لم يتم اختيار خدمات بعد</li>';
+            } else {
+                selectedServicesList.innerHTML = '';
+                selectedServices.forEach(service => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        ${service}
+                        <button type="button" class="remove-btn" data-service="${service}">إزالة</button>
+                    `;
+                    selectedServicesList.appendChild(li);
+                });
+                
+                // إضافة event listeners لأزرار الإزالة
+                const removeButtons = document.querySelectorAll('.remove-btn');
+                removeButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const serviceToRemove = this.getAttribute('data-service');
+                        const index = selectedServices.indexOf(serviceToRemove);
+                        
+                        if (index !== -1) {
+                            selectedServices.splice(index, 1);
+                            
+                            // إزالة التحديد من عنصر الخدمة في القائمة
+                            serviceItems.forEach(item => {
+                                if (item.getAttribute('data-service') === serviceToRemove) {
+                                    item.classList.remove('active');
+                                }
+                            });
+                            
+                            updateSelectedServices();
+                        }
+                    });
+                });
+            }
+        }
+
+        // معالجة إرسال النموذج
+        document.getElementById('communicationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (selectedServices.length === 0) {
+                alert('يرجى اختيار خدمة واحدة على الأقل');
+                return;
+            }
+            
+            alert('شكراً لتقديم طلب الخدمة! سيتصل بك فريقنا قريباً لتأكيد التفاصيل.');
+            this.reset();
+            selectedServices = [];
+            updateSelectedServices();
+            
+            // إزالة التحديد من جميع الخدمات
+            serviceItems.forEach(item => {
+                item.classList.remove('active');
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('تم تحميل صفحة طلب خدمة أنظمة الاتصالات');
+        });
+    </script>
+</body>
+</html>
