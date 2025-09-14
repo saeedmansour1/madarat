@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طلب أنظمة الستلايت - مدارات للأنظمة المحدودة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #005f73;
+            --secondary-color: #0a9396;
+            --accent-color: #94d2bd;
+            --cyber-blue: #001935;
+            --cyber-dark: #000b1c;
+            --cyber-neon: #00f3ff;
+            --cyber-green: #39ff14;
+            --cyber-purple: #8a2be2;
+            --light-color: #f6fafd;
+            --gray-color: #e2e2e2;
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--cyber-dark);
+            color: #fff;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Cyber Background */
+        .cyber-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--cyber-dark) 0%, var(--cyber-blue) 100%);
+            opacity: 0.95;
+        }
+        
+        .binary-code {
+            position: absolute;
+            color: rgba(0, 243, 255, 0.3);
+            font-family: monospace;
+            font-size: 16px;
+            animation: scroll 15s infinite linear;
+            font-weight: bold;
+            z-index: -1;
+        }
+        
+        .cyber-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
+            grid-template-rows: repeat(15, 1fr);
+            opacity: 0.1;
+        }
+        
+        .grid-line {
+            position: absolute;
+            background: rgba(0, 243, 255, 0.1);
+        }
+        
+        .horizontal {
+            width: 100%;
+            height: 1px;
+            animation: pulse 3s infinite ease-in-out;
+        }
+        
+        .vertical {
+            width: 1px;
+            height: 100%;
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(0, 243, 255, 0.3);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--cyber-neon);
+            display: flex;
+            align-items: center;
+            text-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--cyber-neon);
+            text-decoration: none;
+            transition: var(--transition);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover {
+            color: var(--cyber-dark);
+            background-color: var(--cyber-neon);
+            box-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title h1 {
+            font-size: 2.5rem;
+            color: var(--cyber-neon);
+            text-shadow: 0 0 10px var(--cyber-neon);
+            margin-bottom: 15px;
+        }
+
+        .page-title p {
+            color: #ccc;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .packages-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .package-card {
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .package-card.popular {
+            border: 2px solid var(--cyber-green);
+            transform: scale(1.03);
+        }
+
+        .package-card.popular::before {
+            content: 'الأكثر طلباً';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--cyber-green);
+            color: var(--cyber-dark);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            z-index: 2;
+        }
+
+        .package-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+        }
+
+        .package-header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .package-title {
+            font-size: 1.8rem;
+            color: var(--cyber-neon);
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .package-description {
+            color: #ccc;
+            font-size: 1rem;
+        }
+
+        .package-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--cyber-green);
+            margin: 20px 0;
+            text-shadow: 0 0 5px var(--cyber-green);
+        }
+
+        .package-price .period {
+            font-size: 1rem;
+            color: #ccc;
+            font-weight: normal;
+        }
+
+        .package-features {
+            margin: 25px 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #ccc;
+        }
+
+        .feature-item i {
+            color: var(--cyber-neon);
+            margin-left: 10px;
+            font-size: 1.2rem;
+        }
+
+        .feature-item.unavailable {
+            opacity: 0.5;
+        }
+
+        .feature-item.unavailable i {
+            color: #ff073a;
+        }
+
+        .package-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 0 10px var(--cyber-neon);
+            margin-top: 20px;
+        }
+
+        .package-btn:hover {
+            background: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--cyber-neon);
+        }
+
+        .order-form-section {
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 40px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--cyber-neon);
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .form-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 992px) {
+            .form-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-info {
+            padding: 20px;
+        }
+
+        .form-steps {
+            margin-bottom: 30px;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-left: 15px;
+            flex-shrink: 0;
+            box-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .step-content h4 {
+            color: var(--cyber-neon);
+            margin-bottom: 5px;
+        }
+
+        .step-content p {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--cyber-neon);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--cyber-neon);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 576px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: var(--cyber-green);
+            color: var(--cyber-dark);
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 0 10px var(--cyber-green);
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #6aff46;
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--cyber-green);
+        }
+
+        .services-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .service-card {
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 25px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.3);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--cyber-neon);
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            color: var(--cyber-neon);
+            margin-bottom: 15px;
+        }
+
+        .service-description {
+            color: #ccc;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 50px 20px;
+            background: rgba(0, 11, 28, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .cta-title {
+            font-size: 2rem;
+            color: var(--cyber-neon);
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px var(--cyber-neon);
+        }
+
+        .cta-description {
+            color: #ccc;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 12px 25px;
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: var(--transition);
+            box-shadow: 0 0 10px var(--cyber-neon);
+        }
+
+        .cta-btn:hover {
+            background: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--cyber-neon);
+        }
+
+        .cta-btn.outline {
+            background: transparent;
+            color: var(--cyber-neon);
+            border: 2px solid var(--cyber-neon);
+        }
+
+        .cta-btn.outline:hover {
+            background: var(--cyber-neon);
+            color: var(--cyber-dark);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #aaa;
+            border-top: 1px solid rgba(0, 243, 255, 0.3);
+        }
+
+        /* Animations */
+        @keyframes scroll {
+            0% { transform: translateY(100vh); }
+            100% { transform: translateY(-100vh); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .page-title h1 {
+                font-size: 2rem;
+            }
+            
+            .packages-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .package-card.popular {
+                transform: scale(1);
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cyber Background -->
+    <div class="cyber-bg" id="cyber-bg"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-satellite"></i>
+                <span>مدارات للأنظمة المحدودة</span>
+            </div>
+            <div class="nav-links">
+                <a href="index">الرئيسية</a>
+                <a href="serves">الخدمات</a>
+                <a href="security">الحماية</a>
+                <a href="contactUs">اتصل بنا</a>
+            </div>
+        </header>
+
+        <div class="page-title">
+            <h1>أنظمة الستلايت والشبكات التلفزيونية</h1>
+            <p>اختر الباقة المناسبة لاحتياجاتك من أنظمة الستلايت المتكاملة والعالية الجودة</p>
+        </div>
+
+        <div class="packages-container">
+            <!-- باقة الأساسية -->
+            <div class="package-card">
+                <div class="package-header">
+                    <h3 class="package-title">الباقة الأساسية</h3>
+                    <p class="package-description">مناسبة للشقق والمنازل الصغيرة</p>
+                    <div class="package-price">1,299 <span class="period">ريال/شامل التركيب</span></div>
+                </div>
+                
+                <div class="package-features">
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>طبق استقبال 90 سم</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>رأس استقبال Twin LNBF</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>جهاز استقبال HD</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>تركيب وتوجيه الطبق</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>توصيل حتى 2 أجهزة تلفزيون</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>ضمان لمدة عام</span>
+                    </div>
+                    <div class="feature-item unavailable">
+                        <i class="fas fa-times-circle"></i>
+                        <span>توصيل لشبكة داخلية متكاملة</span>
+                    </div>
+                    <div class="feature-item unavailable">
+                        <i class="fas fa-times-circle"></i>
+                        <span>أجهزة استقبال متطورة</span>
+                    </div>
+                </div>
+                
+                <button class="package-btn">اختر هذه الباقة</button>
+            </div>
+
+            <!-- باقة المتوسطة (الأكثر طلباً) -->
+            <div class="package-card popular">
+                <div class="package-header">
+                    <h3 class="package-title">الباقة المتوسطة</h3>
+                    <p class="package-description">مناسبة للفلل والمنازل الكبيرة</p>
+                    <div class="package-price">2,499 <span class="period">ريال/شامل التركيب</span></div>
+                </div>
+                
+                <div class="package-features">
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>طبق استقبال 120 سم</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>رأس استقبال Quad LNBF</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>جهاز استقبال HD متطور</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>تركيب وتوجيه الطبق</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>توصيل حتى 4 أجهزة تلفزيون</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>ضمان لمدة عامين</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>توصيل لشبكة داخلية</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>تقوية إشارة للتلفزيون الأرضي</span>
+                    </div>
+                </div>
+                
+                <button class="package-btn">اختر هذه الباقة</button>
+            </div>
+
+            <!-- باقة المتقدمة -->
+            <div class="package-card">
+                <div class="package-header">
+                    <h3 class="package-title">الباقة المتقدمة</h3>
+                    <p class="package-description">مناسبة للمجمعات السكنية والشركات</p>
+                    <div class="package-price">4,999 <span class="period">ريال/شامل التركيب</span></div>
+                </div>
+                
+                <div class="package-features">
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>طبق استقبال 180 سم</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>رؤوس استقبال متعددة</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>أجهزة استقبال 4K UHD</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>تركيب وتوجيه متكامل</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>توصيل لشبكة داخلية متكاملة</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>ضمان لمدة 3 سنوات</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>تقوية إشارة للتلفزيون الأرضي</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>نظام توزيع متكامل</span>
+                    </div>
+                </div>
+                
+                <button class="package-btn">اختر هذه الباقة</button>
+            </div>
+        </div>
+
+        <div class="order-form-section">
+            <h2 class="section-title">طلب تركيب نظام ستلايت</h2>
+            
+            <div class="form-container">
+                <div class="form-info">
+                    <div class="form-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>اختر الباقة المناسبة</h4>
+                                <p>اختر الباقة التي تناسب احتياجاتك من حيث عدد الأجهزة ونوع الخدمة</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>املأ بياناتك</h4>
+                                <p>أدخل معلوماتك الشخصية ومعلومات الاتصال</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>حدد موعد التركيب</h4>
+                                <p>اختر الموعد المناسب لزيارة الفني للتركيب</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>استلم الخدمة</h4>
+                                <p>سيقوم الفني بتركيب النظام وتدريبك على استخدامه</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="services-section">
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <h3 class="service-title">خدمات التركيب</h3>
+                            <p class="service-description">نقدم خدمات تركيب احترافية بواسطة فنيين متخصصين مع استخدام أحدث التقنيات</p>
+                        </div>
+
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <h3 class="service-title">الدعم الفني</h3>
+                            <p class="service-description">دعم فني على مدار الساعة طوال أيام الأسبوع لحل أي مشكلة تواجهك في النظام</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form">
+                    <form id="satelliteForm">
+                        <div class="form-group">
+                            <label for="package">الباقة المختارة</label>
+                            <select id="package" name="package" required>
+                                <option value="">اختر الباقة</option>
+                                <option value="basic">الباقة الأساسية - 1,299 ريال</option>
+                                <option value="medium">الباقة المتوسطة - 2,499 ريال</option>
+                                <option value="advanced">الباقة المتقدمة - 4,999 ريال</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">الاسم الكامل *</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">رقم الهاتف *</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">البريد الإلكتروني</label>
+                            <input type="email" id="email" name="email">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address">العنوان التفصيلي *</label>
+                            <textarea id="address" name="address" required></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">المدينة *</label>
+                                <input type="text" id="city" name="city" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="district">الحي *</label>
+                                <input type="text" id="district" name="district" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="building-type">نوع العقار</label>
+                                <select id="building-type" name="building-type">
+                                    <option value="">اختر نوع العقار</option>
+                                    <option value="house">منزل/فيلا</option>
+                                    <option value="apartment">شقة</option>
+                                    <option value="office">مكتب</option>
+                                    <option value="compound">مجمع سكني</option>
+                                    <option value="other">أخرى</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="tv-count">عدد أجهزة التلفزيون</label>
+                                <select id="tv-count" name="tv-count">
+                                    <option value="1">1 جهاز</option>
+                                    <option value="2">2 أجهزة</option>
+                                    <option value="3">3 أجهزة</option>
+                                    <option value="4">4 أجهزة</option>
+                                    <option value="5+">5 أجهزة أو أكثر</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="installation-date">الموعد المناسب للتركيب</label>
+                            <input type="date" id="installation-date" name="installation-date">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="notes">ملاحظات إضافية</label>
+                            <textarea id="notes" name="notes" placeholder="أخبرنا عن أي متطلبات خاصة أو استفسارات..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">إرسال طلب التركيب</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2 class="cta-title">هل تحتاج إلى استشارة مجانية؟</h2>
+            <p class="cta-description">اتصل بنا اليوم للحصول على استشارة مجانية حول أفضل حلول أنظمة الستلايت المناسبة لاحتياجاتك</p>
+            <div class="cta-buttons">
+                <a href="contactUs" class="cta-btn">اطلب استشارة مجانية</a>
+                <a href="tel:+966500904343" class="cta-btn outline">اتصل بنا الآن</a>
+            </div>
+        </div>
+
+        <footer>
+            <p>جميع الحقوق محفوظة &copy; 2023 - مدارات للأنظمة المحدودة</p>
+        </footer>
+    </div>
+
+    <script>
+        // إنشاء خلفية الأرقام الثنائية
+        const cyberBg = document.getElementById('cyber-bg');
+        
+        // إنشاء خطوط الشبكة
+        const grid = document.createElement('div');
+        grid.className = 'cyber-grid';
+        for (let i = 0; i < 16; i++) {
+            const horizontal = document.createElement('div');
+            horizontal.className = 'grid-line horizontal';
+            horizontal.style.top = `${i * 6.66}%`;
+            horizontal.style.animationDelay = `${i * 0.2}s`;
+            grid.appendChild(horizontal);
+            
+            const vertical = document.createElement('div');
+            vertical.className = 'grid-line vertical';
+            vertical.style.left = `${i * 6.66}%`;
+            vertical.style.animationDelay = `${i * 0.2 + 0.5}s`;
+            grid.appendChild(vertical);
+        }
+        cyberBg.appendChild(grid);
+        
+        // إنشاء شفرة ثنائية متساقطة (0 و1)
+        for (let i = 0; i < 40; i++) {
+            const binary = document.createElement('div');
+            binary.className = 'binary-code';
+            binary.textContent = generateBinaryCode(25);
+            binary.style.left = `${Math.random() * 100}%`;
+            binary.style.animationDelay = `${Math.random() * 15}s`;
+            binary.style.animationDuration = `${15 + Math.random() * 15}s`;
+            cyberBg.appendChild(binary);
+        }
+        
+        function generateBinaryCode(length) {
+            let code = '';
+            for (let i = 0; i < length; i++) {
+                code += Math.round(Math.random()) + ' ';
+            }
+            return code;
+        }
+
+        // تفعيل أزرار اختيار الباقات
+        const packageButtons = document.querySelectorAll('.package-btn');
+        packageButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const packageName = this.closest('.package-card').querySelector('.package-title').textContent;
+                const packagePrice = this.closest('.package-card').querySelector('.package-price').textContent;
+                
+                // تعبئة الباقة المختارة تلقائياً في النموذج
+                document.getElementById('package').value = 
+                    packageName.includes('الأساسية') ? 'basic' :
+                    packageName.includes('المتوسطة') ? 'medium' :
+                    'advanced';
+                
+                alert(`تم اختيار ${packageName} بسعر ${packagePrice}. يرجى إكمال تعبئة النموذج أدناه.`);
+                
+                // التمرير إلى النموذج
+                document.getElementById('satelliteForm').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // معالجة إرسال النموذج
+        document.getElementById('satelliteForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const package = document.getElementById('package').value;
+            if (!package) {
+                alert('يرجى اختيار باقة مناسبة');
+                return;
+            }
+            
+            alert('شكراً لتقديم طلب التركيب! سيتصل بك فريقنا قريباً لتأكيد التفاصيل والموعد.');
+            this.reset();
+        });
+
+        // تعيين الحد الأدنى لتاريخ اليوم في حقل التاريخ
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        const minDate = `${yyyy}-${mm}-${dd}`;
+        document.getElementById('installation-date').setAttribute('min', minDate);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('تم تحميل صفحة طلب أنظمة الستلايت');
+        });
+    </script>
+</body>
+</html>
