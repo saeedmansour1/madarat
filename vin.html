@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقرير حضور شهري مع الأسماء</title>
+    <style>
+        /* الأنماط الأساسية */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            padding: 20px;
+            direction: rtl;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #1e88e5;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        /* --- قسم إدارة الأسماء والتحكم --- */
+        .controls-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .controls-section {
+             background-color: #fcfcfc;
+        }
+        
+        .controls-group label, .controls-group input, .controls-group button, .controls-group select {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .controls-group button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #printButton {
+            background-color: #f44336;
+        }
+        #saveNameButton {
+            background-color: #ff9800;
+        }
+        
+        /* تنسيق الجداول */
+        .employee-report {
+            margin-top: 30px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+        }
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #2196f3;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px 5px 0 0;
+            margin: -20px -20px 20px -20px;
+        }
+        .report-header h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+        .report-info {
+            font-size: 14px;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px 5px; 
+            white-space: nowrap;
+        }
+        .weekend {
+            background-color: #ffebee !important; 
+            font-weight: bold;
+        }
+
+        /* أنماط خاصة بالطباعة - مصغرة */
+        @media print {
+            .controls-group, h1 {
+                display: none;
+            }
+            .container, .employee-report {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                margin: 0 auto;
+                max-width: 100%;
+            }
+            @page {
+                size: A4 portrait;
+                margin: 0.5cm; 
+                @top-center {
+                    content: "مطعم فينسيا - تقرير الحضور الشهري";
+                    font-size: 14pt; 
+                    font-weight: bold;
+                    color: #000;
+                }
+            }
+            table {
+                font-size: 8pt; 
+            }
+            th, td {
+                padding: 3px 2px; 
+                border-width: 1px;
+            }
+            .report-header {
+                color: #000;
+                background-color: #eee;
+                border-bottom: 1px solid #ccc;
+                margin: 5px 0 5px 0; 
+                padding: 3px 5px;
+                font-size: 10pt; 
+                page-break-after: avoid; 
+            }
+            .report-header h2 {
+                 font-size: 12pt;
+            }
+            .report-info {
+                font-size: 9pt;
+            }
+            .employee-report {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>نظام تصفية وعرض سجلات الحضور الشهرية -م/سعيد مهتدى</h1>
+
+    <div class="controls-group" style="background-color: #e3f2fd;">
+        <label for="idToName">الرقم (ID):</label>
+        <input type="text" id="idToName" placeholder="أدخل رقم الموظف">
+        
+        <label for="employeeName">الاسم:</label>
+        <input type="text" id="employeeName" placeholder="أدخل اسم الموظف">
+
+        <button id="saveNameButton" onclick="saveEmployeeName()">حفظ/تحديث الاسم</button>
+        <span id="nameStatus" style="color: #1565c0; font-weight: bold;"></span>
+    </div>
+
+    <div class="controls-group controls-section">
+        <input type="file" id="datFile" accept=".dat" onchange="loadData()">
+        
+        <label for="monthYear">اختر الشهر والسنة:</label>
+        <input type="month" id="monthYear">
+        
+        <label for="employeeId">رقم الموظف (للبحث):</label>
+        <input type="text" id="employeeId" placeholder="اختياري">
+
+        <button onclick="filterAndRenderReports()">تطبيق البحث وعرض تقارير الشهر</button>
+        
+        <button id="printButton" onclick="printReports()">طباعة التقارير المعروضة</button>
+    </div>
+
+    <div id="reportsContainer">
+        <p style="text-align: center; color: #777;">
+            الرجاء اختيار ملف **DAT** وتحديد الشهر والسنة والضغط على **تطبيق البحث**.
+        </p>
+    </div>
+</div>
+
+<script>
+    const MAX_TIME_COLUMNS = 4;
+    let ALL_GROUPED_DATA = {}; 
+    let currentReportMonth = ''; 
+    let EMPLOYEE_NAMES = {}; // لتخزين كائنات ID: Name
+
+    /**
+     * تحميل الأسماء المخزنة من localStorage
+     */
+    function loadEmployeeNames() {
+        const storedNames = localStorage.getItem('employeeNamesMap');
+        if (storedNames) {
+            try {
+                EMPLOYEE_NAMES = JSON.parse(storedNames);
+            } catch (e) {
+                console.error("Error parsing stored employee names:", e);
+                EMPLOYEE_NAMES = {};
+            }
+        }
+    }
+    
+    /**
+     * حفظ الاسم المدخل لـ ID محدد في localStorage
+     */
+    function saveEmployeeName() {
+        const idInput = document.getElementById('idToName');
+        const nameInput = document.getElementById('employeeName');
+        const statusSpan = document.getElementById('nameStatus');
+        
+        const id = idInput.value.trim();
+        const name = nameInput.value.trim();
+        
+        if (id === '' || name === '') {
+            statusSpan.textContent = 'الرجاء إدخال الرقم والاسم.';
+            statusSpan.style.color = '#ff9800';
+            return;
+        }
+        
+        // تحديث القائمة وتخزينها
+        EMPLOYEE_NAMES[id] = name;
+        localStorage.setItem('employeeNamesMap', JSON.stringify(EMPLOYEE_NAMES));
+        
+        statusSpan.textContent = `تم حفظ الاسم: "${name}" للرقم ${id}.`;
+        statusSpan.style.color = '#4CAF50';
+
+        // مسح الحقول بعد الحفظ
+        idInput.value = '';
+        nameInput.value = '';
+        
+        // إعادة عرض التقارير إذا كانت معروضة
+        if (Object.keys(ALL_GROUPED_DATA).length > 0) {
+            filterAndRenderReports();
+        }
+    }
+
+    /**
+     * وظيفة الطباعة
+     */
+    function printReports() {
+        if (document.getElementById('reportsContainer').innerText.includes('الرجاء اختيار') || document.getElementById('reportsContainer').innerText.includes('لم يتم العثور')) {
+            alert('لا توجد تقارير جاهزة للطباعة بعد. يرجى اختيار ملف وتطبيق البحث.');
+            return;
+        }
+        window.print();
+    }
+
+    // دالة تحليل البيانات (بدون تغيير)
+    function parseAndGroupData(rawData) {
+        // ... (كود دالة parseAndGroupData كما هو)
+        const lines = rawData.trim().split('\r\n').filter(line => line.trim() !== '');
+        const groupedData = {}; 
+
+        lines.forEach(line => {
+            const parts = line.split('\t').map(p => p.trim()).filter(p => p !== ''); 
+            
+            if (parts.length >= 2) {
+                const employeeId = parts[0];
+                const dateTimeStr = parts[1];
+                const [datePart, timePart] = dateTimeStr.split(' ');
+                
+                if (!datePart || !timePart) return;
+
+                if (!groupedData[employeeId]) {
+                    groupedData[employeeId] = {};
+                }
+                
+                if (!groupedData[employeeId][datePart]) {
+                    groupedData[employeeId][datePart] = {
+                        id: employeeId,
+                        date: datePart,
+                        times: []
+                    };
+                }
+                groupedData[employeeId][datePart].times.push(timePart.substring(0, 5)); 
+            }
+        });
+
+        Object.keys(groupedData).forEach(id => {
+            Object.keys(groupedData[id]).forEach(date => {
+                groupedData[id][date].times.sort();
+            });
+        });
+        
+        return groupedData;
+    }
+
+
+    // دوال مساعدة (بدون تغيير)
+    function getDayName(dateString) {
+        const date = new Date(dateString + 'T00:00:00Z'); 
+        if (isNaN(date)) return '-'; 
+        const options = { weekday: 'long', timeZone: 'UTC' };
+        return date.toLocaleDateString('ar-EG', options);
+    }
+    
+    function isWeekend(dateString) {
+        const date = new Date(dateString + 'T00:00:00Z');
+        const day = date.getUTCDay(); 
+        return (day === 5 || day === 6);
+    }
+
+    function loadData() {
+        // ... (كود دالة loadData كما هو)
+        const fileInput = document.getElementById('datFile');
+        const file = fileInput.files[0];
+
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const rawData = e.target.result;
+                ALL_GROUPED_DATA = parseAndGroupData(rawData);
+                filterAndRenderReports(); 
+            } catch (error) {
+                document.getElementById('reportsContainer').innerHTML = `<p style="text-align: center; color: red;">حدث خطأ أثناء معالجة الملف: ${error.message}</p>`;
+                console.error("Parsing Error:", error);
+                ALL_GROUPED_DATA = {};
+            }
+        };
+        reader.readAsText(file); 
+    }
+
+    function filterAndRenderReports() {
+        // ... (كود دالة filterAndRenderReports كما هو، فقط سيستخدم EMPLOYEE_NAMES في buildMonthlyEmployeeReport)
+        const reportsContainer = document.getElementById('reportsContainer');
+        const monthYearStr = document.getElementById('monthYear').value;
+        const targetId = document.getElementById('employeeId').value.trim();
+
+        if (!monthYearStr) {
+            reportsContainer.innerHTML = `<p style="text-align: center; color: red;">الرجاء تحديد الشهر والسنة.</p>`;
+            return;
+        }
+
+        if (Object.keys(ALL_GROUPED_DATA).length === 0) {
+            reportsContainer.innerHTML = `<p style="text-align: center; color: #777;">
+                الرجاء اختيار ملف **DAT** أولاً.
+            </p>`;
+            return;
+        }
+        
+        currentReportMonth = monthYearStr;
+        const [year, month] = monthYearStr.split('-');
+        
+        let filteredReportsHtml = '';
+        let foundRecords = false;
+
+        const employeeIds = targetId ? [targetId] : Object.keys(ALL_GROUPED_DATA);
+
+        employeeIds.forEach(id => {
+            const employeeMonthlyRecords = {};
+            
+            if (ALL_GROUPED_DATA[id]) {
+                Object.keys(ALL_GROUPED_DATA[id]).forEach(dateKey => {
+                    if (dateKey.startsWith(monthYearStr)) {
+                        employeeMonthlyRecords[dateKey] = ALL_GROUPED_DATA[id][dateKey];
+                        foundRecords = true;
+                    }
+                });
+            }
+
+            if (Object.keys(employeeMonthlyRecords).length > 0 || targetId) { 
+                filteredReportsHtml += buildMonthlyEmployeeReport(id, parseInt(year), parseInt(month), employeeMonthlyRecords);
+            }
+        });
+
+        if (filteredReportsHtml) {
+            reportsContainer.innerHTML = filteredReportsHtml;
+        } else {
+            reportsContainer.innerHTML = `<p style="text-align: center; color: #cc0000;">
+                لم يتم العثور على سجلات تطابق معايير البحث المحددة (الشهر و/أو رقم الموظف).
+            </p>`;
+        }
+    }
+
+    /**
+     * بناء جدول شهري كامل (31 يوماً) للموظف.
+     * تم تعديل هذا الجزء ليظهر اسم الموظف.
+     */
+    function buildMonthlyEmployeeReport(employeeId, year, month, monthlyRecords) {
+        let rowsHtml = '';
+        const daysInMonth = new Date(year, month, 0).getDate(); 
+        
+        const employeeName = EMPLOYEE_NAMES[employeeId] || 'غير متوفر'; // استرداد الاسم
+        
+        for (let day = 1; day <= 31; day++) {
+            const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const record = monthlyRecords[dateStr];
+            let isCurrentMonth = day <= daysInMonth;
+            
+            let timeColumns = '';
+            
+            if (isCurrentMonth) {
+                for (let i = 0; i < MAX_TIME_COLUMNS; i++) {
+                    const time = record && record.times[i] ? record.times[i] : '-';
+                    timeColumns += `<td>${time}</td>`;
+                }
+                
+                const isWkEnd = isWeekend(dateStr);
+                const weekendClass = isWkEnd ? 'weekend' : '';
+                
+                rowsHtml += `<tr class="${weekendClass}">`;
+                rowsHtml += `<td>${day}</td>`;
+                rowsHtml += `<td class="day-col">${getDayName(dateStr)}</td>`;
+                rowsHtml += timeColumns;
+                rowsHtml += `</tr>`;
+                
+            } else {
+                rowsHtml += `<tr><td>${day}</td><td class="day-col">-</td><td colspan="${MAX_TIME_COLUMNS}" style="background-color: #f7f7f7;">-</td></tr>`;
+            }
+        }
+        
+        let html = `
+            <div class="employee-report" id="report-${employeeId}-${year}${month}">
+                <div class="report-header">
+                    <h2>تقرير الحضور الشهري</h2>
+                    <div class="report-info">
+                        <strong>الموظف:</strong> ${employeeName} &bull; 
+                        <strong>الرقم:</strong> ${employeeId} &bull; 
+                        <strong>الشهر/السنة:</strong> ${currentReportMonth}
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="date-col" style="width: 5%;">اليوم</th>
+                                <th class="day-col" style="width: 15%;">اسم اليوم</th>
+        `;
+
+        for (let i = 1; i <= MAX_TIME_COLUMNS; i++) {
+            html += `<th>الزمن ${i}</th>`;
+        }
+
+        html += `
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rowsHtml}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+        return html;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // 1. تحميل الأسماء المخزنة عند فتح الصفحة
+        loadEmployeeNames(); 
+        
+        document.getElementById('datFile').addEventListener('change', loadData);
+        
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        document.getElementById('monthYear').value = `${year}-${month}`;
+    });
+
+</script>
+
+</body>
+</html>
