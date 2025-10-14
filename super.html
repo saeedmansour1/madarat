@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>عارض سجلات الحضور - سوبر الصفوة</title>
+<style>
+:root{
+  --bg:#0f172a; --card:#0b1220; --accent:#06b6d4; --muted:#94a3b8; --glass: rgba(255,255,255,0.03);
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family: "Segoe UI", Tahoma, Arial; background: linear-gradient(180deg,#021028 0%, #031a2b 60%); color:#e6eef6}
+.container{max-width:1200px;margin:28px auto;padding:22px}
+.header{display:flex;gap:16px;align-items:center;justify-content:space-between}
+.brand{display:flex;gap:14px;align-items:center}
+.logo{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#8b5cf6);display:flex;align-items:center;justify-content:center;font-weight:700;color:#021;box-shadow:0 6px 18px rgba(6,182,212,.12)}
+.hgroup h1{margin:0;font-size:20px}
+.hgroup p{margin:0;color:var(--muted);font-size:13px}
+.controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:18px}
+.input-file{background:var(--glass);border:1px solid rgba(255,255,255,0.06);padding:10px 12px;border-radius:10px}
+.select-month, .date-range{padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
+.btn{background:linear-gradient(90deg,var(--accent),#8b5cf6);border:none;padding:10px 14px;border-radius:10px;color:#012;cursor:pointer;font-weight:600}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+.meta{margin-top:14px;color:var(--muted);font-size:13px}
+.reports{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;margin-top:18px}
+.card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03);padding:12px;border-radius:12px;box-shadow:0 6px 24px rgba(2,6,23,0.6)}
+.card h3{margin:0 0 8px 0;font-size:15px}
+.table-wrap{overflow:auto;max-height:480px}
+table{width:100%;border-collapse:collapse;font-size:13px;color:#dbeafe}
+th,td{padding:6px 8px;text-align:center;border:1px solid rgba(255,255,255,0.03)}
+th{position:sticky;top:0;background:rgba(0,0,0,0.15);backdrop-filter:blur(6px)}
+.badge{display:inline-block;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,0.03);font-weight:600;color:var(--accent);}
+.footer{margin-top:22px;padding:12px;border-radius:10px;text-align:center;color:var(--muted);font-size:13px}
+.small{font-size:12px;color:var(--muted)}
+.empty{padding:30px;border:2px dashed rgba(255,255,255,0.03);border-radius:10px;text-align:center;color:var(--muted)}
+.date-range-container{display:flex;gap:8px;align-items:center}
+@media (max-width:640px){.header{flex-direction:column;align-items:flex-start}.controls{width:100%}.date-range-container{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="brand">
+      <div class="logo">س</div>
+      <div class="hgroup">
+        <h1>عارض سجلات الحضور الذكي</h1>
+        <p>قراءة ملفات attlog.dat مباشرة - عرض شهري مفصّل لكل رقم</p>
+      </div>
+    </div>
+    <div>
+      <div class="badge">بواسطة مهندس سعيد مهتدى</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <label class="input-file">
+      اختر ملف الحضور (.dat, .txt, .csv)
+      <input id="fileInput" type="file" accept=".dat,.txt,.csv" style="display:none" onchange="handleFile(event)">
+    </label>
+    <select id="monthSelect" class="select-month" onchange="updateDateRange()">
+      <option value="">-- اختر الشهر --</option>
+    </select>
+    <div class="date-range-container">
+      <input type="date" id="startDate" class="date-range" onchange="renderReportsForSelected()">
+      <span>إلى</span>
+      <input type="date" id="endDate" class="date-range" onchange="renderReportsForSelected()">
+    </div>
+    <button class="btn" onclick="document.getElementById('fileInput').click()">رفع ملف</button>
+    <button class="btn ghost" onclick="downloadDisplayedCSV()">تحميل CSV المعروض</button>
+    <button class="btn ghost" onclick="printAllEmployeesOnePage()">طباعة جميع الموظفين</button>
+  </div>
+
+  <div class="meta" id="metaInfo">انتظر رفع الملف لبدء المعالجة.</div>
+
+  <div id="reports" class="reports">
+    <div class="empty" id="emptyBox">لم يتم تحميل بيانات بعد.</div>
+  </div>
+
+  <div class="footer">نسخة محلية تعمل بدون إنترنت — <span class="small">لا حاجة لسيرفر</span></div>
+</div>
+
+<script>
+const state = { rawLines: [], grouped: {}, months: [], names: {} };
+
+// قراءة الملف مع دعم UTF-8 و Windows-1256
+function handleFile(e){
+  const f = e.target.files[0];
+  if(!f) return;
+
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    const arrayBuffer = ev.target.result;
+    let text;
+    try {
+      text = new TextDecoder('utf-8', { fatal: true }).decode(arrayBuffer);
+    } catch(err) {
+      text = new TextDecoder('windows-1256').decode(arrayBuffer);
+    }
+    processRawText(text);
+  };
+  reader.readAsArrayBuffer(f);
+}
+
+function processRawText(text){
+  state.rawLines = text.split(/\r?\n/).map(l=>l.trim()).filter(l=>l.length>0);
+  state.grouped = {}; state.months = new Set(); state.names={};
+
+  const dateRegex = /\b(\d{4}-\d{2}-\d{2})\b/;
+  const timeRegex = /\b(\d{1,2}:\d{2}:\d{2})\b/;
+  const idRegex = /^(\d{1,6})\b/;
+
+  for(const line of state.rawLines){
+    let idMatch = line.match(idRegex);
+    let dateMatch = line.match(dateRegex);
+    let timeMatch = line.match(timeRegex);
+
+    if(!idMatch){ const m = line.match(/\b(\d{1,6})\b/); if(m) idMatch=m; }
+    if(!dateMatch){ 
+      const m2 = line.match(/(\d{2}[\/\-]\d{2}[\/\-]\d{4})/);
+      if(m2){
+        const parts=m2[1].split(/[\/\-]/);
+        let dd,mm,yyyy;
+        if(parseInt(parts[0])>12){ dd=parts[0]; mm=parts[1]; yyyy=parts[2]; }
+        else { mm=parts[0]; dd=parts[1]; yyyy=parts[2]; }
+        dateMatch=[m2[1],`${yyyy}-${String(mm).padStart(2,'0')}-${String(dd).padStart(2,'0')}`];
+      }
+    }
+    if(!timeMatch){ const m3=line.match(/(\d{1,2}:\d{2})(?::\d{2})?/); if(m3) timeMatch=[m3[0]]; }
+
+    if(idMatch && (dateMatch || timeMatch)){
+      const id = idMatch[1] || idMatch[0];
+      let dateStr = dateMatch ? (dateMatch[1]||dateMatch[0]) : null;
+      if(dateMatch && dateMatch[1] && dateMatch[1].includes('-')) dateStr=dateMatch[1];
+      const timeStr = timeMatch ? (timeMatch[1]||timeMatch[0]) : null;
+
+      // جلب الاسم العربي
+      const tokens = line.split(/[,\t;]/);
+      if(tokens.length>=2 && !state.names[id]) state.names[id] = String(tokens[1]).trim();
+
+      if(!id||!dateStr||!timeStr) continue;
+      state.grouped[id] = state.grouped[id]||{};
+      state.grouped[id][dateStr] = state.grouped[id][dateStr]||[];
+      if(!state.grouped[id][dateStr].includes(timeStr)) state.grouped[id][dateStr].push(timeStr);
+      state.months.add(dateStr.slice(0,7));
+    }
+  }
+
+  for(const id of Object.keys(state.grouped)){
+    for(const date of Object.keys(state.grouped[id])) state.grouped[id][date].sort();
+  }
+
+  const monthsArr = Array.from(state.months).sort().reverse();
+  const monthSelect = document.getElementById('monthSelect');
+  monthSelect.innerHTML = '<option value="">-- اختر الشهر --</option>';
+  monthsArr.forEach(m=>{ const opt=document.createElement('option'); opt.value=m; opt.textContent=formatMonthLabel(m); monthSelect.appendChild(opt); });
+
+  document.getElementById('metaInfo').textContent = `تم قراءة ${state.rawLines.length} سطر، و${Object.keys(state.grouped).length} رقم.`;
+  if(monthsArr.length>0){ 
+    monthSelect.value=monthsArr[0]; 
+    updateDateRange();
+    renderReportsForSelected(); 
+  }
+  else document.getElementById('reports').innerHTML='<div class="empty">لا توجد بيانات صالحة للعرض.</div>';
+}
+
+function formatMonthLabel(m){
+  const parts = m.split('-'); const y=parts[0]; const mm=parseInt(parts[1],10);
+  const arMonths = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  return arMonths[mm-1]+' '+y;
+}
+
+function updateDateRange(){
+  const month = document.getElementById('monthSelect').value;
+  if(!month) return;
+  
+  const year = parseInt(month.split('-')[0]);
+  const monthNum = parseInt(month.split('-')[1]);
+  
+  // حساب أول وآخر يوم في الشهر
+  const firstDay = new Date(year, monthNum - 1, 1);
+  const lastDay = new Date(year, monthNum, 0);
+  
+  document.getElementById('startDate').value = formatDateForInput(firstDay);
+  document.getElementById('endDate').value = formatDateForInput(lastDay);
+  
+  renderReportsForSelected();
+}
+
+function formatDateForInput(date){
+  return date.toISOString().split('T')[0];
+}
+
+function getArabicWeekday(dateStr){
+  const parts=dateStr.split('-'); const d=new Date(Number(parts[0]), Number(parts[1])-1, Number(parts[2]));
+  const days=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  return days[d.getDay()];
+}
+
+function getDaysInRange(startDate, endDate){
+  const days = [];
+  const current = new Date(startDate);
+  const end = new Date(endDate);
+  
+  while(current <= end){
+    days.push(formatDateForInput(current));
+    current.setDate(current.getDate() + 1);
+  }
+  
+  return days;
+}
+
+function renderReportsForSelected(){
+  const sel = document.getElementById('monthSelect').value;
+  const startDate = document.getElementById('startDate').value;
+  const endDate = document.getElementById('endDate').value;
+  
+  if(!sel || !startDate || !endDate) return;
+  
+  const reports = document.getElementById('reports'); 
+  reports.innerHTML=''; 
+  const ids = Object.keys(state.grouped).sort((a,b)=>Number(a)-Number(b));
+  
+  if(ids.length===0){ 
+    reports.innerHTML='<div class="empty">لا توجد سجلات لهذا الشهر.</div>'; 
+    return; 
+  }
+
+  const daysInRange = getDaysInRange(startDate, endDate);
+  
+  for(const id of ids){
+    const card=document.createElement('div'); 
+    card.className='card';
+    const employeeName = state.names[id] || `الموظف ${id}`;
+    const ph = document.createElement('div'); 
+    ph.className='print-header';
+    ph.innerHTML=`<h3>${employeeName} - الرقم: ${id}</h3><div class="small">الفترة: ${startDate} إلى ${endDate}</div>`;
+    card.appendChild(ph);
+
+    const wrap=document.createElement('div'); 
+    wrap.className='table-wrap';
+    const table=document.createElement('table');
+    const thead=document.createElement('thead');
+    thead.innerHTML=`<tr>
+      <th>مسلسل</th><th>التاريخ</th><th>اليوم</th>
+      <th>الزمن 1</th><th>الزمن 2</th><th>الزمن 3</th><th>الزمن 4</th>
+    </tr>`; 
+    table.appendChild(thead);
+
+    const tbody=document.createElement('tbody');
+    let serial = 1;
+    
+    for(const dayStr of daysInRange){
+      const tr=document.createElement('tr');
+      const tdSerial=document.createElement('td'); 
+      tdSerial.textContent=serial++;
+      const tdDate=document.createElement('td'); 
+      tdDate.textContent=dayStr;
+      const tdDay=document.createElement('td'); 
+      tdDay.textContent=getArabicWeekday(dayStr);
+
+      const times=state.grouped[id][dayStr]||[];
+      const tdTimes=[];
+      for(let i=0;i<4;i++){ 
+        const td=document.createElement('td'); 
+        td.textContent=times[i]||'-'; 
+        tdTimes.push(td); 
+      }
+
+      tr.appendChild(tdSerial); 
+      tr.appendChild(tdDate); 
+      tr.appendChild(tdDay);
+      tdTimes.forEach(td=>tr.appendChild(td));
+      tbody.appendChild(tr);
+    }
+
+    table.appendChild(tbody); 
+    wrap.appendChild(table); 
+    card.appendChild(wrap); 
+    reports.appendChild(card);
+  }
+}
+
+function downloadDisplayedCSV(){
+  const sel=document.getElementById('monthSelect').value;
+  const startDate = document.getElementById('startDate').value;
+  const endDate = document.getElementById('endDate').value;
+  
+  if(!sel || !startDate || !endDate){ 
+    alert('اختر الشهر والفترة أولاً'); 
+    return; 
+  }
+  
+  const rows=[['ID','Name','Date','Day','Time1','Time2','Time3','Time4']];
+  const ids=Object.keys(state.grouped).sort((a,b)=>Number(a)-Number(b));
+  const daysInRange = getDaysInRange(startDate, endDate);
+  
+  for(const id of ids){
+    const name = state.names[id] || '';
+    for(const dayStr of daysInRange){
+      const times=state.grouped[id][dayStr]||[];
+      rows.push([id, name, dayStr, getArabicWeekday(dayStr), times[0]||'', times[1]||'', times[2]||'', times[3]||'']);
+    }
+  }
+  
+  const csvContent = rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob=new Blob([csvContent], {type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); 
+  a.href=url; 
+  a.download=`attendance_${startDate}_to_${endDate}.csv`; 
+  document.body.appendChild(a); 
+  a.click(); 
+  a.remove(); 
+  URL.revokeObjectURL(url);
+}
+
+function printAllEmployeesOnePage(){
+  const sel = document.getElementById('monthSelect').value;
+  const startDate = document.getElementById('startDate').value;
+  const endDate = document.getElementById('endDate').value;
+  
+  if(!sel || !startDate || !endDate){ 
+    alert('اختر الشهر والفترة أولاً'); 
+    return; 
+  }
+  
+  const ids = Object.keys(state.grouped).sort((a,b)=>Number(a)-Number(b));
+  if(ids.length===0){ 
+    alert('لا توجد بيانات للطباعة'); 
+    return; 
+  }
+
+  const daysInRange = getDaysInRange(startDate, endDate);
+  
+  let printWindow = window.open('', '', 'width=1200,height=800');
+  let html = `<html lang="ar" dir="rtl">
+    <head>
+      <meta charset="utf-8">
+      <title>سجل حضور الموظفين</title>
+      <style>
+        body{font-family: "Segoe UI", Tahoma, Arial; color:black; text-align:center; font-size:10px; margin:0; padding:10px;}
+        table{width:100%;border-collapse:collapse;margin-top:8px;font-size:8px; page-break-inside:avoid;}
+        th,td{border:1px solid black;padding:3px;text-align:center;}
+        th{background:#ddd;}
+        .employee-section{page-break-after:always; margin-bottom:20px;}
+        .employees-list-section{page-break-after:always; margin-bottom:20px;}
+        .multi-column-container{display:flex; gap:10px; margin-top:15px;}
+        .column{flex:1; min-width:0;}
+        .employees-table{width:100%; font-size:9px;}
+        .company-header{text-align:center; margin-bottom:15px; padding-bottom:10px; border-bottom:2px solid #000;}
+        @media print {
+          .employee-section{page-break-after:always;}
+          .employees-list-section{page-break-after:always;}
+        }
+      </style>
+    </head>
+    <body>`;
+
+  // صفحة كشف بأسماء وارقام الموظفين - باستخدام أعمدة متعددة
+  html += `<div class="employees-list-section">
+    <div class="company-header">
+      <h1 style="margin:0; font-size:20px;">سوبر الصفوة</h1>
+      <h2 style="margin:5px 0; font-size:16px;">كشف بأسماء الموظفين</h2>
+      <p style="font-size:12px; margin:5px 0;">الفترة: ${startDate} إلى ${endDate}</p>
+      <p style="font-size:10px; margin:5px 0;">تاريخ الطباعة: ${new Date().toLocaleDateString('ar-EG')}</p>
+    </div>`;
+
+  // تقسيم الموظفين إلى 3 أعمدة
+  const employeesPerColumn = Math.ceil(ids.length / 3);
+  const columns = [[], [], []];
+  
+  ids.forEach((id, index) => {
+    const columnIndex = Math.floor(index / employeesPerColumn);
+    if (columnIndex < 3) {
+      columns[columnIndex].push({id, name: state.names[id] || `الموظف ${id}`});
+    }
+  });
+
+  html += `<div class="multi-column-container">`;
+  
+  columns.forEach((column, colIndex) => {
+    if (column.length > 0) {
+      html += `<div class="column">
+        <table class="employees-table">
+          <thead>
+            <tr>
+              <th style="width:15%">م</th>
+              <th style="width:60%">اسم الموظف</th>
+              <th style="width:25%">الرقم</th>
+            </tr>
+          </thead>
+          <tbody>`;
+      
+      column.forEach((employee, index) => {
+        const globalIndex = colIndex * employeesPerColumn + index + 1;
+        html += `<tr>
+          <td>${globalIndex}</td>
+          <td style="text-align:right; padding-right:5px; font-size:8px;">${employee.name}</td>
+          <td>${employee.id}</td>
+        </tr>`;
+      });
+      
+      html += `</tbody>
+        </table>
+      </div>`;
+    }
+  });
+  
+  html += `</div>
+    <div style="margin-top:15px; text-align:center; font-size:11px; padding:8px; background:#f5f5f5; border-radius:4px;">
+      <strong>إجمالي عدد الموظفين:</strong> ${ids.length}
+    </div>
+  </div>`;
+
+  // صفحات سجلات الحضور لكل موظف
+  for(const id of ids){
+    const employeeName = state.names[id] || `الموظف ${id}`;
+    html += `<div class="employee-section">
+      <div class="company-header">
+        <h2 style="margin:0; font-size:16px;">سوبر الصفوة</h2>
+        <div style="margin:3px 0; font-size:12px;">
+          <strong>سجل الحضور:</strong> ${employeeName}
+        </div>
+        <div style="margin:2px 0; font-size:11px;">
+          <strong>الرقم:</strong> ${id}
+        </div>
+        <div style="margin:2px 0; font-size:11px;">
+          <strong>الفترة:</strong> ${startDate} إلى ${endDate}
+        </div>
+      </div>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>مسلسل</th>
+            <th>التاريخ</th>
+            <th>اليوم</th>
+            <th>الزمن 1</th>
+            <th>الزمن 2</th>
+            <th>الزمن 3</th>
+            <th>الزمن 4</th>
+          </tr>
+        </thead>
+        <tbody>`;
+
+    let serial = 1;
+    for(const dayStr of daysInRange){
+      const times = state.grouped[id][dayStr] || [];
+      html += `<tr>
+        <td>${serial++}</td>
+        <td>${dayStr}</td>
+        <td>${getArabicWeekday(dayStr)}</td>
+        <td>${times[0]||'-'}</td>
+        <td>${times[1]||'-'}</td>
+        <td>${times[2]||'-'}</td>
+        <td>${times[3]||'-'}</td>
+      </tr>`;
+    }
+
+    html += `</tbody>
+      </table>
+      <div style="margin-top:10px; text-align:left; font-size:9px; padding:5px; background:#f0f0f0; border-radius:3px;">
+        <strong>عدد أيام العمل:</strong> ${serial-1} يوم
+      </div>
+    </div>`;
+  }
+
+  html += `<script>window.print();<\/script></body></html>`;
+  printWindow.document.write(html);
+  printWindow.document.close();
+}
+</script>
+</body>
+</html>
