@@ -160,14 +160,18 @@
             border: 1px solid rgba(0, 243, 255, 0.2);
         }
 
+        /* تعديل حجم الشعار */
         .profile-img {
-            width: 150px;
-            height: 150px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            object-fit: cover;
-            border: 5px solid var(--cyber-neon);
-            margin-bottom: 20px;
+            object-fit: contain;
+            border: 3px solid var(--cyber-neon);
+            margin: 0 auto 20px;
             box-shadow: 0 0 15px var(--cyber-neon);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            display: block;
         }
 
         .profile-name {
@@ -486,7 +490,7 @@
 
         <div class="profile-container">
             <div class="profile-sidebar">
-                <img src="logo.png">
+                <img src="logo.png" alt="شعار مدارات للأنظمة المحدودة" class="profile-img">
                 <h2 class="profile-name">مدارات للأنظمة المحدودة</h2>
                 <p class="profile-tagline">شركة سعودية رائدة في مجال الأمن السيبراني والأنظمة الذكية</p>
                 
@@ -752,7 +756,4 @@
         });
     </script>
 </body>
-
 </html>
-
-
