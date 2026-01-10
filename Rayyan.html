@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>عارض سجلات الحضور - نسخة نهائية</title>
+<title>عارض سجلات الحضور - النسخة النهائية</title>
 
 <!-- SheetJS لقراءة Excel محليًا -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -40,17 +40,140 @@ th{position:sticky;top:0;background:rgba(0,0,0,0.15);backdrop-filter:blur(6px)}
   .controls, .footer, .btn, .input-file, .select-month { display:none !important; }
 }
 
-/* الصفحة الأولى (كشف الأسماء) مضغوطة */
-.print-first-page{padding:12px 8px 6px;text-align:right}
-.print-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:11px}
-.print-table th,.print-table td{border:1px solid #333;padding:4px 6px;text-align:center;font-size:10px}
+/* تحسينات الطباعة */
+@media print {
+  body {
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
+    margin: 0;
+    padding: 10px;
+  }
+  
+  /* صفحة كشف الأسماء */
+  .print-first-page {
+    page-break-after: always;
+  }
+  
+  /* بطاقة بيانات الموظف العلوية */
+  .employee-card {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 12px;
+    margin-bottom: 15px;
+    page-break-inside: avoid;
+  }
+  
+  .employee-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .employee-info {
+    flex: 1;
+  }
+  
+  .employee-name {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 0 5px 0;
+    color: #000;
+  }
+  
+  .employee-id {
+    font-size: 13px;
+    color: #555;
+    margin: 0;
+  }
+  
+  .employee-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 8px;
+  }
+  
+  .meta-item {
+    background: white;
+    border: 1px solid #eee;
+    padding: 8px;
+    border-radius: 3px;
+    text-align: center;
+  }
+  
+  .meta-label {
+    font-size: 10px;
+    color: #666;
+    margin-bottom: 3px;
+  }
+  
+  .meta-value {
+    font-size: 11px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* جدول الحضور */
+  .attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 10px;
+  }
+  
+  .attendance-table th,
+  .attendance-table td {
+    border: 1px solid #333;
+    padding: 4px 6px;
+    text-align: center;
+  }
+  
+  .attendance-table thead th {
+    background-color: #e9ecef;
+    font-weight: bold;
+    color: #212529;
+  }
+  
+  .attendance-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  /* فاصل الصفحات */
+  .employee-section {
+    page-break-after: always;
+    margin-top: 20px;
+    padding-top: 15px;
+  }
+  
+  .employee-section:first-child {
+    margin-top: 0;
+    padding-top: 0;
+  }
+  
+  /* معلومات الصفحة */
+  .page-info {
+    font-size: 10px;
+    color: #666;
+    text-align: left;
+    margin-top: 5px;
+    border-top: 1px solid #ddd;
+    padding-top: 5px;
+  }
+  
+  /* إخفاء عناصر الطباعة غير المرغوبة */
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+  }
+}
 
-/* جدول كل موظف مضغوط */
-.emp-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:11px}
-.emp-table th,.emp-table td{border:1px solid #333;padding:4px;text-align:center;font-size:10px}
-
-/* فاصل الصفحة لكل موظف */
-.employee-section{page-break-after:always;margin-top:12px;padding-top:6px;border-top:1px dashed #ccc}
+/* تنسيقات الشاشة */
 .small{font-size:12px;color:var(--muted)}
 </style>
 </head>
@@ -61,28 +184,34 @@ th{position:sticky;top:0;background:rgba(0,0,0,0.15);backdrop-filter:blur(6px)}
       <div class="logo">س</div>
       <div class="hgroup">
         <h1>عارض سجلات الحضور لريان الجور</h1>
-        <div class="small">قراءة Excel محليًا - كشف أسماء مضغوط + صفحات موظفين</div>
+        <div class="small">النسخة النهائية - قراءة Excel محليًا</div>
       </div>
     </div>
     <div class="small">نسخة احترافية</div>
   </div>
 
   <div class="controls">
-    <label class="input-file" onclick="document.getElementById('fileInput').click()">اختر ملف Excel
+    <label class="input-file" onclick="document.getElementById('fileInput').click()">📁 اختر ملف Excel
       <input id="fileInput" type="file" accept=".xls,.xlsx" style="display:none" onchange="handleExcelFile(event)">
     </label>
 
-    <button class="btn ghost" onclick="downloadDisplayedCSV()">تحميل CSV</button>
-    <button class="btn" onclick="printAllEmployeesStyled()">طباعة الكشف + صفحات الموظفين</button>
+    <button class="btn ghost" onclick="downloadDisplayedCSV()">📥 تحميل CSV</button>
+    <button class="btn" onclick="printAllEmployeesStyled()">🖨️ طباعة الكشف + صفحات الموظفين</button>
+    <button class="btn ghost" onclick="showAllDatesTable()">📅 عرض جميع التواريخ</button>
   </div>
 
   <div id="metaInfo" class="meta">لم يتم رفع ملف بعد.</div>
+  
+  <div id="allDatesTable" style="display:none; margin-bottom:20px;">
+    <h3 style="text-align:center; margin-bottom:10px;">جميع التواريخ في الملف</h3>
+    <div id="datesTableContent"></div>
+  </div>
 
   <div id="reports" class="reports">
     <div class="empty">لم يتم تحميل بيانات بعد.</div>
   </div>
 
-  <div class="footer">تطبيق محلي — لا حاجة لسيرفر م/سعيد مهتدى</div>
+  <div class="footer">تطبيق محلي — لا حاجة لسيرفر | النسخة النهائية</div>
 </div>
 
 <script>
@@ -92,7 +221,8 @@ const state = {
   grouped: {},   // grouped[id][date] = [times...]
   months: new Set(),
   names: {},
-  allDates: new Set() // جميع التواريخ الموجودة في الملف
+  allDates: new Set(),
+  dateDayMap: {} // حفظ تخطيط التاريخ-اليوم
 };
 
 /* قراءة ملف Excel */
@@ -111,13 +241,11 @@ function handleExcelFile(e){
   reader.readAsArrayBuffer(file);
 }
 
-/* محاولة فك تشفير الأسماء (windows-1256 fallback) */
+/* فك تشفير الأسماء */
 function decodePossiblyCP1256(text){
   if(!text) return '';
   text = String(text);
-  // إذا يحتوي على عربي بالفعل
   if(/[\u0600-\u06FF]/.test(text)) return text;
-  // حاول TextDecoder windows-1256
   try{
     if(typeof TextDecoder === 'function'){
       const decoder = new TextDecoder('windows-1256');
@@ -126,12 +254,10 @@ function decodePossiblyCP1256(text){
       if(/[ء-ي]/.test(dec)) return dec;
     }
   }catch(e){}
-  // محاولة بديلة: Latin1 -> UTF-8 trick
   try{
     const conv = decodeURIComponent(escape(text));
     if(/[ء-ي]/.test(conv)) return conv;
   }catch(e){}
-  // fallback: أصل النص
   return text;
 }
 
@@ -139,7 +265,6 @@ function decodePossiblyCP1256(text){
 function excelSerialToDate(serial){
   const n = Number(serial);
   if(isNaN(n)) return serial;
-  // Excel's serial starts 1 Jan 1900 but with bug: 1900 is leap in Excel.
   const epoch = new Date(Date.UTC(1899,11,30));
   epoch.setUTCDate(epoch.getUTCDate() + n);
   const y = epoch.getUTCFullYear();
@@ -148,33 +273,127 @@ function excelSerialToDate(serial){
   return `${y}-${m}-${d}`;
 }
 
-/* تنظيف وتنسيق الوقت وتحويل الأحرف الغريبة إلى AM/PM */
+/* تحويل التاريخ إلى صيغة dd/mm/yyyy للعرض */
+function formatDateDMY(dateStr) {
+  if (!dateStr) return '';
+  
+  // إذا كان التاريخ بصيغة mm/dd/yyyy
+  if (dateStr.includes('/')) {
+    const parts = dateStr.split('/');
+    if (parts.length === 3) {
+      const month = parts[0].padStart(2, '0');
+      const day = parts[1].padStart(2, '0');
+      let year = parts[2];
+      if (year.length === 2) year = '20' + year;
+      return `${day}/${month}/${year}`;
+    }
+  }
+  
+  // إذا كان التاريخ بصيغة yyyy-mm-dd
+  if (dateStr.includes('-')) {
+    const parts = dateStr.split('-');
+    if (parts.length === 3) {
+      const day = parts[2].padStart(2, '0');
+      const month = parts[1].padStart(2, '0');
+      const year = parts[0];
+      return `${day}/${month}/${year}`;
+    }
+  }
+  
+  return dateStr;
+}
+
+/* تحويل التاريخ من mm/dd/yyyy إلى Date object */
+function parseMDYToDate(dateStr) {
+  if (!dateStr) return null;
+  
+  dateStr = dateStr.toString().trim();
+  
+  if (dateStr.includes('/')) {
+    const parts = dateStr.split('/');
+    if (parts.length === 3) {
+      const month = parseInt(parts[0], 10) - 1;
+      const day = parseInt(parts[1], 10);
+      let year = parseInt(parts[2], 10);
+      
+      if (year < 100) {
+        year += 2000;
+      }
+      
+      return new Date(year, month, day, 12, 0, 0);
+    }
+  }
+  
+  return null;
+}
+
+/* تحويل تاريخ إلى اسم يوم عربي بشكل صحيح */
+function getArabicWeekday(dateStr){
+  if(!dateStr || dateStr.trim() === '') return '';
+  
+  // إذا كان لدينا اليوم محفوظاً مسبقاً
+  if (state.dateDayMap[dateStr]) {
+    return state.dateDayMap[dateStr];
+  }
+  
+  if (!dateStr.match(/\d{1,2}\/\d{1,2}\/\d{2,4}/)) {
+    return '';
+  }
+  
+  const dateObj = parseMDYToDate(dateStr);
+  
+  if (!dateObj || isNaN(dateObj.getTime())) {
+    return '';
+  }
+  
+  const days = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+  const dayIndex = dateObj.getDay();
+  const dayName = days[dayIndex];
+  
+  // حفظ اليوم للتاريخ
+  state.dateDayMap[dateStr] = dayName;
+  
+  return dayName;
+}
+
+/* اختبار أن اليوم يتطابق مع التاريخ */
+function testAllDates() {
+  console.log('=== اختبار جميع التواريخ ===');
+  const allDates = Array.from(state.allDates).sort();
+  
+  allDates.forEach(date => {
+    const day = getArabicWeekday(date);
+    const dateObj = parseMDYToDate(date);
+    console.log(`${formatDateDMY(date)} (${date}) => ${day}`);
+  });
+  
+  // التحقق من الجمعة
+  const fridayDates = allDates.filter(date => getArabicWeekday(date) === 'الجمعة');
+  console.log(`عدد أيام الجمعة: ${fridayDates.length}`);
+  fridayDates.forEach(date => {
+    console.log(`يوم الجمعة: ${formatDateDMY(date)} (${date})`);
+  });
+}
+
+/* تنظيف وتنسيق الوقت */
 function cleanAndFormatTime(timeStr) {
   if (!timeStr) return '';
   
-  // تحويل إلى نص
   let cleaned = String(timeStr).trim();
-  
-  // إذا كان فارغاً
   if (!cleaned) return '';
 
   // تحويل الأحرف الغريبة إلى AM/PM
-  if (cleaned.includes('ã') || cleaned.includes('Ã') || cleaned.includes('ã'.charCodeAt(0))) {
-    // الحرف ã يمثل وقت مسائي (PM)
+  if (cleaned.includes('ã') || cleaned.includes('Ã')) {
     cleaned = cleaned.replace(/[ãÃ]/g, 'PM');
   }
   
-  if (cleaned.includes('Õ') || cleaned.includes('Õ'.charCodeAt(0)) || cleaned.includes('õ')) {
-    // الحرف Õ يمثل وقت صباحي (AM)
+  if (cleaned.includes('Õ') || cleaned.includes('õ')) {
     cleaned = cleaned.replace(/[Õõ]/g, 'AM');
   }
 
-  // إزالة أي أحرف غريبة متبقية وتحويل الوقت
   cleaned = cleaned.replace(/[^0-9:.\sAPMapm]/g, '').trim();
   
-  // إذا كان الوقت يحتوي على AM/PM (تنسيق 12 ساعة)
   if (cleaned.match(/[APap][Mm]/)) {
-    // تحويل من 12 ساعة إلى 24 ساعة
     const timeParts = cleaned.split(/:|\s/);
     let hours = parseInt(timeParts[0]);
     const minutes = timeParts[1] || '00';
@@ -189,13 +408,11 @@ function cleanAndFormatTime(timeStr) {
     return `${String(hours).padStart(2, '0')}:${minutes.padStart(2, '0')}`;
   }
   
-  // إذا كان الوقت بتنسيق 24 ساعة بالفعل
   if (cleaned.match(/^\d{1,2}:\d{2}$/)) {
     const [h, m] = cleaned.split(':');
     return `${String(h).padStart(2, '0')}:${m.padStart(2, '0')}`;
   }
   
-  // إذا كان الوقت برقم عشري (مثل 0.5 لـ 12:00)
   if (cleaned.match(/^\d+\.\d+$/)) {
     const decimal = parseFloat(cleaned);
     const totalMinutes = Math.round(decimal * 24 * 60);
@@ -214,8 +431,8 @@ function processExcelData(data){
   state.months = new Set();
   state.names = {};
   state.allDates = new Set();
+  state.dateDayMap = {};
 
-  // نتوقع أن الصف الأول رأس
   for(let i=1;i<data.length;i++){
     const row = data[i];
     if(!row || row.length < 4) continue;
@@ -226,13 +443,10 @@ function processExcelData(data){
     let dateTime = row[3] !== undefined ? String(row[3]).trim() : '';
     if(!id || !dateTime) continue;
 
-    // تفصيل التاريخ والوقت
     let datePart = '';
     let timePart = '';
 
-    // لو التاريخ مكتوب كـ Excel serial (رقم)
     if(/^\d+(\.\d+)?$/.test(dateTime) && dateTime.length < 6){
-      // قد يكون serial أو وقت فقط - نعالج لاحقًا
       datePart = excelSerialToDate(dateTime.split('.')[0]);
     } else {
       const parts = dateTime.split(' ');
@@ -240,68 +454,76 @@ function processExcelData(data){
         datePart = parts[0];
         timePart = parts.slice(1).join(' ');
       }
-      // إذا التاريخ بصيغة d/m/Y
+      
       if(datePart.indexOf('/') !== -1){
         const dp = datePart.split('/');
         if(dp.length === 3){
-          let day = dp[0].padStart(2,'0');
-          let month = dp[1].padStart(2,'0');
+          let month = dp[0].padStart(2,'0');
+          let day = dp[1].padStart(2,'0');
           let year = dp[2];
           if(year.length === 2) year = '20' + year;
-          datePart = `${year}-${month}-${day}`;
+          datePart = `${month}/${day}/${year}`;
         }
       } else if(/^\d{4}-\d{1,2}-\d{1,2}$/.test(datePart)){
-        // صحيح الشكل
+        const parts = datePart.split('-');
+        datePart = `${parts[1]}/${parts[2]}/${parts[0]}`;
       } else {
-        // محاولة تحويل لو كان serial داخل cell مع وقت منفصل
         const n = Number(datePart);
-        if(!isNaN(n)) datePart = excelSerialToDate(n);
+        if(!isNaN(n)) {
+          const serialDate = excelSerialToDate(n);
+          const parts = serialDate.split('-');
+          datePart = `${parts[1]}/${parts[2]}/${parts[0]}`;
+        }
       }
     }
 
-    // تنظيف وتنسيق الوقت
     timePart = cleanAndFormatTime(timePart);
 
-    // تخزين الاسم
     if(name && !state.names[id]) state.names[id] = name;
 
-    // تجميع
     if(!state.grouped[id]) state.grouped[id] = {};
-    const dayKey = datePart.length >= 10 ? datePart.slice(0,10) : datePart;
-    if(!state.grouped[id][dayKey]) state.grouped[id][dayKey] = [];
-    if(timePart && !state.grouped[id][dayKey].includes(timePart)) state.grouped[id][dayKey].push(timePart);
+    if(!state.grouped[id][datePart]) state.grouped[id][datePart] = [];
+    if(timePart && !state.grouped[id][datePart].includes(timePart)) state.grouped[id][datePart].push(timePart);
 
-    // إضافة تواريخ
-    if(dayKey && dayKey.length >= 10) {
-      state.allDates.add(dayKey);
-      state.months.add(dayKey.slice(0,7));
+    if(datePart && datePart.length >= 8) {
+      state.allDates.add(datePart);
+      const parts = datePart.split('/');
+      if(parts.length === 3) {
+        const monthYear = `${parts[2]}-${parts[0]}`;
+        state.months.add(monthYear);
+      }
     }
   }
 
-  // ترتيب الأوقات لكل يوم
   for(const id of Object.keys(state.grouped)){
     for(const d of Object.keys(state.grouped[id])){
       state.grouped[id][d].sort();
     }
   }
 
-  document.getElementById('metaInfo').textContent = `تم قراءة ${Math.max(0, state.raw.length - 1)} سجل، و${Object.keys(state.grouped).length} موظف، ${state.allDates.size} يوم.`;
+  const sortedDates = Array.from(state.allDates).sort((a, b) => {
+    const dateA = parseMDYToDate(a);
+    const dateB = parseMDYToDate(b);
+    return dateA - dateB;
+  });
+  state.allDates = new Set(sortedDates);
 
-  // عرض جميع البيانات مباشرة
+  testAllDates();
+
+  const totalRecords = Math.max(0, state.raw.length - 1);
+  const totalEmployees = Object.keys(state.grouped).length;
+  const totalDays = state.allDates.size;
+  
+  document.getElementById('metaInfo').innerHTML = `
+    تم قراءة <strong>${totalRecords}</strong> سجل<br>
+    عدد الموظفين: <strong>${totalEmployees}</strong><br>
+    عدد الأيام: <strong>${totalDays}</strong> يوم
+  `;
+
   renderAllData();
 }
 
-/* تحويل تاريخ YYYY-MM-DD إلى اسم يوم عربي */
-function getArabicWeekday(dateStr){
-  if(!dateStr) return '';
-  const p = dateStr.split('-');
-  if(p.length < 3) return '';
-  const d = new Date(Number(p[0]), Number(p[1])-1, Number(p[2]));
-  const days = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
-  return days[d.getDay()];
-}
-
-/* عرض جميع البيانات بدون تصفية */
+/* عرض جميع البيانات */
 function renderAllData(){
   const reports = document.getElementById('reports');
   reports.innerHTML = '';
@@ -312,8 +534,7 @@ function renderAllData(){
     return;
   }
 
-  // الحصول على جميع التواريخ وترتيبها
-  const allDates = Array.from(state.allDates).sort();
+  const allDates = Array.from(state.allDates);
   
   ids.forEach(id => {
     const card = document.createElement('div');
@@ -326,16 +547,26 @@ function renderAllData(){
     const wrap = document.createElement('div'); wrap.className = 'table-wrap';
     const table = document.createElement('table');
     const thead = document.createElement('thead');
-    thead.innerHTML = `<tr><th>مسلسل</th><th>التاريخ</th><th>اليوم</th><th>الزمن 1</th><th>الزمن 2</th><th>الزمن 3</th><th>الزمن 4</th><th>الزمن 5</th></tr>`;
+    thead.innerHTML = `<tr><th>م</th><th>التاريخ</th><th>اليوم</th><th>الحضور 1</th><th>الحضور 2</th><th>انصراف 1</th><th>انصراف 2</th><th>انصراف 3</th></tr>`;
     table.appendChild(thead);
 
     const tbody = document.createElement('tbody');
     allDates.forEach((date, index) => {
       const times = state.grouped[id][date] || [];
+      const formattedDate = formatDateDMY(date);
+      const dayName = getArabicWeekday(date);
       const tr = document.createElement('tr');
+      
+      // تلوين يوم الجمعة
+      const isFriday = dayName === 'الجمعة';
+      if (isFriday) {
+        tr.style.backgroundColor = 'rgba(255, 255, 0, 0.1)';
+        tr.style.fontWeight = 'bold';
+      }
+      
       tr.innerHTML = `<td>${index + 1}</td>
-                      <td>${date}</td>
-                      <td>${getArabicWeekday(date)}</td>
+                      <td>${formattedDate}</td>
+                      <td>${dayName}</td>
                       <td>${escapeHtml(times[0]||'-')}</td>
                       <td>${escapeHtml(times[1]||'-')}</td>
                       <td>${escapeHtml(times[2]||'-')}</td>
@@ -351,10 +582,55 @@ function renderAllData(){
   });
 }
 
+/* عرض جدول جميع التواريخ */
+function showAllDatesTable() {
+  const allDates = Array.from(state.allDates);
+  if (allDates.length === 0) {
+    alert('لا توجد بيانات للعرض');
+    return;
+  }
+  
+  const container = document.getElementById('allDatesTable');
+  const content = document.getElementById('datesTableContent');
+  
+  let html = `<div style="overflow-x:auto;">
+    <table style="width:100%; border-collapse:collapse; background:white; color:#222;">
+      <thead>
+        <tr style="background:#f0f0f0;">
+          <th style="padding:8px; border:1px solid #ddd;">مسلسل</th>
+          <th style="padding:8px; border:1px solid #ddd;">التاريخ (mm/dd/yyyy)</th>
+          <th style="padding:8px; border:1px solid #ddd;">التاريخ (dd/mm/yyyy)</th>
+          <th style="padding:8px; border:1px solid #ddd;">اليوم</th>
+          <th style="padding:8px; border:1px solid #ddd;">ملاحظات</th>
+        </tr>
+      </thead>
+      <tbody>`;
+  
+  allDates.forEach((date, index) => {
+    const formattedDate = formatDateDMY(date);
+    const dayName = getArabicWeekday(date);
+    const isFriday = dayName === 'الجمعة';
+    const notes = isFriday ? 'يوم الجمعة' : '';
+    
+    html += `
+      <tr style="${isFriday ? 'background:#fffacd; font-weight:bold;' : ''}">
+        <td style="padding:6px; border:1px solid #ddd; text-align:center;">${index + 1}</td>
+        <td style="padding:6px; border:1px solid #ddd; text-align:center;">${date}</td>
+        <td style="padding:6px; border:1px solid #ddd; text-align:center;">${formattedDate}</td>
+        <td style="padding:6px; border:1px solid #ddd; text-align:center;">${dayName}</td>
+        <td style="padding:6px; border:1px solid #ddd; text-align:center;">${notes}</td>
+      </tr>`;
+  });
+  
+  html += `</tbody></table></div>`;
+  content.innerHTML = html;
+  container.style.display = 'block';
+}
+
 /* تنزيل CSV */
 function downloadDisplayedCSV(){
   const ids = Object.keys(state.grouped).sort((a,b)=>Number(a)-Number(b));
-  const allDates = Array.from(state.allDates).sort();
+  const allDates = Array.from(state.allDates);
   
   if(ids.length === 0) return alert('لا توجد بيانات للتحميل');
   
@@ -362,8 +638,9 @@ function downloadDisplayedCSV(){
   ids.forEach(id => {
     const name = state.names[id] || '';
     allDates.forEach(date => {
+      const formattedDate = formatDateDMY(date);
       const times = state.grouped[id][date] || [];
-      rows.push([id, name, date, getArabicWeekday(date), times[0]||'', times[1]||'', times[2]||'', times[3]||'', times[4]||'']);
+      rows.push([id, name, formattedDate, getArabicWeekday(date), times[0]||'', times[1]||'', times[2]||'', times[3]||'', times[4]||'']);
     });
   });
   
@@ -372,54 +649,382 @@ function downloadDisplayedCSV(){
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a'); 
   a.href = url; 
-  a.download = `attendance_all_data.csv`; 
+  a.download = `attendance_data_${new Date().toISOString().slice(0,10)}.csv`; 
   document.body.appendChild(a); 
   a.click(); 
   a.remove(); 
   URL.revokeObjectURL(url);
 }
 
-/* طباعة: الصفحة الأولى كشف أسماء منسق مضغوط + لكل موظف صفحة منفصلة */
+/* الطباعة النهائية */
 function printAllEmployeesStyled(){
   const ids = Object.keys(state.grouped).sort((a,b)=>Number(a)-Number(b));
-  const allDates = Array.from(state.allDates).sort();
+  const allDates = Array.from(state.allDates);
   
   if(!ids.length) return alert('لا توجد بيانات للطباعة');
+  
+  const startDate = allDates[0] || '';
+  const endDate = allDates[allDates.length - 1] || '';
+  const formattedStartDate = formatDateDMY(startDate);
+  const formattedEndDate = formatDateDMY(endDate);
+  
+  let html = `<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>طباعة سجلات الحضور - النسخة النهائية</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #222;
+    margin: 0;
+    padding: 15px;
+    background: white;
+  }
+  
+  .print-first-page {
+    page-break-after: always;
+  }
+  
+  .company-header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #333;
+  }
+  
+  .company-header h1 {
+    margin: 0 0 5px 0;
+    font-size: 22px;
+    color: #000;
+  }
+  
+  .company-header .subtitle {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 10px;
+  }
+  
+  .print-date {
+    font-size: 12px;
+    color: #555;
+    text-align: left;
+  }
+  
+  /* كشف الأسماء */
+  .names-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 12px;
+  }
+  
+  .names-table th,
+  .names-table td {
+    border: 1px solid #333;
+    padding: 6px 8px;
+    text-align: center;
+  }
+  
+  .names-table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+  }
+  
+  .names-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  /* صفحة الموظف */
+  .employee-section {
+    page-break-after: always;
+    margin-top: 20px;
+    padding-top: 20px;
+  }
+  
+  .employee-card {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .employee-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ccc;
+  }
+  
+  .employee-info {
+    flex: 1;
+  }
+  
+  .employee-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 0 8px 0;
+    color: #000;
+  }
+  
+  .employee-id {
+    font-size: 14px;
+    color: #555;
+    margin: 0;
+  }
+  
+  .employee-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 15px;
+  }
+  
+  .meta-item {
+    background: white;
+    border: 1px solid #eee;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .meta-label {
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .meta-value {
+    font-size: 13px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* جدول الحضور */
+  .attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 11px;
+  }
+  
+  .attendance-table th,
+  .attendance-table td {
+    border: 1px solid #333;
+    padding: 5px 6px;
+    text-align: center;
+  }
+  
+  .attendance-table thead th {
+    background-color: #e9ecef;
+    font-weight: bold;
+    color: #212529;
+    font-size: 12px;
+  }
+  
+  .attendance-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  /* تلوين يوم الجمعة */
+  .friday-row {
+    background-color: #fffacd !important;
+    font-weight: bold;
+  }
+  
+  /* معلومات الصفحة */
+  .page-info {
+    font-size: 11px;
+    color: #666;
+    text-align: left;
+    margin-top: 10px;
+    border-top: 1px solid #ddd;
+    padding-top: 8px;
+  }
+  
+  /* إخفاء عناصر الطباعة غير المرغوبة */
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+  }
+  
+  @page {
+    margin: 15mm;
+    size: A4;
+  }
+</style>
+</head>
+<body>`;
 
-  let html = `<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>طباعة سجلات الحضور</title>
-    <style>
-      body{font-family:Arial, Tahoma; color:#222; padding:18px}
-      .company{display:flex;justify-content:space-between;align-items:center}
-      h1{margin:0}
-      .first-table{width:100%;border-collapse:collapse;margin-top:12px}
-      .first-table th,.first-table td{border:1px solid #333;padding:4px 6px;text-align:center;font-size:10px}
-      .employee{page-break-after:always;margin-top:16px}
-      .emp-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:10px}
-      .emp-table th,.emp-table td{border:1px solid #333;padding:4px;text-align:center}
-      .meta{font-size:12px;color:#333}
-    </style>
-    </head><body>`;
-
-  // الصفحة الأولى: كشف الأسماء (مضغوط)
-  html += `<div class="company"><div><h1> سجلات الحضور لريان الجور</h1><div class="meta">كشف أسماء الموظفين - ${allDates.length} يوم</div></div><div>${new Date().toLocaleString()}</div></div>`;
-  html += `<table class="first-table"><thead><tr><th>مسلسل</th><th>الاسم</th><th>الرقم</th></tr></thead><tbody>`;
+  // === الصفحة الأولى: كشف الأسماء ===
+  html += `
+  <div class="print-first-page">
+    <div class="company-header">
+      <h1>شركة ريان الجور</h1>
+      <div class="subtitle">كشف سجلات الحضور والانصراف - النسخة النهائية</div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+        <div class="print-date">
+          تاريخ الطباعة: ${new Date().toLocaleDateString('ar-SA')}<br>
+          وقت الطباعة: ${new Date().toLocaleTimeString('ar-SA')}
+        </div>
+        <div style="font-size: 13px; color: #555; background:#f8f9fa; padding:10px; border-radius:5px;">
+          <strong>الفترة:</strong> من ${formattedStartDate} إلى ${formattedEndDate}<br>
+          <strong>إجمالي الأيام:</strong> ${allDates.length} يوم<br>
+          <strong>عدد الموظفين:</strong> ${ids.length} موظف
+        </div>
+      </div>
+    </div>
+    
+    <h2 style="text-align: center; margin: 25px 0 15px; font-size: 18px; border-bottom:2px solid #333; padding-bottom:10px;">كشف أسماء الموظفين</h2>
+    
+    <table class="names-table">
+      <thead>
+        <tr>
+          <th width="8%">مسلسل</th>
+          <th width="62%">اسم الموظف</th>
+          <th width="15%">الرقم الوظيفي</th>
+          <th width="15%">أيام الحضور</th>
+        </tr>
+      </thead>
+      <tbody>`;
+  
   ids.forEach((id, idx) => {
-    html += `<tr><td>${idx+1}</td><td>${escapeHtml(state.names[id]||id)}</td><td>${escapeHtml(id)}</td></tr>`;
+    const name = state.names[id] || id;
+    const attendanceDays = Object.keys(state.grouped[id] || {}).length;
+    html += `
+        <tr>
+          <td>${idx + 1}</td>
+          <td style="text-align: right; padding-right: 20px; font-weight:bold;">${escapeHtml(name)}</td>
+          <td style="font-weight:bold;">${escapeHtml(id)}</td>
+          <td>${attendanceDays}</td>
+        </tr>`;
   });
-  html += `</tbody></table><div style="page-break-after:always"></div>`;
+  
+  html += `
+      </tbody>
+    </table>
+    
+    <div style="margin-top: 30px; padding: 15px; background: #f0f0f0; border-radius: 5px; font-size: 12px; border-right:4px solid #06b6d4;">
+      <strong>ملاحظات:</strong><br>
+      1. تم رصد ${ids.length} موظف خلال الفترة من ${formattedStartDate} إلى ${formattedEndDate}<br>
+      2. إجمالي أيام العمل: ${allDates.length} يوم<br>
+      3. يوم الجمعة مظلل باللون الأصفر في الجداول
+    </div>
+  </div>`;
 
-  // صفحات الموظفين
-  ids.forEach(id => {
-    html += `<div class="employee"><div style="display:flex;justify-content:space-between;align-items:center"><div><h2>الموظف: ${escapeHtml(state.names[id]||id)}</h2><div class="meta">الرقم: ${escapeHtml(id)} — ${allDates.length} يوم</div></div><div>${new Date().toLocaleDateString()}</div></div>`;
-    html += `<table class="emp-table"><thead><tr><th>مسلسل</th><th>التاريخ</th><th>اليوم</th><th>الزمن 1</th><th>الزمن 2</th><th>الزمن 3</th><th>الزمن 4</th><th>الزمن 5</th></tr></thead><tbody>`;
+  // === صفحات الموظفين الفردية ===
+  ids.forEach((id, employeeIndex) => {
+    const name = state.names[id] || id;
+    const attendanceDays = Object.keys(state.grouped[id] || {}).length;
+    
+    html += `
+    <div class="employee-section">
+      <!-- بطاقة بيانات الموظف العلوية -->
+      <div class="employee-card">
+        <div class="employee-header">
+          <div class="employee-info">
+            <h2 class="employee-name">${escapeHtml(name)}</h2>
+            <p class="employee-id">الرقم الوظيفي: ${escapeHtml(id)}</p>
+          </div>
+          <div style="text-align: left; background:#e9ecef; padding:8px; border-radius:4px;">
+            <div style="font-size: 12px; color: #555;">
+              <strong>صفحة الموظف:</strong> ${employeeIndex + 1} من ${ids.length}<br>
+              <strong>تاريخ الطباعة:</strong> ${new Date().toLocaleDateString('ar-SA')}
+            </div>
+          </div>
+        </div>
+        
+        <!-- معلومات إحصائية -->
+        <div class="employee-meta">
+          <div class="meta-item">
+            <div class="meta-label">إجمالي أيام الحضور</div>
+            <div class="meta-value">${attendanceDays} يوم</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">الفترة الزمنية</div>
+            <div class="meta-value">${formattedStartDate}<br>إلى<br>${formattedEndDate}</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">عدد السجلات</div>
+            <div class="meta-value">${allDates.length} يوم</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- جدول الحضور -->
+      <h3 style="text-align: center; margin: 20px 0 15px; font-size: 16px; color:#333; background:#f8f9fa; padding:10px; border-radius:5px;">
+        تفصيل سجلات الحضور اليومية
+      </h3>
+      
+      <table class="attendance-table">
+        <thead>
+          <tr class="table-header">
+            <th width="6%">م</th>
+            <th width="18%">التاريخ<br>(dd/mm/yyyy)</th>
+            <th width="14%">اليوم</th>
+            <th width="12%">الحضور 1</th>
+            <th width="12%">الحضور 2</th>
+            <th width="12%">انصراف 1</th>
+            <th width="12%">انصراف 2</th>
+            <th width="12%">انصراف 3</th>
+          </tr>
+        </thead>
+        <tbody>`;
+    
+    // إضافة سجلات الحضور
     allDates.forEach((date, index) => {
       const times = state.grouped[id][date] || [];
-      html += `<tr><td>${index + 1}</td><td>${date}</td><td>${getArabicWeekday(date)}</td><td>${escapeHtml(times[0]||'-')}</td><td>${escapeHtml(times[1]||'-')}</td><td>${escapeHtml(times[2]||'-')}</td><td>${escapeHtml(times[3]||'-')}</td><td>${escapeHtml(times[4]||'-')}</td></tr>`;
+      const formattedDate = formatDateDMY(date);
+      const dayName = getArabicWeekday(date);
+      const isFriday = dayName === 'الجمعة';
+      const rowClass = isFriday ? 'class="friday-row"' : '';
+      
+      html += `
+          <tr ${rowClass}>
+            <td>${index + 1}</td>
+            <td>${formattedDate}</td>
+            <td>${dayName}</td>
+            <td>${escapeHtml(times[0] || '-')}</td>
+            <td>${escapeHtml(times[1] || '-')}</td>
+            <td>${escapeHtml(times[2] || '-')}</td>
+            <td>${escapeHtml(times[3] || '-')}</td>
+            <td>${escapeHtml(times[4] || '-')}</td>
+          </tr>`;
     });
-    html += `</tbody></table></div>`;
+    
+    html += `
+        </tbody>
+      </table>
+      
+      <div class="page-info">
+        <strong>معلومات الصفحة:</strong> الموظف: ${escapeHtml(name)} | الرقم: ${escapeHtml(id)} | 
+        صفحة: ${employeeIndex + 1} من ${ids.length} | إجمالي أيام الحضور: ${attendanceDays} يوم
+      </div>
+    </div>`;
   });
 
-  html += `<script>window.print();setTimeout(()=>window.close(),500);<\/script></body></html>`;
+  html += `
+  <script>
+    window.onload = function() {
+      // إعطاء وقت للتحميل ثم الطباعة
+      setTimeout(function() {
+        window.print();
+        setTimeout(function() {
+          window.close();
+        }, 1000);
+      }, 500);
+    }
+  <\/script>
+</body>
+</html>`;
 
   const w = window.open('', '_blank', 'width=1200,height=800');
   w.document.open();
@@ -428,9 +1033,9 @@ function printAllEmployeesStyled(){
 }
 
 /* تنسيقات مساعدة */
-function escapeHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function escapeHtml(s){ 
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); 
+}
 </script>
 </body>
-
 </html>
-
