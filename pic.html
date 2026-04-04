@@ -17,7 +17,7 @@
         }
         canvas { display: block; width: 100%; height: 100%; touch-action: none; }
         
-        /* طبقات الأدلة الإرشادية */
+        /*  */
         .guide-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
         .grid-v { position: absolute; left: 50%; top: 0; width: 1.5px; height: 100%; background: rgba(30, 86, 49, 0.5); }
         .eye-line { position: absolute; top: 42%; left: 0; width: 100%; height: 2px; background: rgba(0, 255, 0, 0.6); }
@@ -99,13 +99,13 @@
     function draw() {
         ctx.save();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "white"; // ضمان خلفية بيضاء نقية
+        ctx.fillStyle = "white"; //
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
         ctx.translate(state.x, state.y);
         ctx.rotate(ctrl.rotate.value * Math.PI / 180);
         
-        // تطبيق فلاتر المعالجة الرقمية
+        // 
         ctx.filter = `brightness(${ctrl.bright.value}%) contrast(${ctrl.contrast.value}%)`;
         
         if (img.src) {
@@ -114,13 +114,13 @@
         ctx.restore();
     }
 
-    // تحديث فوري عند التلاعب بالمقابض
+    // 
     sliders.forEach(s => ctrl[s].oninput = () => {
         if (s === 'zoom') state.scale = parseFloat(ctrl.zoom.value);
         draw();
     });
 
-    // منطق التحريك باللمس والماوس
+    // 
     const start = (e) => { state.isDragging = true; const p = e.touches ? e.touches[0] : e; state.lastX = p.clientX; state.lastY = p.clientY; };
     const move = (e) => {
         if (!state.isDragging) return;
@@ -139,7 +139,7 @@
     downloadBtn.onclick = () => {
         const link = document.createElement('a');
         link.download = 'Absher_Identity_Master.jpg';
-        // تصدير بجودة قصوى
+        // 
         link.href = canvas.toDataURL('image/jpeg', 0.95);
         link.click();
     };
