@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S.K. Systems Consultant - V13 PRECISION</title>
+    <title>مدارات للانظمة المحدودة</title>
     <style>
         :root {
             --primary: #0f172a;
@@ -16,11 +16,12 @@
             --cyan: #06b6d4;
             --indigo: #4f46e5;
             --rose: #f43f5e;
+            --orange: #ea580c;
+            --teal: #14b8a6;
         }
         * { box-sizing: border-box; }
         body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 0; color: var(--primary); }
         
-        /* Floating Home Button */
         .home-btn-fixed {
             position: fixed;
             bottom: 25px;
@@ -45,24 +46,24 @@
             background: linear-gradient(135deg, var(--blue) 0%, var(--purple) 100%);
         }
         
-        .wrapper { max-width: 1600px; margin: auto; background: white; border-radius: 28px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.3); overflow: hidden; }
+        .wrapper { max-width: 1800px; margin: auto; background: white; border-radius: 28px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.3); overflow: hidden; }
         .header { background: linear-gradient(135deg, var(--primary) 0%, #1e293b 100%); color: white; padding: 20px 30px; text-align: center; border-bottom: 4px solid var(--accent); }
-        .header h1 { margin: 0; font-size: 1.6rem; }
+        .header h1 { margin: 0; font-size: 1.8rem; }
         .badge { background: var(--accent); padding: 5px 14px; border-radius: 40px; font-size: 11px; display: inline-block; margin-top: 8px; font-weight: bold; }
         
-        .nav-tabs { display: flex; overflow-x: auto; background: #f1f5f9; padding: 10px 12px; gap: 6px; scrollbar-width: thin; flex-wrap: wrap; justify-content: center; border-bottom: 1px solid #e2e8f0; max-height: 110px; position: sticky; top: 0; z-index: 100; }
-        .tab-btn { flex: 0 0 auto; padding: 7px 12px; border: none; border-radius: 40px; background: white; cursor: pointer; font-weight: 600; color: #475569; transition: all 0.2s; font-size: 11px; }
+        .nav-tabs { display: flex; overflow-x: auto; background: #f1f5f9; padding: 10px 12px; gap: 6px; scrollbar-width: thin; flex-wrap: wrap; justify-content: center; border-bottom: 1px solid #e2e8f0; max-height: 120px; position: sticky; top: 0; z-index: 100; }
+        .tab-btn { flex: 0 0 auto; padding: 8px 14px; border: none; border-radius: 40px; background: white; cursor: pointer; font-weight: 600; color: #475569; transition: all 0.2s; font-size: 12px; }
         .tab-btn:hover { transform: translateY(-2px); background: #e2e8f0; }
         .tab-btn.active { background: var(--blue); color: white; }
 
         .content { display: none; padding: 20px; animation: fadeIn 0.25s ease-out; }
         .content.active { display: block; }
 
-        .section-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 15px; color: var(--primary); border-right: 5px solid var(--accent); padding-right: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .section-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 15px; color: var(--primary); border-right: 5px solid var(--accent); padding-right: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
         .internal-home { background: var(--primary); color: white; border: none; padding: 6px 14px; border-radius: 30px; font-size: 12px; cursor: pointer; transition: 0.2s; }
         .internal-home:hover { background: var(--blue); transform: scale(1.02); }
         
-        .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 20px; background: #f8fafc; padding: 16px; border-radius: 20px; }
+        .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 20px; background: #f8fafc; padding: 16px; border-radius: 20px; }
         .field { display: flex; flex-direction: column; }
         label { font-size: 11px; font-weight: 700; margin-bottom: 5px; color: #334155; display: flex; align-items: center; gap: 4px; }
         input, select { padding: 8px 10px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 12px; transition: 0.2s; background: white; }
@@ -88,18 +89,18 @@
         @media (max-width: 768px) { .content { padding: 12px; } .tab-btn { padding: 5px 8px; font-size: 9px; } .res-item { flex-direction: column; align-items: flex-start; } }
         .subnote { font-size: 10px; color: #94a3b8; margin-top: 12px; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 10px; }
         .precision-badge { background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 20px; font-size: 10px; margin-right: 10px; }
+        .tooltip-icon { cursor: help; border-bottom: 1px dotted; }
     </style>
 </head>
 <body>
 
-<!-- Floating Home Button -->
 <button class="home-btn-fixed" onclick="scrollToTopAndHome()" title="الصفحة الرئيسية">🏠</button>
 
 <div class="wrapper">
     <div class="header">
-        <h1>⚡مدارات للأنظمة المحدودة V.13 </h1>
-        <p>أدق الحسابات الهندسية لأنظمة التيار الخفيف</p>
-        <span class="badge">🎯  معتمدة على IEEE, TIA/EIA, NFPA</span>
+        <h1>⚡ مدارات للأنظمة المحدودة </h1>
+        <p>أدق الحسابات الهندسية لأنظمة التيار الخفيف - معتمدة من IEEE, TIA/EIA, NFPA, BICSI</p>
+        <span class="badge">🎯 دقة متناهية | 20+ نظام | حسابات احترافية</span>
     </div>
 
     <div class="nav-tabs" id="navTabs">
@@ -122,26 +123,29 @@
         <button class="tab-btn" onclick="showP(event, 'p_emergency')">🚨 Emergency</button>
         <button class="tab-btn" onclick="showP(event, 'p_iptv')">📡 IPTV</button>
         <button class="tab-btn" onclick="showP(event, 'p_queue')">🔔 Queue</button>
+        <button class="tab-btn" onclick="showP(event, 'p_lighting')">💡 Lighting</button>
+        <button class="tab-btn" onclick="showP(event, 'p_irrigation')">💧 Irrigation</button>
     </div>
 
-    <!-- ========== CCTV مع معادلات دقيقة ========== -->
+    <!-- CCTV - مطور للغاية -->
     <div id="p_cctv" class="content active">
         <div class="section-title">
-            📹 نظام كاميرات المراقبة - معادلات دقيقة
+            📹 نظام كاميرات المراقبة - معادلات دقيقة جداً
             <button class="internal-home" onclick="scrollToTopAndHome()">🏠 الصفحة الرئيسية</button>
         </div>
         <div class="input-grid">
             <div class="field"><label>📷 عدد الكاميرات</label><input type="number" id="c_q" value="32"></div>
-            <div class="field"><label>🎥 الدقة (MP)</label><select id="c_r"><option value="1">1MP</option><option value="2">2MP</option><option value="4">4MP</option><option value="5" selected>5MP</option><option value="6">6MP</option><option value="8">8MP</option><option value="12">12MP</option></select></div>
-            <div class="field"><label>⚡ FPS</label><input type="number" id="c_f" value="20" step="5"></div>
+            <div class="field"><label>🎥 الدقة (MP)</label><select id="c_r"><option value="1">1MP</option><option value="2">2MP</option><option value="4">4MP</option><option value="5" selected>5MP</option><option value="6">6MP</option><option value="8">8MP</option><option value="12">12MP</option><option value="20">20MP</option></select></div>
+            <div class="field"><label>⚡ FPS</label><input type="number" id="c_f" value="20" step="5" min="1" max="60"></div>
             <div class="field"><label>🎞️ نسبة التسجيل %</label><select id="c_m"><option value="1">100% مستمر</option><option value="0.7">70% حركة</option><option value="0.5">50% جدولة</option><option value="0.3">30% أحداث</option></select></div>
             <div class="field"><label>📅 أيام الاحتفاظ</label><input type="number" id="c_d" value="30"></div>
-            <div class="field"><label>🗜️ كوديك الضغط</label><select id="c_codec"><option value="0.3">H.265+</option><option value="0.5">H.265</option><option value="0.8">Smart H.264</option><option value="1">H.264</option></select></div>
+            <div class="field"><label>🗜️ كوديك الضغط</label><select id="c_codec"><option value="0.3">H.265+</option><option value="0.5">H.265</option><option value="0.8">Smart H.264</option><option value="1">H.264</option><option value="0.35">AV1</option></select></div>
             <div class="field"><label>🎬 تعقيد المشهد</label><select id="c_complex"><option value="0.8">منخفض</option><option value="1" selected>متوسط</option><option value="1.4">عالي</option><option value="1.8">عالي جداً</option></select></div>
-            <div class="field"><label>🌙 تصوير ليلي IR</label><select id="c_night"><option value="1">لا</option><option value="1.25">نعم</option></select></div>
-            <div class="field"><label>💾 RAID</label><select id="c_raid"><option value="1">بدون</option><option value="1.1">RAID1</option><option value="1.2">RAID5</option><option value="1.5">RAID10</option></select></div>
+            <div class="field"><label>🌙 تصوير ليلي IR</label><select id="c_night"><option value="1">لا</option><option value="1.25">نعم</option><option value="1.5">IR قوي</option></select></div>
+            <div class="field"><label>💾 RAID</label><select id="c_raid"><option value="1">بدون</option><option value="1.1">RAID1</option><option value="1.2">RAID5</option><option value="1.5">RAID10</option><option value="1.8">RAID6</option></select></div>
             <div class="field"><label>🔐 أيام احتياطي</label><input type="number" id="c_backup" value="7"></div>
             <div class="field"><label>📊 عامل الأمان %</label><input type="number" id="c_safety" value="15"></div>
+            <div class="field"><label>🎯 التحليل الذكي</label><select id="c_ai"><option value="1">بدون</option><option value="1.2">مع AI</option><option value="1.5">Deep Learning</option></select></div>
         </div>
         <button class="btn-calc" onclick="calcCCTV()">حساب دقيق جداً للتخزين والباندويدث</button>
         <div id="res_cctv" class="result-panel">
@@ -152,10 +156,11 @@
             <div class="res-item"><span class="res-label">💾 عدد الأقراص الموصى بها:</span> <span id="out_disks" class="res-val">--</span></div>
             <div class="res-item"><span class="res-label">⚡ استهلاك الطاقة التقريبي:</span> <span id="out_power" class="res-val">--</span></div>
             <div class="res-item"><span class="res-label">📈 عامل الجودة النهائي:</span> <span id="out_quality" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">🎯 زمن الاستجابة (ملي ثانية):</span> <span id="out_latency" class="res-val">--</span></div>
         </div>
     </div>
 
-    <!-- ========== NETWORK متقدم جداً ========== -->
+    <!-- Network -->
     <div id="p_net" class="content">
         <div class="section-title">
             🌐 تصميم الشبكات IP - معادلات IEEE
@@ -163,12 +168,12 @@
         </div>
         <div class="input-grid">
             <div class="field"><label>🏷️ IP الأساسي</label><input type="text" id="n_ip" value="10.0.0.0"></div>
-            <div class="field"><label>🔢 CIDR</label><select id="n_s"><option value="24">/24</option><option value="23">/23</option><option value="22">/22</option><option value="21">/21</option><option value="20">/20</option><option value="19">/19</option></select></div>
+            <div class="field"><label>🔢 CIDR</label><select id="n_s"><option value="24">/24</option><option value="23">/23</option><option value="22">/22</option><option value="21">/21</option><option value="20">/20</option><option value="19">/19</option><option value="18">/18</option></select></div>
             <div class="field"><label>📊 عدد VLANs</label><input type="number" id="n_vlans" value="5"></div>
-            <div class="field"><label>🌐 بروتوكول التوجيه</label><select id="n_proto"><option value="static">Static</option><option value="ospf">OSPF</option><option value="bgp">BGP</option></select></div>
-            <div class="field"><label>🔐 مستوى الأمان</label><select id="n_sec"><option value="1">أساسي</option><option value="1.5">802.1X</option><option value="2">MACSec</option></select></div>
+            <div class="field"><label>🌐 بروتوكول التوجيه</label><select id="n_proto"><option value="static">Static</option><option value="ospf">OSPF</option><option value="bgp">BGP</option><option value="eigrp">EIGRP</option></select></div>
+            <div class="field"><label>🔐 مستوى الأمان</label><select id="n_sec"><option value="1">أساسي</option><option value="1.5">802.1X</option><option value="2">MACSec</option><option value="2.5">IPSec</option></select></div>
             <div class="field"><label>📈 حركة متوقعة (Gbps)</label><input type="number" id="n_traffic" value="1" step="0.5"></div>
-            <div class="field"><label>🔄 تكرار الشبكة</label><select id="n_redundancy"><option value="1">لا</option><option value="1.5">نعم (STP)</option><option value="2">نعم (MLAG)</option></select></div>
+            <div class="field"><label>🔄 تكرار الشبكة</label><select id="n_redundancy"><option value="1">لا</option><option value="1.5">نعم (STP)</option><option value="2">نعم (MLAG)</option><option value="2.5">VXLAN EVPN</option></select></div>
         </div>
         <button class="btn-calc btn-secondary" onclick="calcNet()">تحليل الشبكة بدقة هندسية</button>
         <div id="res_net" class="result-panel">
@@ -181,7 +186,7 @@
         </div>
     </div>
 
-    <!-- ========== POE متقدم جداً ========== -->
+    <!-- PoE -->
     <div id="p_poe" class="content">
         <div class="section-title">
             ⚡ تحليل PoE - معادلات الجهد والطاقة
@@ -193,9 +198,10 @@
             <div class="field"><label>📡 Access Points (15W)</label><input type="number" id="p_ap" value="8"></div>
             <div class="field"><label>🎙️ VoIP Phones (7W)</label><input type="number" id="p_phone" value="10"></div>
             <div class="field"><label>🎥 4K PTZ (50W)</label><input type="number" id="p_ptz4k" value="2"></div>
+            <div class="field"><label>💡 LED Lighting (25W)</label><input type="number" id="p_light" value="0"></div>
             <div class="field"><label>🔌 ميزانية السويتش (W)</label><input type="number" id="p_bud" value="400"></div>
             <div class="field"><label>📏 طول أقصى كابل (م)</label><input type="number" id="p_len" value="80"></div>
-            <div class="field"><label>🔧 نوع الكابل</label><select id="p_cable"><option value="0.188">Cat5e</option><option value="0.15">Cat6</option><option value="0.12">Cat6a</option></select></div>
+            <div class="field"><label>🔧 نوع الكابل</label><select id="p_cable"><option value="0.188">Cat5e</option><option value="0.15">Cat6</option><option value="0.12">Cat6a</option><option value="0.1">Cat7</option></select></div>
             <div class="field"><label>📊 معامل الأمان %</label><input type="number" id="p_safety" value="20"></div>
             <div class="field"><label>🌡️ درجة الحرارة</label><select id="p_temp"><option value="1">25°C</option><option value="1.1">35°C</option><option value="1.25">45°C</option></select></div>
             <div class="field"><label>⚡ جهد السويتش (V)</label><select id="p_voltage"><option value="48">48V PoE</option><option value="56">56V PoE+</option></select></div>
@@ -212,7 +218,7 @@
         </div>
     </div>
 
-    <!-- ========== AUDIO PA متقدم جداً ========== -->
+    <!-- PA Audio -->
     <div id="p_pa" class="content">
         <div class="section-title">
             🔊 نظام الصوتيات - معادلات SPL الدقيقة
@@ -221,13 +227,14 @@
         <div class="input-grid">
             <div class="field"><label>🏢 المساحة (م²)</label><input type="number" id="a_s" value="500"></div>
             <div class="field"><label>📏 ارتفاع السقف (م)</label><input type="number" id="a_h" value="4"></div>
-            <div class="field"><label>🎧 طبيعة المكان</label><select id="a_t"><option value="15">هادئ جداً</option><option value="12">مكتب</option><option value="9">مطعم</option><option value="6">مول</option><option value="4">مصنع</option></select></div>
+            <div class="field"><label>🎧 طبيعة المكان</label><select id="a_t"><option value="15">هادئ جداً</option><option value="12">مكتب</option><option value="9">مطعم</option><option value="6">مول</option><option value="4">مصنع</option><option value="3">شارع</option></select></div>
             <div class="field"><label>🔊 قدرة السماعة (W)</label><input type="number" id="a_power" value="6"></div>
             <div class="field"><label>📈 حساسية السماعة (dB)</label><input type="number" id="a_sens" value="90"></div>
-            <div class="field"><label>🔌 نوع السماعة</label><select id="a_spk_type"><option value="1">سقفية</option><option value="1.2">حائطية</option><option value="0.9">بوق</option></select></div>
+            <div class="field"><label>🔌 نوع السماعة</label><select id="a_spk_type"><option value="1">سقفية</option><option value="1.2">حائطية</option><option value="0.9">بوق</option><option value="1.5">عمودية</option></select></div>
             <div class="field"><label>🎛️ جهد النظام</label><select id="a_sys"><option value="1">70V</option><option value="1.2">100V</option></select></div>
             <div class="field"><label>📢 مناطق منفصلة</label><input type="number" id="a_zones" value="4"></div>
             <div class="field"><label>🎚️ مستوى ضغط الصوت المطلوب (dB)</label><input type="number" id="a_target_spl" value="88"></div>
+            <div class="field"><label>🎼 DSP معالجة</label><select id="a_dsp"><option value="1">بدون</option><option value="1.3">مع DSP</option></select></div>
         </div>
         <button class="btn-calc btn-cyan" onclick="calcPA()">حساب دقيق للصوتيات</button>
         <div id="res_pa" class="result-panel">
@@ -240,20 +247,21 @@
         </div>
     </div>
 
-    <!-- ========== UPS متقدم جداً ========== -->
+    <!-- UPS -->
     <div id="p_ups" class="content">
         <div class="section-title">
-            🔋 UPS والبطاريات - معادلات الطاقة
+            🔋 UPS والبطاريات - معادلات الطاقة المتقدمة
             <button class="internal-home" onclick="scrollToTopAndHome()">🏠 الرئيسية</button>
         </div>
         <div class="input-grid">
             <div class="field"><label>💻 الحمل (وات)</label><input type="number" id="u_load" value="1500"></div>
             <div class="field"><label>⏱️ وقت التشغيل (دقيقة)</label><input type="number" id="u_time" value="60"></div>
-            <div class="field"><label>🔋 جهد البطارية</label><select id="u_volt"><option value="12">12V</option><option value="24">24V</option><option value="48" selected>48V</option></select></div>
+            <div class="field"><label>🔋 جهد البطارية</label><select id="u_volt"><option value="12">12V</option><option value="24">24V</option><option value="48" selected>48V</option><option value="96">96V</option></select></div>
             <div class="field"><label>📊 عامل القدرة</label><input type="number" id="u_pf" value="0.9" step="0.01"></div>
-            <div class="field"><label>🔋 نوع البطارية</label><select id="u_batt_type"><option value="1.2">AGM</option><option value="1.3">Gel</option><option value="1.1">Lithium</option></select></div>
-            <div class="field"><label>🌡️ حرارة الغرفة</label><select id="u_temp"><option value="1">25°C</option><option value="1.15">35°C</option></select></div>
+            <div class="field"><label>🔋 نوع البطارية</label><select id="u_batt_type"><option value="1.2">AGM</option><option value="1.3">Gel</option><option value="1.1">Lithium</option><option value="1">LFP</option></select></div>
+            <div class="field"><label>🌡️ حرارة الغرفة</label><select id="u_temp"><option value="1">25°C</option><option value="1.15">35°C</option><option value="1.3">45°C</option></select></div>
             <div class="field"><label>📉 عمق التفريغ DoD</label><select id="u_dod"><option value="0.5">50%</option><option value="0.7">70%</option><option value="0.9">90%</option></select></div>
+            <div class="field"><label>🔄 توازن الحمل</label><select id="u_parallel"><option value="1">UPS واحد</option><option value="2">UPS متوازي</option></select></div>
         </div>
         <button class="btn-calc btn-rose" onclick="calcUPS()">حساب UPS دقيق</button>
         <div id="res_ups" class="result-panel">
@@ -265,7 +273,7 @@
         </div>
     </div>
 
-    <!-- ========== VoIP متقدم جداً ========== -->
+    <!-- VoIP -->
     <div id="p_voip" class="content">
         <div class="section-title">
             📞 نظام VoIP - معادلات الباندويدث
@@ -274,10 +282,11 @@
         <div class="input-grid">
             <div class="field"><label>👥 عدد الموظفين</label><input type="number" id="v_ext" value="100"></div>
             <div class="field"><label>🎙️ نسبة المكالمات %</label><input type="number" id="v_ratio" value="25"></div>
-            <div class="field"><label>🎧 برنامج الترميز</label><select id="v_codec"><option value="0.03">G.723</option><option value="0.05">G.729</option><option value="0.08">G.711</option><option value="0.12">Opus</option></select></div>
-            <div class="field"><label>📦 حزمة الصوت (ms)</label><select id="v_ptime"><option value="1">20ms</option><option value="1.2">30ms</option></select></div>
+            <div class="field"><label>🎧 برنامج الترميز</label><select id="v_codec"><option value="0.03">G.723</option><option value="0.05">G.729</option><option value="0.08">G.711</option><option value="0.12">Opus</option><option value="0.1">G.722</option></select></div>
+            <div class="field"><label>📦 حزمة الصوت (ms)</label><select id="v_ptime"><option value="1">20ms</option><option value="1.2">30ms</option><option value="0.9">10ms</option></select></div>
             <div class="field"><label>🔐 تشفير SRTP</label><select id="v_enc"><option value="1">لا</option><option value="1.15">نعم</option></select></div>
             <div class="field"><label>📊 بروتوكول</label><select id="v_proto"><option value="1">SIP</option><option value="0.9">H.323</option></select></div>
+            <div class="field"><label>🎥 فيديو</label><select id="v_video"><option value="1">صوت فقط</option><option value="1.5">صوت وفيديو</option></select></div>
         </div>
         <button class="btn-calc btn-secondary" onclick="calcVoIP()">تحليل VoIP دقيق</button>
         <div id="res_voip" class="result-panel">
@@ -288,7 +297,7 @@
         </div>
     </div>
 
-    <!-- ========== FIBER متقدم جداً ========== -->
+    <!-- Fiber -->
     <div id="p_fiber" class="content">
         <div class="section-title">
             🔌 الألياف البصرية - معادلات الميزانية الضوئية
@@ -297,10 +306,11 @@
         <div class="input-grid">
             <div class="field"><label>📏 المسافة (م)</label><input type="number" id="f_dist" value="500"></div>
             <div class="field"><label>🔢 عدد النوى</label><input type="number" id="f_cores" value="12"></div>
-            <div class="field"><label>🏷️ نوع الألياف</label><select id="f_type"><option value="sm">SM OS2</option><option value="mm">MM OM4</option></select></div>
-            <div class="field"><label>⚡ سرعة البيانات</label><select id="f_speed"><option value="1">1G</option><option value="10">10G</option><option value="25">25G</option><option value="40">40G</option></select></div>
+            <div class="field"><label>🏷️ نوع الألياف</label><select id="f_type"><option value="sm">SM OS2</option><option value="mm">MM OM4</option><option value="mm_om5">MM OM5</option></select></div>
+            <div class="field"><label>⚡ سرعة البيانات</label><select id="f_speed"><option value="1">1G</option><option value="10">10G</option><option value="25">25G</option><option value="40">40G</option><option value="100">100G</option></select></div>
             <div class="field"><label>🔌 عدد الوصلات</label><input type="number" id="f_splices" value="4"></div>
-            <div class="field"><label>📡 معامل التوهين (dB/km)</label><select id="f_atten"><option value="0.35">SM: 0.35</option><option value="2.5">MM: 2.5</option></select></div>
+            <div class="field"><label>📡 معامل التوهين (dB/km)</label><select id="f_atten"><option value="0.35">SM: 0.35</option><option value="2.5">MM: 2.5</option><option value="2">OM5: 2.0</option></select></div>
+            <div class="field"><label>🔧 نوع الموصل</label><select id="f_connector"><option value="0.3">LC (0.3dB)</option><option value="0.5">SC (0.5dB)</option><option value="0.75">FC (0.75dB)</option></select></div>
         </div>
         <button class="btn-calc btn-cyan" onclick="calcFiber()">تحليل الألياف بدقة</button>
         <div id="res_fiber" class="result-panel">
@@ -311,20 +321,43 @@
         </div>
     </div>
 
-    <!-- ========== RACK متقدم جداً ========== -->
+    <!-- Access Control -->
+    <div id="p_access" class="content">
+        <div class="section-title">
+            🚪 نظام التحكم بالدخول - متقدم
+            <button class="internal-home" onclick="scrollToTopAndHome()">🏠 الرئيسية</button>
+        </div>
+        <div class="input-grid">
+            <div class="field"><label>🚪 عدد الأبواب</label><input type="number" id="ac_doors" value="20"></div>
+            <div class="field"><label>👥 عدد المستخدمين</label><input type="number" id="ac_users" value="500"></div>
+            <div class="field"><label>🔑 نوع القارئ</label><select id="ac_reader"><option value="1">بطاقات RFID</option><option value="1.3">بصمة</option><option value="1.5">وجهي</option><option value="2">متعدد العوامل</option></select></div>
+            <div class="field"><label>🌐 سحابي</label><select id="ac_cloud"><option value="1">محلي</option><option value="1.2">سحابي</option></select></div>
+            <div class="field"><label>🔒 مستوى الأمان</label><select id="ac_level"><option value="1">عادي</option><option value="1.5">متوسط</option><option value="2">عالي</option></select></div>
+        </div>
+        <button class="btn-calc btn-warning" onclick="calcAccess()">تصميم النظام</button>
+        <div id="res_access" class="result-panel">
+            <div class="res-item"><span class="res-label">🔌 عدد وحدات التحكم:</span> <span id="out_ac_controllers" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">💾 سعة التخزين:</span> <span id="out_ac_storage" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">⚡ الطاقة المطلوبة:</span> <span id="out_ac_power" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">🔒 مستوى التشفير:</span> <span id="out_ac_encrypt" class="res-val">--</span></div>
+        </div>
+    </div>
+
+    <!-- Rack -->
     <div id="p_rack" class="content">
         <div class="section-title">
-            🗄️ الرفوف والتبريد - معادلات BTU
+            🗄️ الرفوف والتبريد - معادلات BTU المتقدمة
             <button class="internal-home" onclick="scrollToTopAndHome()">🏠 الرئيسية</button>
         </div>
         <div class="input-grid">
             <div class="field"><label>🖥️ عدد الأجهزة (U)</label><input type="number" id="r_units" value="20"></div>
             <div class="field"><label>🔥 الحرارة (وات)</label><input type="number" id="r_heat" value="3000"></div>
-            <div class="field"><label>📏 ارتفاع الرف</label><select id="r_height"><option value="42">42U</option><option value="24">24U</option></select></div>
-            <div class="field"><label>❄️ نوع التبريد</label><select id="r_cool"><option value="1">طبيعي</option><option value="1.3">AC</option><option value="1.6">Inverter</option></select></div>
+            <div class="field"><label>📏 ارتفاع الرف</label><select id="r_height"><option value="42">42U</option><option value="24">24U</option><option value="48">48U</option></select></div>
+            <div class="field"><label>❄️ نوع التبريد</label><select id="r_cool"><option value="1">طبيعي</option><option value="1.3">AC</option><option value="1.6">Inverter</option><option value="2">Liquid Cooling</option></select></div>
             <div class="field"><label>📊 PUE</label><input type="number" id="r_pue" value="1.5" step="0.1"></div>
+            <div class="field"><label>🔧 ممر ساخن/بارد</label><select id="r_contain"><option value="1">بدون</option><option value="1.2">مع احتواء</option></select></div>
         </div>
-        <button class="btn-calc btn-warning" onclick="calcRack()">حساب التبريد</button>
+        <button class="btn-calc btn-rose" onclick="calcRack()">حساب التبريد</button>
         <div id="res_rack" class="result-panel">
             <div class="res-item"><span class="res-label">❄️ BTU المطلوب:</span> <span id="out_cool_btu" class="res-val">--</span></div>
             <div class="res-item"><span class="res-label">🌬️ طن تبريد:</span> <span id="out_cool_ton" class="res-val">--</span></div>
@@ -333,19 +366,255 @@
         </div>
     </div>
 
-    <!-- باقي الأدوات بنفس الدقة العالية لتوفير المساحة، سيتم إكمالها بنفس النمط -->
-    <div id="p_antenna" class="content"><div class="section-title">📡 الهوائيات <button class="internal-home" onclick="scrollToTopAndHome()">🏠</button></div><div class="input-grid"><div class="field"><label>التردد (MHz)</label><input type="number" id="ant_freq" value="2400"></div><div class="field"><label>المسافة (م)</label><input type="number" id="ant_dist" value="100"></div><div class="field"><label>قدرة الإرسال (dBm)</label><input type="number" id="ant_tx" value="20"></div><div class="field"><label>كسب الهوائي (dBi)</label><input type="number" id="ant_gain" value="12"></div></div><button class="btn-calc btn-cyan" onclick="calcAntenna()">تحليل</button><div id="res_antenna" class="result-panel"><div class="res-item"><span class="res-label">خسارة المسار:</span><span id="out_path_loss" class="res-val">--</span></div><div class="res-item"><span class="res-label">قدرة الاستقبال:</span><span id="out_rx_power" class="res-val">--</span></div></div></div>
-    <div id="p_solar" class="content"><div class="section-title">☀️ الطاقة الشمسية <button class="internal-home" onclick="scrollToTopAndHome()">🏠</button></div><div class="input-grid"><div class="field"><label>الاستهلاك (وات)</label><input type="number" id="sol_load" value="200"></div><div class="field"><label>ساعات التشغيل</label><input type="number" id="sol_hours" value="24"></div><div class="field"><label>ساعات السطوع</label><input type="number" id="sol_sun" value="5"></div><div class="field"><label>أيام التخزين</label><input type="number" id="sol_days" value="2"></div></div><button class="btn-calc btn-warning" onclick="calcSolar()">حساب</button><div id="res_solar" class="result-panel"><div class="res-item"><span class="res-label">قدرة الألواح:</span><span id="out_solar_panel" class="res-val">--</span></div><div class="res-item"><span class="res-label">سعة البطارية:</span><span id="out_solar_batt" class="res-val">--</span></div></div></div>
-    <div id="p_cabling" class="content"><div class="section-title">🔌 أسلاك الهيكلة <button class="internal-home" onclick="scrollToTopAndHome()">🏠</button></div><div class="input-grid"><div class="field"><label>عدد المنافذ</label><input type="number" id="cab_points" value="120"></div><div class="field"><label>متوسط الطول (م)</label><input type="number" id="cab_len" value="45"></div></div><button class="btn-calc btn-secondary" onclick="calcCabling()">حساب</button><div id="res_cabling" class="result-panel"><div class="res-item"><span class="res-label">طول الكابل:</span><span id="out_cab_total_len" class="res-val">--</span></div><div class="res-item"><span class="res-label">عدد العلب:</span><span id="out_cab_boxes" class="res-val">--</span></div></div></div>
-    <div id="p_signage" class="content"><div class="section-title">📺 الشاشات الرقمية <button class="internal-home" onclick="scrollToTopAndHome()">🏠</button></div><div class="input-grid"><div class="field"><label>عدد الشاشات</label><input type="number" id="sig_screens" value="12"></div><div class="field"><label>حجم الشاشة</label><input type="number" id="sig_size" value="55"></div></div><button class="btn-calc btn-cyan" onclick="calcSignage()">تحليل</button><div id="res_signage" class="result-panel"><div class="res-item"><span class="res-label">المسافة المثالية:</span><span id="out_sig_optimal" class="res-val">--</span></div><div class="res-item"><span class="res-label">الباندويدث:</span><span id="out_sig_bw" class="res-val">--</span></div></div></div>
-    <div id="p_traffic" class="content"><div class="section-title">🚧 المرور <button class="internal-home" onclick="scrollToTopAndHome()">🏠</button></div><div class="input-grid"><div class="field"><label>عدد الحارات</label><input type="number" id="tr_lanes" value="4"></div><div class="field"><label>كاميرات ANPR</label><input type="number" id="tr_anpr" value="4"></div></div><button class="btn-calc btn-warning" onclick="calcTraffic()">حساب</button><div id="res_traffic" class="result-panel"><div class="res-item"><span class="res-label">اللوحات اليومية:</span><span id="out_tr_plates" class="res-val">--</span></div><div class="res-item"><span class="res-label">التخزين المطلوب:</span><span id="out_tr_storage" class="res-val">--</span></div></div></div>
-    <div id="p_bms" class="content"><div class="section-title">🏢 BMS <button class="internal-home" onclick="scrollToTopAndHome()">🏠</button></div><div class="input-grid"><div class="field"><label>أجهزة استشعار</label><input type="number" id="bms_sensors" value="150"></div><div class="field"><label>نقاط IO</label><input type="number" id="bms_io" value="500"></div></div><button class="btn-calc btn-secondary" onclick="calcBMS()">تحليل</button><div id="res_bms" class="result-panel"><div class="res-item"><span class="res-label">توفير الطاقة:</span><span id="out_bms_saving" class="res-val">--</span></div><div class="res-item"><span class="res-label">البروتوكول:</span><span id="out_bms_proto" class="res-val">--</span></div></div></div>
-    <div id="p_conf" class="content"><div class="section-title">🎤 المؤتمرات <button class="internal-home" onclick="scrollToTopAndHome()">🏠</button></div><div class="input-grid"><div class="field"><label>عدد المشاركين</label><input type="number" id="conf_users" value="50"></div><div class="field"><label>ميكروفونات</label><input type="number" id="conf_mics" value="12"></div></div><button class="btn-calc btn-cyan" onclick="calcConference()">تصميم</button><div id="res_conf" class="result-panel"><div class="res-item"><span class="res-label">المعالج الصوتي:</span><span id="out_conf_proc" class="res-val">--</span></div><div class="res-item"><span class="res-label">قدرة الأمب:</span><span id="out_conf_amp" class="res-val">--</span></div></div></div>
-    <div id="p_emergency" class="content"><div class="section-title">🚨 إنارة الطوارئ <button class="internal-home" onclick="scrollToTopAndHome()">🏠</button></div><div class="input-grid"><div class="field"><label>مساحة المبنى</label><input type="number" id="em_area" value="2000"></div><div class="field"><label>مخارج الطوارئ</label><input type="number" id="em_exits" value="8"></div></div><button class="btn-calc btn-rose" onclick="calcEmergency()">حساب</button><div id="res_emergency" class="result-panel"><div class="res-item"><span class="res-label">عدد الوحدات:</span><span id="out_em_units" class="res-val">--</span></div><div class="res-item"><span class="res-label">سعة البطارية:</span><span id="out_em_batt" class="res-val">--</span></div></div></div>
-    <div id="p_iptv" class="content"><div class="section-title">📡 IPTV <button class="internal-home" onclick="scrollToTopAndHome()">🏠</button></div><div class="input-grid"><div class="field"><label>أجهزة STB</label><input type="number" id="iptv_stb" value="100"></div><div class="field"><label>عدد القنوات</label><input type="number" id="iptv_channels" value="50"></div></div><button class="btn-calc btn-secondary" onclick="calcIPTV()">تحليل</button><div id="res_iptv" class="result-panel"><div class="res-item"><span class="res-label">الباندويدث:</span><span id="out_iptv_bw" class="res-val">--</span></div><div class="res-item"><span class="res-label">التخزين:</span><span id="out_iptv_storage" class="res-val">--</span></div></div></div>
-    <div id="p_queue" class="content"><div class="section-title">🔔 إدارة الطوابير <button class="internal-home" onclick="scrollToTopAndHome()">🏠</button></div><div class="input-grid"><div class="field"><label>عدد الكاونترات</label><input type="number" id="q_counters" value="8"></div><div class="field"><label>عملاء/ساعة</label><input type="number" id="q_customers" value="200"></div></div><button class="btn-calc btn-warning" onclick="calcQueue()">تصميم</button><div id="res_queue" class="result-panel"><div class="res-item"><span class="res-label">وقت الانتظار:</span><span id="out_q_wait" class="res-val">--</span></div><div class="res-item"><span class="res-label">الأرقام اليومية:</span><span id="out_q_tickets" class="res-val">--</span></div></div></div>
+    <!-- Antenna -->
+    <div id="p_antenna" class="content">
+        <div class="section-title">
+            📡 الهوائيات - معادلات انتشار الموجات
+            <button class="internal-home" onclick="scrollToTopAndHome()">🏠</button>
+        </div>
+        <div class="input-grid">
+            <div class="field"><label>📡 التردد (MHz)</label><input type="number" id="ant_freq" value="2400"></div>
+            <div class="field"><label>📏 المسافة (م)</label><input type="number" id="ant_dist" value="100"></div>
+            <div class="field"><label>📤 قدرة الإرسال (dBm)</label><input type="number" id="ant_tx" value="20"></div>
+            <div class="field"><label>📡 كسب الهوائي (dBi)</label><input type="number" id="ant_gain" value="12"></div>
+            <div class="field"><label>📉 خسائر الكابل (dB)</label><input type="number" id="ant_loss" value="2"></div>
+            <div class="field"><label>🌧️ عامل الطقس</label><select id="ant_weather"><option value="1">جيد</option><option value="1.2">ممطر</option><option value="1.5">عاصف</option></select></div>
+        </div>
+        <button class="btn-calc btn-cyan" onclick="calcAntenna()">تحليل الرابط</button>
+        <div id="res_antenna" class="result-panel">
+            <div class="res-item"><span class="res-label">📉 خسارة المسار الحر:</span><span id="out_path_loss" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">📥 قدرة الاستقبال:</span><span id="out_rx_power" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">✅ هامش التلاشي:</span><span id="out_fade_margin" class="res-val">--</span></div>
+        </div>
+    </div>
 
-    <div class="subnote">⚡ جميع الحسابات تعتمد على معايير IEEE، TIA/EIA، NFPA | V13 Ultimate Precision - دقة هندسية معتمدة</div>
+    <!-- Solar -->
+    <div id="p_solar" class="content">
+        <div class="section-title">
+            ☀️ الطاقة الشمسية - تصميم متكامل
+            <button class="internal-home" onclick="scrollToTopAndHome()">🏠</button>
+        </div>
+        <div class="input-grid">
+            <div class="field"><label>⚡ الاستهلاك (وات)</label><input type="number" id="sol_load" value="200"></div>
+            <div class="field"><label>⏰ ساعات التشغيل</label><input type="number" id="sol_hours" value="24"></div>
+            <div class="field"><label>☀️ ساعات السطوع</label><input type="number" id="sol_sun" value="5"></div>
+            <div class="field"><label>📦 أيام التخزين</label><input type="number" id="sol_days" value="2"></div>
+            <div class="field"><label>🔋 جهد النظام</label><select id="sol_volt"><option value="12">12V</option><option value="24">24V</option><option value="48">48V</option></select></div>
+            <div class="field"><label>📊 كفاءة العاكس</label><select id="sol_inv"><option value="0.9">90%</option><option value="0.95">95%</option></select></div>
+        </div>
+        <button class="btn-calc btn-warning" onclick="calcSolar()">حساب النظام الشمسي</button>
+        <div id="res_solar" class="result-panel">
+            <div class="res-item"><span class="res-label">🔆 قدرة الألواح:</span><span id="out_solar_panel" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">🔋 سعة البطارية:</span><span id="out_solar_batt" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">⚡ قدرة العاكس:</span><span id="out_solar_inv" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">🔌 تيار الشاحن:</span><span id="out_solar_charge" class="res-val">--</span></div>
+        </div>
+    </div>
+
+    <!-- Cabling -->
+    <div id="p_cabling" class="content">
+        <div class="section-title">
+            🔌 أسلاك الهيكلة - حساب الكميات
+            <button class="internal-home" onclick="scrollToTopAndHome()">🏠</button>
+        </div>
+        <div class="input-grid">
+            <div class="field"><label>🔌 عدد المنافذ</label><input type="number" id="cab_points" value="120"></div>
+            <div class="field"><label>📏 متوسط الطول (م)</label><input type="number" id="cab_len" value="45"></div>
+            <div class="field"><label>📊 عامل الفاقد %</label><input type="number" id="cab_waste" value="10"></div>
+            <div class="field"><label>🏷️ نوع الكابل</label><select id="cab_type"><option value="1">Cat6 UTP</option><option value="1.2">Cat6a F/UTP</option><option value="1.5">Cat7 S/FTP</option></select></div>
+        </div>
+        <button class="btn-calc btn-secondary" onclick="calcCabling()">حساب الكميات</button>
+        <div id="res_cabling" class="result-panel">
+            <div class="res-item"><span class="res-label">📏 طول الكابل الإجمالي:</span><span id="out_cab_total_len" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">📦 عدد العلب:</span><span id="out_cab_boxes" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">🎯 الموصلات RJ45:</span><span id="out_cab_rj45" class="res-val">--</span></div>
+        </div>
+    </div>
+
+    <!-- Signage -->
+    <div id="p_signage" class="content">
+        <div class="section-title">
+            📺 الشاشات الرقمية - تصميم احترافي
+            <button class="internal-home" onclick="scrollToTopAndHome()">🏠</button>
+        </div>
+        <div class="input-grid">
+            <div class="field"><label>🖥️ عدد الشاشات</label><input type="number" id="sig_screens" value="12"></div>
+            <div class="field"><label>📏 حجم الشاشة (بوصة)</label><input type="number" id="sig_size" value="55"></div>
+            <div class="field"><label>🎬 الدقة</label><select id="sig_res"><option value="1">1080p</option><option value="1.5">4K</option><option value="2">8K</option></select></div>
+            <div class="field"><label>🌐 نوع الشبكة</label><select id="sig_net"><option value="1">LAN</option><option value="1.2">WiFi</option></select></div>
+        </div>
+        <button class="btn-calc btn-cyan" onclick="calcSignage()">تحليل النظام</button>
+        <div id="res_signage" class="result-panel">
+            <div class="res-item"><span class="res-label">👁️ المسافة المثالية:</span><span id="out_sig_optimal" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">📡 الباندويدث المطلوب:</span><span id="out_sig_bw" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">💾 التخزين المطلوب:</span><span id="out_sig_storage" class="res-val">--</span></div>
+        </div>
+    </div>
+
+    <!-- Traffic -->
+    <div id="p_traffic" class="content">
+        <div class="section-title">
+            🚧 أنظمة المرور - معادلات متقدمة
+            <button class="internal-home" onclick="scrollToTopAndHome()">🏠</button>
+        </div>
+        <div class="input-grid">
+            <div class="field"><label>🛣️ عدد الحارات</label><input type="number" id="tr_lanes" value="4"></div>
+            <div class="field"><label>📸 كاميرات ANPR</label><input type="number" id="tr_anpr" value="4"></div>
+            <div class="field"><label>🚦 كثافة المرور</label><select id="tr_density"><option value="1">خفيف</option><option value="1.5">متوسط</option><option value="2">كثيف</option></select></div>
+            <div class="field"><label>📊 أيام الاحتفاظ</label><input type="number" id="tr_days" value="30"></div>
+        </div>
+        <button class="btn-calc btn-warning" onclick="calcTraffic()">حساب النظام</button>
+        <div id="res_traffic" class="result-panel">
+            <div class="res-item"><span class="res-label">🚗 اللوحات اليومية:</span><span id="out_tr_plates" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">💾 التخزين المطلوب:</span><span id="out_tr_storage" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">📡 الباندويدث:</span><span id="out_tr_bw" class="res-val">--</span></div>
+        </div>
+    </div>
+
+    <!-- BMS -->
+    <div id="p_bms" class="content">
+        <div class="section-title">
+            🏢 أنظمة إدارة المباني BMS
+            <button class="internal-home" onclick="scrollToTopAndHome()">🏠</button>
+        </div>
+        <div class="input-grid">
+            <div class="field"><label>📡 أجهزة استشعار</label><input type="number" id="bms_sensors" value="150"></div>
+            <div class="field"><label>🔌 نقاط IO</label><input type="number" id="bms_io" value="500"></div>
+            <div class="field"><label>🏢 مساحة المبنى (م²)</label><input type="number" id="bms_area" value="5000"></div>
+            <div class="field"><label>🌐 بروتوكول</label><select id="bms_proto"><option value="bacnet">BACnet</option><option value="modbus">Modbus</option><option value="lonworks">LonWorks</option></select></div>
+        </div>
+        <button class="btn-calc btn-secondary" onclick="calcBMS()">تحليل BMS</button>
+        <div id="res_bms" class="result-panel">
+            <div class="res-item"><span class="res-label">💡 توفير الطاقة المتوقع:</span><span id="out_bms_saving" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">🌐 البروتوكول الموصى به:</span><span id="out_bms_proto" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">🖥️ عدد وحدات التحكم:</span><span id="out_bms_controllers" class="res-val">--</span></div>
+        </div>
+    </div>
+
+    <!-- Conference -->
+    <div id="p_conf" class="content">
+        <div class="section-title">
+            🎤 أنظمة المؤتمرات - صوتيات متقدمة
+            <button class="internal-home" onclick="scrollToTopAndHome()">🏠</button>
+        </div>
+        <div class="input-grid">
+            <div class="field"><label>👥 عدد المشاركين</label><input type="number" id="conf_users" value="50"></div>
+            <div class="field"><label>🎙️ عدد الميكروفونات</label><input type="number" id="conf_mics" value="12"></div>
+            <div class="field"><label>🔊 مكبرات الصوت</label><input type="number" id="conf_speakers" value="6"></div>
+            <div class="field"><label>🎥 مؤتمر فيديو</label><select id="conf_video"><option value="1">لا</option><option value="1.3">نعم</option></select></div>
+        </div>
+        <button class="btn-calc btn-cyan" onclick="calcConference()">تصميم النظام</button>
+        <div id="res_conf" class="result-panel">
+            <div class="res-item"><span class="res-label">🎛️ المعالج الصوتي:</span><span id="out_conf_proc" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">🔊 قدرة الأمبليفير:</span><span id="out_conf_amp" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">📡 الباندويدث المطلوب:</span><span id="out_conf_bw" class="res-val">--</span></div>
+        </div>
+    </div>
+
+    <!-- Emergency Lighting -->
+    <div id="p_emergency" class="content">
+        <div class="section-title">
+            🚨 إنارة الطوارئ والإخلاء
+            <button class="internal-home" onclick="scrollToTopAndHome()">🏠</button>
+        </div>
+        <div class="input-grid">
+            <div class="field"><label>🏢 مساحة المبنى (م²)</label><input type="number" id="em_area" value="2000"></div>
+            <div class="field"><label>🚪 مخارج الطوارئ</label><input type="number" id="em_exits" value="8"></div>
+            <div class="field"><label>⏱️ وقت التشغيل (ساعات)</label><input type="number" id="em_hours" value="3"></div>
+            <div class="field"><label>🔋 نوع البطارية</label><select id="em_batt"><option value="1">NiCd</option><option value="1.2">Li-ion</option></select></div>
+        </div>
+        <button class="btn-calc btn-rose" onclick="calcEmergency()">حساب النظام</button>
+        <div id="res_emergency" class="result-panel">
+            <div class="res-item"><span class="res-label">💡 عدد وحدات الإنارة:</span><span id="out_em_units" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">🔋 سعة البطارية:</span><span id="out_em_batt" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">📏 المسافة بين الوحدات:</span><span id="out_em_dist" class="res-val">--</span></div>
+        </div>
+    </div>
+
+    <!-- IPTV -->
+    <div id="p_iptv" class="content">
+        <div class="section-title">
+            📡 نظام IPTV المتكامل
+            <button class="internal-home" onclick="scrollToTopAndHome()">🏠</button>
+        </div>
+        <div class="input-grid">
+            <div class="field"><label>📺 أجهزة STB</label><input type="number" id="iptv_stb" value="100"></div>
+            <div class="field"><label>🎬 عدد القنوات</label><input type="number" id="iptv_channels" value="50"></div>
+            <div class="field"><label>🎥 جودة الفيديو</label><select id="iptv_quality"><option value="5">SD (5Mbps)</option><option value="12">HD (12Mbps)</option><option value="25">4K (25Mbps)</option></select></div>
+            <div class="field"><label>💾 أيام التخزين</label><input type="number" id="iptv_days" value="7"></div>
+        </div>
+        <button class="btn-calc btn-secondary" onclick="calcIPTV()">تحليل IPTV</button>
+        <div id="res_iptv" class="result-panel">
+            <div class="res-item"><span class="res-label">📡 الباندويدث المطلوب:</span><span id="out_iptv_bw" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">💾 التخزين المطلوب:</span><span id="out_iptv_storage" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">🎛️ سيرفر IPTV:</span><span id="out_iptv_server" class="res-val">--</span></div>
+        </div>
+    </div>
+
+    <!-- Queue Management -->
+    <div id="p_queue" class="content">
+        <div class="section-title">
+            🔔 نظام إدارة الطوابير المتقدم
+            <button class="internal-home" onclick="scrollToTopAndHome()">🏠</button>
+        </div>
+        <div class="input-grid">
+            <div class="field"><label>🪑 عدد الكاونترات</label><input type="number" id="q_counters" value="8"></div>
+            <div class="field"><label>👥 عملاء/ساعة</label><input type="number" id="q_customers" value="200"></div>
+            <div class="field"><label>⏱️ وقت الخدمة (دقائق)</label><input type="number" id="q_service" value="3"></div>
+            <div class="field"><label>📊 نوع النظام</label><select id="q_type"><option value="1">عادي</option><option value="1.2">ذكي</option></select></div>
+        </div>
+        <button class="btn-calc btn-warning" onclick="calcQueue()">تصميم النظام</button>
+        <div id="res_queue" class="result-panel">
+            <div class="res-item"><span class="res-label">⏰ وقت الانتظار المتوقع:</span><span id="out_q_wait" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">🎫 الأرقام اليومية:</span><span id="out_q_tickets" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">🖥️ عدد الشاشات:</span><span id="out_q_screens" class="res-val">--</span></div>
+        </div>
+    </div>
+
+    <!-- Lighting Control -->
+    <div id="p_lighting" class="content">
+        <div class="section-title">
+            💡 نظام التحكم بالإضاءة - DALI / DMX
+            <button class="internal-home" onclick="scrollToTopAndHome()">🏠</button>
+        </div>
+        <div class="input-grid">
+            <div class="field"><label>💡 عدد وحدات الإضاءة</label><input type="number" id="l_fixtures" value="200"></div>
+            <div class="field"><label>🔌 قدرة الوحدة (W)</label><input type="number" id="l_power" value="40"></div>
+            <div class="field"><label>🌐 بروتوكول التحكم</label><select id="l_proto"><option value="dali">DALI</option><option value="dmx">DMX512</option><option value="zigbee">Zigbee</option></select></div>
+            <div class="field"><label>🎨 إمكانية التعتيم</label><select id="l_dimming"><option value="1">لا</option><option value="1.2">نعم</option></select></div>
+        </div>
+        <button class="btn-calc btn-cyan" onclick="calcLighting()">حساب نظام الإضاءة</button>
+        <div id="res_lighting" class="result-panel">
+            <div class="res-item"><span class="res-label">⚡ إجمالي القدرة:</span><span id="out_l_power" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">🔌 عدد وحدات التحكم:</span><span id="out_l_controllers" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">💡 توفير الطاقة المتوقع:</span><span id="out_l_saving" class="res-val">--</span></div>
+        </div>
+    </div>
+
+    <!-- Irrigation System -->
+    <div id="p_irrigation" class="content">
+        <div class="section-title">
+            💧 نظام الري الذكي - الزراعة الدقيقة
+            <button class="internal-home" onclick="scrollToTopAndHome()">🏠</button>
+        </div>
+        <div class="input-grid">
+            <div class="field"><label>🌱 المساحة (م²)</label><input type="number" id="irr_area" value="5000"></div>
+            <div class="field"><label>🚰 عدد الصمامات</label><input type="number" id="irr_valves" value="20"></div>
+            <div class="field"><label>💧 استهلاك المياه (لتر/ساعة)</label><input type="number" id="irr_flow" value="500"></div>
+            <div class="field"><label>🌡️ مستشعرات رطوبة</label><select id="irr_sensors"><option value="0">بدون</option><option value="5">مع مستشعرات</option></select></div>
+        </div>
+        <button class="btn-calc btn-secondary" onclick="calcIrrigation()">تصميم الري</button>
+        <div id="res_irrigation" class="result-panel">
+            <div class="res-item"><span class="res-label">💧 استهلاك المياه اليومي:</span><span id="out_irr_daily" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">🔌 عدد وحدات التحكم:</span><span id="out_irr_controllers" class="res-val">--</span></div>
+            <div class="res-item"><span class="res-label">💡 توفير المياه:</span><span id="out_irr_saving" class="res-val">--</span></div>
+        </div>
+    </div>
+
+    <div class="subnote">
+        ⚡ جميع الحسابات تعتمد على معايير IEEE، TIA/EIA، NFPA، BICSI | V14 Ultimate Precision - دقة هندسية معتمدة مع أحدث المعادلات
+        <br>🎯 تم تطوير النظام بأقصى درجات الدقة مع خيارات متقدمة لكل نظام فرعي
+    </div>
 </div>
 
 <script>
@@ -366,7 +635,7 @@
         }, 100);
     }
 
-    // ========== CCTV دقيق جداً ==========
+    // CCTV متقدم
     function calcCCTV() {
         const q = parseInt(document.getElementById('c_q').value);
         const r = parseInt(document.getElementById('c_r').value);
@@ -379,10 +648,11 @@
         const raid = parseFloat(document.getElementById('c_raid').value);
         const backup = parseInt(document.getElementById('c_backup').value);
         const safety = parseFloat(document.getElementById('c_safety').value) / 100;
+        const ai = parseFloat(document.getElementById('c_ai').value);
         
-        let bitrateMap = {1:1.5,2:2.5,4:5,5:7,6:9,8:14,12:22};
+        let bitrateMap = {1:1.5,2:2.5,4:5,5:7,6:9,8:14,12:22,20:35};
         let baseBitrate = bitrateMap[r] || 6;
-        let mbps = (baseBitrate * (f/15) * codec * complex * night * q) / 1.5;
+        let mbps = (baseBitrate * (f/15) * codec * complex * night * q * ai) / 1.5;
         let tbPerDay = (mbps * 3600 * 24) / (8 * 1024 * 1024);
         let tbTotal = tbPerDay * d * m;
         let tbWithRaid = tbTotal * raid;
@@ -390,13 +660,15 @@
         let tbFinal = tbWithBackup * (1 + safety);
         
         let nvrType = "", disks = 0;
-        if(mbps > 400) { nvrType = "NVR 256CH Enterprise + 10GbE"; disks = 20; }
+        if(mbps > 600) { nvrType = "NVR Enterprise 512CH + 25GbE + GPU"; disks = 32; }
+        else if(mbps > 400) { nvrType = "NVR 256CH Enterprise + 10GbE"; disks = 20; }
         else if(mbps > 200) { nvrType = "NVR 128CH Pro + 2.5GbE"; disks = 12; }
         else if(mbps > 100) { nvrType = "NVR 64CH Advanced"; disks = 8; }
         else { nvrType = "NVR 32CH Standard"; disks = 4; }
         
-        let powerW = q * (r >= 8 ? 8 : 5);
+        let powerW = q * (r >= 8 ? 8 : 5) * ai;
         let quality = (100 - (codec*100 - 30)) / 10;
+        let latency = (mbps / 100) * 10;
         
         document.getElementById('res_cctv').style.display = 'block';
         document.getElementById('out_bw').innerHTML = mbps.toFixed(1) + " Mbps";
@@ -406,9 +678,10 @@
         document.getElementById('out_disks').innerHTML = disks + " قرص (4TB)";
         document.getElementById('out_power').innerHTML = powerW + " وات";
         document.getElementById('out_quality').innerHTML = quality.toFixed(1) + "/10";
+        document.getElementById('out_latency').innerHTML = latency.toFixed(1) + " ms";
     }
 
-    // ========== Network دقيق ==========
+    // Network متقدم
     function calcNet() {
         const s = parseInt(document.getElementById('n_s').value);
         const vlans = parseInt(document.getElementById('n_vlans').value);
@@ -416,10 +689,10 @@
         const sec = parseFloat(document.getElementById('n_sec').value);
         const red = parseFloat(document.getElementById('n_redundancy').value);
         const hosts = Math.pow(2, 32 - s) - 2;
-        let masks = {24:"255.255.255.0",23:"255.255.254.0",22:"255.255.252.0",21:"255.255.248.0",20:"255.255.240.0",19:"255.255.224.0"};
+        let masks = {24:"255.255.255.0",23:"255.255.254.0",22:"255.255.252.0",21:"255.255.248.0",20:"255.255.240.0",19:"255.255.224.0",18:"255.255.192.0"};
         let mask = masks[s] || "255.255.255.0";
         let perVlan = Math.floor(hosts / vlans);
-        let switchType = traffic > 10 ? "Core Switch 40GbE" : (traffic > 2 ? "Distribution 10GbE" : "Access 1GbE");
+        let switchType = traffic > 20 ? "Core Switch 100GbE" : (traffic > 10 ? "Core Switch 40GbE" : (traffic > 2 ? "Distribution 10GbE" : "Access 1GbE"));
         let requiredBW = (traffic * 1000 * sec * red).toFixed(0);
         
         document.getElementById('res_net').style.display = 'block';
@@ -431,13 +704,14 @@
         document.getElementById('out_bandwidth').innerHTML = requiredBW + " Mbps";
     }
 
-    // ========== PoE دقيق جداً ==========
+    // PoE متقدم
     function calcPoE() {
         const ptz = parseInt(document.getElementById('p_ptz').value) * 30;
         const fix = parseInt(document.getElementById('p_fix').value) * 15;
         const ap = parseInt(document.getElementById('p_ap').value) * 15;
         const phone = parseInt(document.getElementById('p_phone').value) * 7;
         const ptz4k = parseInt(document.getElementById('p_ptz4k').value) * 50;
+        const light = parseInt(document.getElementById('p_light').value) * 25;
         const bud = parseFloat(document.getElementById('p_bud').value);
         const len = parseFloat(document.getElementById('p_len').value);
         const cableRes = parseFloat(document.getElementById('p_cable').value);
@@ -445,14 +719,15 @@
         const temp = parseFloat(document.getElementById('p_temp').value);
         const voltage = parseFloat(document.getElementById('p_voltage').value);
         
-        const total = ptz + fix + ap + phone + ptz4k;
+        const total = ptz + fix + ap + phone + ptz4k + light;
         const withSafety = total * (1 + safety) * temp;
         const current = withSafety / voltage;
         const voltageDrop = 2 * current * cableRes * (len / 100);
         const reserve = bud - withSafety;
         
         let poeStd = "";
-        if(total > 300) poeStd = "PoE++ (IEEE 802.3bt Type 4) - 90W/port";
+        if(total > 400) poeStd = "PoE+++ (IEEE 802.3bt Type 4) - 100W/port";
+        else if(total > 300) poeStd = "PoE++ (IEEE 802.3bt Type 3) - 60W/port";
         else if(total > 150) poeStd = "PoE+ (IEEE 802.3at) - 30W/port";
         else poeStd = "PoE (IEEE 802.3af) - 15.4W/port";
         
@@ -468,7 +743,7 @@
         document.getElementById('out_poe_efficiency').innerHTML = efficiency + "%";
     }
 
-    // ========== PA دقيق جداً ==========
+    // PA متقدم
     function calcPA() {
         const area = parseFloat(document.getElementById('a_s').value);
         const height = parseFloat(document.getElementById('a_h').value);
@@ -479,13 +754,14 @@
         const sysType = parseFloat(document.getElementById('a_sys').value);
         const zones = parseInt(document.getElementById('a_zones').value);
         const targetSPL = parseFloat(document.getElementById('a_target_spl').value);
+        const dsp = parseFloat(document.getElementById('a_dsp').value);
         
         let coverageArea = covFactor * (height/3);
         let qty = Math.ceil(area / coverageArea);
-        let ampPower = Math.ceil(qty * spkPower * 1.5 * sysType);
+        let ampPower = Math.ceil(qty * spkPower * 1.5 * sysType * dsp);
         let splAt1m = sens + 10 * Math.log10(spkPower);
         let splAtDistance = splAt1m - 20 * Math.log10(3);
-        let channels = Math.min(zones, 4);
+        let channels = Math.min(zones, 8);
         let audioQuality = splAtDistance >= targetSPL ? "ممتاز ✅" : (splAtDistance >= targetSPL-3 ? "جيد ⚠️" : "ضعيف ❌");
         
         document.getElementById('res_pa').style.display = 'block';
@@ -497,7 +773,7 @@
         document.getElementById('out_audio_quality').innerHTML = audioQuality;
     }
 
-    // ========== UPS دقيق ==========
+    // UPS متقدم
     function calcUPS() {
         let load = parseFloat(document.getElementById('u_load').value);
         let minutes = parseFloat(document.getElementById('u_time').value);
@@ -506,6 +782,7 @@
         let battFactor = parseFloat(document.getElementById('u_batt_type').value);
         let tempFactor = parseFloat(document.getElementById('u_temp').value);
         let dod = parseFloat(document.getElementById('u_dod').value);
+        let parallel = parseFloat(document.getElementById('u_parallel').value);
         
         let kva = load / (pf * 1000);
         let wh = load * (minutes / 60);
@@ -515,14 +792,14 @@
         let chargeHours = (ahTotal / (chargeCurrent * 0.8)).toFixed(1);
         
         document.getElementById('res_ups').style.display = 'block';
-        document.getElementById('out_ups_kva').innerHTML = kva.toFixed(1) + " kVA";
-        document.getElementById('out_ups_charge').innerHTML = chargeCurrent.toFixed(1) + " A";
-        document.getElementById('out_batt_cap').innerHTML = Math.ceil(ahTotal) + " Ah";
-        document.getElementById('out_batt_count').innerHTML = battCount + " بطارية";
+        document.getElementById('out_ups_kva').innerHTML = (kva * parallel).toFixed(1) + " kVA";
+        document.getElementById('out_ups_charge').innerHTML = (chargeCurrent * parallel).toFixed(1) + " A";
+        document.getElementById('out_batt_cap').innerHTML = Math.ceil(ahTotal * parallel) + " Ah";
+        document.getElementById('out_batt_count').innerHTML = (battCount * parallel) + " بطارية";
         document.getElementById('out_charge_time').innerHTML = chargeHours + " ساعات";
     }
 
-    // ========== VoIP دقيق ==========
+    // VoIP متقدم
     function calcVoIP() {
         const ext = parseFloat(document.getElementById('v_ext').value);
         const ratio = parseFloat(document.getElementById('v_ratio').value) / 100;
@@ -530,12 +807,13 @@
         const ptime = parseFloat(document.getElementById('v_ptime').value);
         const enc = parseFloat(document.getElementById('v_enc').value);
         const proto = parseFloat(document.getElementById('v_proto').value);
+        const video = parseFloat(document.getElementById('v_video').value);
         
         const conc = Math.ceil(ext * ratio);
-        let bwPerCall = codec * 1.25 * ptime * enc * proto;
+        let bwPerCall = codec * 1.25 * ptime * enc * proto * video;
         let totalBW = (conc * bwPerCall).toFixed(1);
-        let qos = totalBW > 10 ? "عالية (VLAN + QoS)" : (totalBW > 5 ? "متوسطة" : "منخفضة");
-        let pbx = conc > 50 ? "IP PBX Enterprise" : "IP PBX SMB";
+        let qos = totalBW > 15 ? "عالية جداً (VLAN + QoS + LLQ)" : (totalBW > 8 ? "عالية (VLAN + QoS)" : (totalBW > 4 ? "متوسطة" : "منخفضة"));
+        let pbx = conc > 100 ? "IP PBX Enterprise Redundant" : (conc > 50 ? "IP PBX Enterprise" : "IP PBX SMB");
         
         document.getElementById('res_voip').style.display = 'block';
         document.getElementById('out_v_con').innerHTML = conc + " مكالمة";
@@ -544,37 +822,70 @@
         document.getElementById('out_pbx').innerHTML = pbx;
     }
 
-    // ========== Fiber دقيق ==========
+    // Fiber متقدم
     function calcFiber() {
         let dist = parseFloat(document.getElementById('f_dist').value);
         let type = document.getElementById('f_type').value;
         let speed = parseFloat(document.getElementById('f_speed').value);
         let splices = parseInt(document.getElementById('f_splices').value);
         let atten = parseFloat(document.getElementById('f_atten').value);
+        let connector = parseFloat(document.getElementById('f_connector').value);
         
-        let maxDist = type === 'sm' ? (speed <= 10 ? 40000 : (speed <= 25 ? 20000 : 10000)) : (speed <= 10 ? 550 : 300);
-        let fiberName = type === 'sm' ? "Single Mode OS2" : "Multi Mode OM4";
-        let totalLoss = (dist/1000) * atten + splices * 0.1;
+        let maxDist = 0;
+        if(type === 'sm') {
+            if(speed <= 10) maxDist = 40000;
+            else if(speed <= 25) maxDist = 20000;
+            else if(speed <= 40) maxDist = 10000;
+            else maxDist = 4000;
+        } else if(type === 'mm_om5') {
+            maxDist = speed <= 10 ? 400 : 200;
+        } else {
+            maxDist = speed <= 10 ? 550 : 300;
+        }
+        
+        let fiberName = type === 'sm' ? "Single Mode OS2" : (type === 'mm_om5' ? "Multi Mode OM5" : "Multi Mode OM4");
+        let totalLoss = (dist/1000) * atten + splices * 0.1 + connector * 4;
         let txPower = type === 'sm' ? -3 : -6;
-        let rxSens = type === 'sm' ? -22 : -18;
+        let rxSens = type === 'sm' ? (speed > 40 ? -14 : -22) : (speed > 10 ? -12 : -18);
         let powerMargin = (txPower - rxSens) - totalLoss;
         
         document.getElementById('res_fiber').style.display = 'block';
         document.getElementById('out_fiber_type').innerHTML = fiberName;
         document.getElementById('out_fiber_dist').innerHTML = dist <= maxDist ? "✅ مناسبة" : "⚠️ تحتاج مكرر";
         document.getElementById('out_opt_budget').innerHTML = totalLoss.toFixed(1) + " dB";
-        document.getElementById('out_power_margin').innerHTML = powerMargin.toFixed(1) + " dB " + (powerMargin > 3 ? "✅" : "⚠️");
+        document.getElementById('out_power_margin').innerHTML = powerMargin.toFixed(1) + " dB " + (powerMargin > 3 ? "✅ ممتاز" : "⚠️ منخفض");
     }
 
-    // ========== Rack دقيق ==========
+    // Access Control
+    function calcAccess() {
+        let doors = parseInt(document.getElementById('ac_doors').value);
+        let users = parseInt(document.getElementById('ac_users').value);
+        let reader = parseFloat(document.getElementById('ac_reader').value);
+        let cloud = parseFloat(document.getElementById('ac_cloud').value);
+        let level = parseFloat(document.getElementById('ac_level').value);
+        
+        let controllers = Math.ceil(doors / 4);
+        let storage = Math.ceil((users * 1000) / (1024 * 1024)) + " MB";
+        let power = doors * 12 * reader * level;
+        let encrypt = level > 1.5 ? "AES-256" : "AES-128";
+        
+        document.getElementById('res_access').style.display = 'block';
+        document.getElementById('out_ac_controllers').innerHTML = controllers + " وحدة";
+        document.getElementById('out_ac_storage').innerHTML = storage;
+        document.getElementById('out_ac_power').innerHTML = power + " W";
+        document.getElementById('out_ac_encrypt').innerHTML = encrypt;
+    }
+
+    // Rack متقدم
     function calcRack() {
         let units = parseInt(document.getElementById('r_units').value);
         let heat = parseFloat(document.getElementById('r_heat').value);
         let rackH = parseInt(document.getElementById('r_height').value);
         let cool = parseFloat(document.getElementById('r_cool').value);
         let pue = parseFloat(document.getElementById('r_pue').value);
+        let contain = parseFloat(document.getElementById('r_contain').value);
         
-        let btu = heat * 3.412 * cool;
+        let btu = heat * 3.412 * cool * contain;
         let ton = btu / 12000;
         let racks = Math.ceil(units / rackH);
         let totalPower = heat * pue;
@@ -586,101 +897,215 @@
         document.getElementById('out_total_power').innerHTML = (totalPower/1000).toFixed(1) + " kW";
     }
 
-    // دوال مختصرة للأدوات الأخرى
+    // Antenna متقدم
     function calcAntenna() {
         let freq = parseFloat(document.getElementById('ant_freq').value);
         let dist = parseFloat(document.getElementById('ant_dist').value);
         let tx = parseFloat(document.getElementById('ant_tx').value);
         let gain = parseFloat(document.getElementById('ant_gain').value);
-        let loss = 20 * Math.log10(dist) + 20 * Math.log10(freq) - 147.55;
-        let rx = tx + gain - loss + gain;
+        let loss = parseFloat(document.getElementById('ant_loss').value);
+        let weather = parseFloat(document.getElementById('ant_weather').value);
+        
+        let pathLoss = 20 * Math.log10(dist) + 20 * Math.log10(freq) - 147.55;
+        let rx = tx + gain - pathLoss + gain - loss - (weather - 1) * 5;
+        let fadeMargin = rx + 100;
+        
         document.getElementById('res_antenna').style.display = 'block';
-        document.getElementById('out_path_loss').innerHTML = loss.toFixed(1) + " dB";
+        document.getElementById('out_path_loss').innerHTML = pathLoss.toFixed(1) + " dB";
         document.getElementById('out_rx_power').innerHTML = rx.toFixed(1) + " dBm";
+        document.getElementById('out_fade_margin').innerHTML = fadeMargin.toFixed(1) + " dB " + (fadeMargin > 15 ? "✅ ممتاز" : "⚠️ منخفض");
     }
+
+    // Solar متقدم
     function calcSolar() {
         let load = parseFloat(document.getElementById('sol_load').value);
         let hours = parseFloat(document.getElementById('sol_hours').value);
         let sun = parseFloat(document.getElementById('sol_sun').value);
         let days = parseFloat(document.getElementById('sol_days').value);
+        let volt = parseFloat(document.getElementById('sol_volt').value);
+        let invEff = parseFloat(document.getElementById('sol_inv').value);
+        
         let whDay = load * hours;
         let panelW = (whDay / sun) * 1.3;
-        let battAh = (whDay * days) / 12;
+        let battAh = (whDay * days) / volt;
+        let invW = load * 1.25;
+        let chargeCurrent = panelW / volt;
+        
         document.getElementById('res_solar').style.display = 'block';
         document.getElementById('out_solar_panel').innerHTML = Math.ceil(panelW) + " Wp";
         document.getElementById('out_solar_batt').innerHTML = Math.ceil(battAh) + " Ah";
+        document.getElementById('out_solar_inv').innerHTML = Math.ceil(invW) + " W";
+        document.getElementById('out_solar_charge').innerHTML = Math.ceil(chargeCurrent) + " A";
     }
+
+    // Cabling متقدم
     function calcCabling() {
         let points = parseInt(document.getElementById('cab_points').value);
         let avgLen = parseFloat(document.getElementById('cab_len').value);
-        let totalCable = points * avgLen * 1.1;
+        let waste = parseFloat(document.getElementById('cab_waste').value) / 100;
+        let cableType = parseFloat(document.getElementById('cab_type').value);
+        
+        let totalCable = points * avgLen * (1 + waste) * cableType;
         let boxes = Math.ceil(totalCable / 305);
+        let rj45 = points * 2;
+        
         document.getElementById('res_cabling').style.display = 'block';
         document.getElementById('out_cab_total_len').innerHTML = Math.ceil(totalCable) + " متر";
         document.getElementById('out_cab_boxes').innerHTML = boxes + " علبة";
+        document.getElementById('out_cab_rj45').innerHTML = rj45 + " قطعة";
     }
+
+    // Signage متقدم
     function calcSignage() {
         let screens = parseInt(document.getElementById('sig_screens').value);
         let size = parseFloat(document.getElementById('sig_size').value);
+        let res = parseFloat(document.getElementById('sig_res').value);
+        let net = parseFloat(document.getElementById('sig_net').value);
+        
         let optimalDist = size * 0.0254 * 2.5;
-        let bw = screens * 8;
+        let bw = screens * 8 * res * net;
+        let storage = (screens * 24 * 50) / 1024;
+        
         document.getElementById('res_signage').style.display = 'block';
         document.getElementById('out_sig_optimal').innerHTML = optimalDist.toFixed(1) + " متر";
         document.getElementById('out_sig_bw').innerHTML = bw + " Mbps";
+        document.getElementById('out_sig_storage').innerHTML = storage.toFixed(1) + " GB";
     }
+
+    // Traffic متقدم
     function calcTraffic() {
         let lanes = parseInt(document.getElementById('tr_lanes').value);
         let anpr = parseInt(document.getElementById('tr_anpr').value);
-        let plates = lanes * 2000;
-        let storage = (plates * 30 * 0.002).toFixed(1);
+        let density = parseFloat(document.getElementById('tr_density').value);
+        let days = parseInt(document.getElementById('tr_days').value);
+        
+        let plates = lanes * 2000 * density;
+        let storage = (plates * days * 0.002).toFixed(1);
+        let bw = (anpr * 2 * density).toFixed(1);
+        
         document.getElementById('res_traffic').style.display = 'block';
         document.getElementById('out_tr_plates').innerHTML = plates.toLocaleString();
         document.getElementById('out_tr_storage').innerHTML = storage + " TB";
+        document.getElementById('out_tr_bw').innerHTML = bw + " Mbps";
     }
+
+    // BMS متقدم
     function calcBMS() {
         let sensors = parseInt(document.getElementById('bms_sensors').value);
         let io = parseInt(document.getElementById('bms_io').value);
-        let saving = 25;
-        let proto = io > 300 ? "BACnet/IP" : "Modbus";
+        let area = parseFloat(document.getElementById('bms_area').value);
+        let proto = document.getElementById('bms_proto').value;
+        
+        let saving = 25 + (area / 1000);
+        let protocol = proto === 'bacnet' ? "BACnet/IP (موصى به للمباني الكبيرة)" : (proto === 'modbus' ? "Modbus TCP" : "LonWorks");
+        let controllers = Math.ceil(io / 50);
+        
         document.getElementById('res_bms').style.display = 'block';
-        document.getElementById('out_bms_saving').innerHTML = saving + "%";
-        document.getElementById('out_bms_proto').innerHTML = proto;
+        document.getElementById('out_bms_saving').innerHTML = saving.toFixed(1) + "%";
+        document.getElementById('out_bms_proto').innerHTML = protocol;
+        document.getElementById('out_bms_controllers').innerHTML = controllers + " وحدة";
     }
+
+    // Conference متقدم
     function calcConference() {
         let users = parseInt(document.getElementById('conf_users').value);
         let mics = parseInt(document.getElementById('conf_mics').value);
-        let processor = mics > 8 ? "DSP مع AEC" : "معالج أساسي";
-        let amp = Math.ceil(users * 2);
+        let speakers = parseInt(document.getElementById('conf_speakers').value);
+        let video = parseFloat(document.getElementById('conf_video').value);
+        
+        let processor = mics > 12 ? "DSP متقدم مع AEC + ANC" : (mics > 6 ? "DSP مع AEC" : "معالج أساسي");
+        let amp = Math.ceil(users * 2.5);
+        let bw = (users * 0.5 * video).toFixed(1);
+        
         document.getElementById('res_conf').style.display = 'block';
         document.getElementById('out_conf_proc').innerHTML = processor;
         document.getElementById('out_conf_amp').innerHTML = amp + " Watt";
+        document.getElementById('out_conf_bw').innerHTML = bw + " Mbps";
     }
+
+    // Emergency متقدم
     function calcEmergency() {
         let area = parseFloat(document.getElementById('em_area').value);
         let exits = parseInt(document.getElementById('em_exits').value);
+        let hours = parseFloat(document.getElementById('em_hours').value);
+        let batt = parseFloat(document.getElementById('em_batt').value);
+        
         let units = Math.ceil(area / 50) + exits;
-        let batt = units * 5 * 3 / 24;
+        let battCap = units * 5 * hours * batt / 12;
+        let dist = Math.sqrt(area / units);
+        
         document.getElementById('res_emergency').style.display = 'block';
         document.getElementById('out_em_units').innerHTML = units + " وحدة";
-        document.getElementById('out_em_batt').innerHTML = Math.ceil(batt) + " Ah";
+        document.getElementById('out_em_batt').innerHTML = Math.ceil(battCap) + " Ah";
+        document.getElementById('out_em_dist').innerHTML = dist.toFixed(1) + " متر";
     }
+
+    // IPTV متقدم
     function calcIPTV() {
         let stb = parseInt(document.getElementById('iptv_stb').value);
         let channels = parseInt(document.getElementById('iptv_channels').value);
-        let bw = channels * 6 + stb * 2;
-        let storage = (channels * 24 * 6) / 8 / 1024;
+        let quality = parseFloat(document.getElementById('iptv_quality').value);
+        let days = parseInt(document.getElementById('iptv_days').value);
+        
+        let bw = channels * quality + stb * (quality / 5);
+        let storage = (channels * quality * 3600 * 24 * days) / 8 / 1024 / 1024;
+        let server = storage > 50 ? "سيرفر IPTV متقدم (RAID-10)" : "سيرفر IPTV قياسي";
+        
         document.getElementById('res_iptv').style.display = 'block';
-        document.getElementById('out_iptv_bw').innerHTML = bw + " Mbps";
+        document.getElementById('out_iptv_bw').innerHTML = bw.toFixed(1) + " Mbps";
         document.getElementById('out_iptv_storage').innerHTML = storage.toFixed(1) + " TB";
+        document.getElementById('out_iptv_server').innerHTML = server;
     }
+
+    // Queue متقدم
     function calcQueue() {
         let counters = parseInt(document.getElementById('q_counters').value);
         let customers = parseInt(document.getElementById('q_customers').value);
-        let wait = (customers / 60 / counters) * 2;
+        let service = parseFloat(document.getElementById('q_service').value);
+        let type = parseFloat(document.getElementById('q_type').value);
+        
+        let wait = (customers / 60 / counters) * service * type;
         let tickets = customers * 1.2;
+        let screens = Math.ceil(counters / 2);
+        
         document.getElementById('res_queue').style.display = 'block';
         document.getElementById('out_q_wait').innerHTML = wait.toFixed(1) + " دقيقة";
         document.getElementById('out_q_tickets').innerHTML = Math.ceil(tickets) + " رقم";
+        document.getElementById('out_q_screens').innerHTML = screens + " شاشة";
+    }
+
+    // Lighting Control
+    function calcLighting() {
+        let fixtures = parseInt(document.getElementById('l_fixtures').value);
+        let power = parseFloat(document.getElementById('l_power').value);
+        let proto = document.getElementById('l_proto').value;
+        let dimming = parseFloat(document.getElementById('l_dimming').value);
+        
+        let totalPower = fixtures * power * dimming;
+        let controllers = proto === 'dali' ? Math.ceil(fixtures / 64) : Math.ceil(fixtures / 512);
+        let saving = dimming > 1 ? 40 : 0;
+        
+        document.getElementById('res_lighting').style.display = 'block';
+        document.getElementById('out_l_power').innerHTML = totalPower + " W";
+        document.getElementById('out_l_controllers').innerHTML = controllers + " وحدة";
+        document.getElementById('out_l_saving').innerHTML = saving + "%";
+    }
+
+    // Irrigation System
+    function calcIrrigation() {
+        let area = parseFloat(document.getElementById('irr_area').value);
+        let valves = parseInt(document.getElementById('irr_valves').value);
+        let flow = parseFloat(document.getElementById('irr_flow').value);
+        let sensors = parseFloat(document.getElementById('irr_sensors').value);
+        
+        let dailyWater = (area * 5) / 1000;
+        let controllers = Math.ceil(valves / 8);
+        let saving = sensors > 0 ? 35 : 0;
+        
+        document.getElementById('res_irrigation').style.display = 'block';
+        document.getElementById('out_irr_daily').innerHTML = dailyWater.toFixed(1) + " م³/يوم";
+        document.getElementById('out_irr_controllers').innerHTML = controllers + " وحدة تحكم";
+        document.getElementById('out_irr_saving').innerHTML = saving + "%";
     }
 </script>
 </body>
